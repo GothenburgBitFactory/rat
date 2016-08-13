@@ -1,0 +1,23 @@
+TDPL & PG
+---------
+
+  ()                Empty string, always succeeds.
+  a                 Terminal. Consume and succeed.
+  A                 Non-terminal. Recurse and succeed.
+  (e1,e2, ...en)    Sequence. e1 and e2 ...
+  (e1/e2/.../en)    Choice. e1 or e2 ...
+  e*                Greedy repetition, always succeeds.
+  e+                Greedy positive repetition.
+  e?                Optional.
+  &(e)              Positive lookahead. Succeed in presence of e but do not consume e.
+  !(e)              Negative lookahead. Succeed in absence of e but do not consume e.
+
+
+  E ← N
+    / ‘(’ E ‘+’ E ‘)’
+    / ‘(’ E ‘-’ E ‘)’
+  N ← D N
+    / D
+  D ← ‘0’ | ... | ‘9’
+
+
