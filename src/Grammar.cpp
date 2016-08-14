@@ -31,23 +31,12 @@
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Grammar::loadFromFile (File& file)
-{
-  if (! file.exists ())
-    throw format ("Grammar file '{1}' not found.", file._data);
-
-  std::string contents;
-  file.read (contents);
-  loadFromString (contents);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Load and parse TDPL.
-void Grammar::loadFromString (const std::string& input)
+void Grammar::initialize (const std::string& input)
 {
   std::string rule_name = "";
 
-  // TODO Read string.
+  // TODO Parse string.
 
   if (_debug)
     std::cout << dump () << "\n";

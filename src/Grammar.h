@@ -34,8 +34,7 @@ class Grammar
 {
 public:
   Grammar () = default;
-  void loadFromFile (File&);
-  void loadFromString (const std::string&);
+  void initialize (const std::string&);
   void debug (bool);
   std::string dump () const;
 

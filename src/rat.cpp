@@ -25,94 +25,93 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-// If <iostream> is included, put it after <stdio.h>, because it includes
-// <stdio.h>, and therefore would ignore the _WITH_GETLINE.
-#ifdef FREEBSD
-#define _WITH_GETLINE
-#endif
+#include <Grammar.h>
+#include <FS.h>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
+
+////////////////////////////////////////////////////////////////////////////////
+void usage ()
+{
+  std::cout << "\n"
+            << "Usage: rat [options] <grammar> [<args>]\n"
+            << "\n"
+            << "Options are:\n"
+            << "  -h/--help       Command usage\n"
+            << "  -d/--debug      Debug mode\n"
+            << "\n";
+  exit (-1);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, char** argv)
 {
   int status = 0;
 
-  try
+  // Process command line arguments
+  std::string grammarFile = "";
+  std::string commandLine = "";
+  bool debug = false;
+
+  for (int i = 1; i < argc; ++i)
   {
-/*
-    for (int i = 1; i < argc; ++i)
+    if (argv[i][0] == '-')
     {
-      if (!strcmp (argv[i], "-h") ||
-          !strcmp (argv[i], "--help"))
+           if (!strcmp (argv[i], "-h"))         usage ();
+      else if (!strcmp (argv[i], "--help"))     usage ();
+      else if (!strcmp (argv[i], "-d"))         debug = true;
+      else if (!strcmp (argv[i], "--debug"))    debug = true;
+      else
       {
-        std::cout << '\n'
-                  << "Usage: rat [<options>] [<section> ...]\n"
-                  << '\n'
-                  << "  -h|--help       Show this usage\n"
-                  << "  -v|--version    Show this version\n"
-                  << '\n';
-        return status;
-      }
-
-      else if (!strcmp (argv[i], "-v") ||
-               !strcmp (argv[i], "--version"))
-      {
-        std::cout << "\n"
-                  << PACKAGE_STRING
-                  << " built for "
-#if defined (DARWIN)
-                  << "Darwin"
-#elif defined (SOLARIS)
-                  << "Solaris"
-#elif defined (CYGWIN)
-                  << "Cygwin"
-#elif defined (OPENBSD)
-                  << "OpenBSD"
-#elif defined (FREEBSD)
-                  << "FreeBSD"
-#elif defined (NETBSD)
-                  << "NetBSD"
-#elif defined (LINUX)
-                  << "Linux"
-#elif defined (KFREEBSD)
-                  << "GNU/kFreeBSD"
-#elif defined (GNUHURD)
-                  << "GNU/Hurd"
-#else
-                  << "Unknown"
-#endif
-                  << "\n"
-                  << "Copyright (C) 2010 - 2016 Göteborg Bit Factory\n"
-                  << "\n"
-                  << "Rat may be copied only under the terms of the MIT "
-                     "license, which may be found in the source kit.\n"
-                  << "\n"
-                  << "Documentation for rat can be found using 'man rat' "
-                     "or at http://tasktools.org/projects/rat.html\n"
-                  << "\n";
-        return status;
-      }
-
-      else if (!strcmp (argv[i], "-d") ||
-               !strcmp (argv[i], "--debug"))
-      {
-        debug = true;
+        std::cout << "Unrecognized option '" << argv[i] << "'" << std::endl;
+        usage ();
       }
     }
-*/
+    else if (grammarFile == "")
+    {
+      grammarFile = argv[i];
+    }
+    else
+    {
+      if (commandLine != "")
+        commandLine += " ";
+
+      commandLine += "'" + std::string (argv[i]) + "'";
+    }
   }
 
-  catch (std::string& error)
+  // Display usage for incorrect command line.
+  if (grammarFile == "")
+    usage ();
+
+  try
+  {
+    std::string contents;
+    File (grammarFile).read (contents);
+
+    Grammar grammar;
+    grammar.debug (debug);
+    grammar.initialize (contents);
+
+    // Test commandLine against grammar.
+    if (commandLine != "")
+    {
+      // TODO Create parser.
+      // TODO Set debug mode.
+      // TODO Parse commandLine.
+    }
+  }
+
+  catch (const std::string& error)
   {
     std::cout << error << "\n";
-    return -1;
+    status = -1;
   }
-
   catch (...)
   {
     std::cout << "Unknown error\n";
-    return -2;
+    status = -2;
   }
 
   return status;
