@@ -26,22 +26,85 @@
 
 #include <cmake.h>
 #include <Grammar.h>
+#include <Lexer.h>
+#include <shared.h>
 #include <format.h>
 #include <iostream>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
-// Load and parse TDPL.
+// Load and parse PG.
 void Grammar::initialize (const std::string& input)
 {
   std::string rule_name = "";
 
-  // TODO Parse string.
+  // This is a state machine.  Read each line.
+  for (auto& line : split (input, '\n'))
+  {
+    // Skip whole-line comments.
+    if (line[0] == '#')
+      continue;
+
+    // Eliminate inline comments.
+    std::string::size_type hash = line.find ('#');
+    if (hash != std::string::npos)
+      line.resize (hash);
+
+    // Skip blank lines with no semantics.
+    line = Lexer::trim (line);
+    if (line == "" and rule_name == "")
+      continue;
+
+    if (line != "")
+    {
+      std::cout << "# Grammar line " << line << "\n";
+
+      Lexer l (line);
+      l.noPattern ();
+      l.noPath ();
+      l.noUUID ();
+      l.noDate ();
+      l.noDuration ();
+
+      auto tokens = l.tokenize (line);
+      if (tokens.size () < 5)
+        throw std::string ("Incomplete line: ") + line;
+
+      // Capture rule name, and first rule (entry point).
+      rule_name = std::get <0> (tokens[0]);
+      if (_first == "")
+        _first = rule_name;
+
+      // rule < - - ...
+      // 0    1 2 3
+      unsigned int i = 4;
+      while (i < tokens.size ())
+      {
+        // TODO Recognize all the following possibilities:
+        // TODO Should this instead be a recursive descent parser?
+
+        // TODO ()
+        // TODO (e)
+        // TODO nonterminal
+        // TODO literal
+        // TODO choice
+        // TODO optional?
+        // TODO any*
+        // TODO mandatory+
+        // TODO &(positive_lookahead)
+        // TODO !(negative_lookahead)
+      }
+
+      // TODO Store something indexed by rule_name.
+    }
+  }
 
   if (_debug)
     std::cout << dump () << "\n";
 
   // TODO Validate the parsed grammar.
+  // TODO - _first != "".
+  // TODO - all rules referenced.
 }
 
 ////////////////////////////////////////////////////////////////////////////////

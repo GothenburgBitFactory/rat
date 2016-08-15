@@ -39,7 +39,8 @@ public:
   std::string dump () const;
 
 private:
-  bool _debug {false};
+  bool        _debug {false};
+  std::string _first {};
 };
 
 #endif
