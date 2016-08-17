@@ -121,6 +121,37 @@ bool Grammar::isSequence (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Alternative <-- AND UnaryItem / NOT UnaryItem / UnaryItem
+bool Grammar::isAlternative (Pig& pig)
+{
+  auto checkpoint = pig.cursor ();
+  if (isAnd (pig) &&
+      isUnaryItem (pig))
+  {
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
+  if (isNot (pig) &&
+      isUnaryItem (pig))
+  {
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
+  if (isUnaryItem (pig))
+  {
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // UnaryItem <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
 bool Grammar::isUnaryItem (Pig& pig)
 {
