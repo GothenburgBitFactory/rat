@@ -57,43 +57,26 @@ void Grammar::initialize (const std::string& input)
 
     if (line != "")
     {
-      std::cout << "# Grammar line " << line << "\n";
+    }
 
-      Lexer l (line);
-      l.noPattern ();
-      l.noPath ();
-      l.noUUID ();
-      l.noDate ();
-      l.noDuration ();
+    isSpacing (pig);
+    std::cout << "# Grammar::isIdentifier\n";
+    return true;
+  }
 
-      auto tokens = l.tokenize (line);
-      if (tokens.size () < 5)
-        throw std::string ("Incomplete line: ") + line;
+  return false;
+}
 
-      // Capture rule name, and first rule (entry point).
-      rule_name = std::get <0> (tokens[0]);
-      if (_first == "")
-        _first = rule_name;
-
-      // rule < - - ...
-      // 0    1 2 3
-      unsigned int i = 4;
-      while (i < tokens.size ())
-      {
-        // TODO Recognize all the following possibilities:
-        // TODO Should this instead be a recursive descent parser?
-
-        // TODO ()
-        // TODO (e)
-        // TODO nonterminal
-        // TODO literal
-        // TODO choice
-        // TODO optional?
-        // TODO any*
-        // TODO mandatory+
-        // TODO &(positive_lookahead)
-        // TODO !(negative_lookahead)
-      }
+////////////////////////////////////////////////////////////////////////////////
+// SpaceChar <-- ' ' / TAB / CR / LF
+bool Grammar::isSpaceChar (Pig& pig)
+{
+  return pig.skip (' ')  ||
+         pig.skip ('\t') ||
+         pig.skip ('\r') ||
+         pig.skip ('\f') ||
+         pig.skip ('\n');
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // LineComment <-- '#' (!(LineTerminator) Char)* LineTerminator
