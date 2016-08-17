@@ -40,6 +40,7 @@ public:
   std::string dump () const;
 
 private:
+  bool isLineComment    (Pig&);
   bool isLineTerminator (Pig&);
   bool isLeftArrow      (Pig&);
   bool isEOF            (Pig&);

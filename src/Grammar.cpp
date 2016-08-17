@@ -95,8 +95,20 @@ void Grammar::initialize (const std::string& input)
         // TODO !(negative_lookahead)
       }
 
-      // TODO Store something indexed by rule_name.
+////////////////////////////////////////////////////////////////////////////////
+// LineComment <-- '#' (!(LineTerminator) Char)* LineTerminator
+bool Grammar::isLineComment (Pig& pig)
+{
+  if (pig.skip ('#'))
+  {
+    while (! isEOF (pig) &&
+           ! isLineTerminator (pig))
+    {
+      pig.skipN (1);
     }
+
+    std::cout << "# Grammar::isLineComment\n";
+    return true;
   }
 
   return false;
