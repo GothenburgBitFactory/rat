@@ -281,6 +281,20 @@ bool Grammar::isQuestion (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// STAR <-- '!' Spacing
+bool Grammar::isStar (Pig& pig)
+{
+  if (pig.skip ('*') &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isStar " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // LEFTARROW <-- '<--' Spacing
 bool Grammar::isLeftArrow (Pig& pig)
 {

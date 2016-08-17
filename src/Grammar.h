@@ -54,6 +54,7 @@ private:
   bool isAnd            (Pig&);
   bool isNot            (Pig&);
   bool isQuestion       (Pig&);
+  bool isStar           (Pig&);
   bool isLeftArrow      (Pig&);
   bool isSlash          (Pig&);
   bool isEOF            (Pig&);
