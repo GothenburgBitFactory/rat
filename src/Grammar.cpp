@@ -112,6 +112,13 @@ bool Grammar::isSequence (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
+bool Grammar::isPrimaryItem (Pig& pig)
+{
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Identifier <-- IdentStart IdentCont* Spacing
 bool Grammar::isIdentifier (Pig& pig)
 {

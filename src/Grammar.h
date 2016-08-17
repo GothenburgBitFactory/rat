@@ -44,6 +44,7 @@ private:
   bool isDefinition     (Pig&);
   bool isRule           (Pig&);
   bool isSequence       (Pig&);
+  bool isPrimaryItem    (Pig&);
   bool isIdentifier     (Pig&);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
