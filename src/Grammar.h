@@ -40,6 +40,7 @@ public:
   std::string dump () const;
 
 private:
+  bool isLeftArrow      (Pig&);
   bool isEOF            (Pig&);
 
 private:

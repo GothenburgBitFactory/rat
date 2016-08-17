@@ -99,8 +99,22 @@ void Grammar::initialize (const std::string& input)
     }
   }
 
-  if (_debug)
-    std::cout << dump () << "\n";
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// LEFTARROW <-- '<--' Spacing
+bool Grammar::isLeftArrow (Pig& pig)
+{
+  if (pig.skipLiteral ("<--") &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isLeftArrow\n";
+    return true;
+  }
+
+  return false;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF <-- !(Char)
