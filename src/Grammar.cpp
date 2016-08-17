@@ -90,7 +90,25 @@ bool Grammar::isDefinition (Pig& pig)
 // Rule <-- Sequence+
 bool Grammar::isRule (Pig& pig)
 {
+  if (isSequence (pig))
+  {
+    while (isSequence (pig))
+    {
+    }
+
+    std::cout << "# Grammar::isRule " << pig.cursor () << " (" << pig.peek (4) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Sequence <-- Alternative (SLASH Alternative)*
+bool Grammar::isSequence (Pig& pig)
+{
   // TODO Implement.
+
   return false;
 }
 

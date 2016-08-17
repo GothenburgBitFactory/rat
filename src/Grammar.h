@@ -43,6 +43,7 @@ private:
   bool isGrammar        (Pig&);
   bool isDefinition     (Pig&);
   bool isRule           (Pig&);
+  bool isSequence       (Pig&);
   bool isIdentifier     (Pig&);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
