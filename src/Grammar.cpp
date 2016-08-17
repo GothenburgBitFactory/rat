@@ -39,17 +39,30 @@ void Grammar::initialize (const std::string& input)
 {
   std::string rule_name = "";
 
-  // This is a state machine.  Read each line.
-  for (auto& line : split (input, '\n'))
+////////////////////////////////////////////////////////////////////////////////
+// Grammar <-- Spacing Definition+ EOF
+bool Grammar::isGrammar (Pig& pig)
+{
+  auto checkpoint = pig.cursor ();
+  if (isSpacing (pig))
   {
-    // Skip whole-line comments.
-    if (line[0] == '#')
-      continue;
+    if (isDefinition (pig))
+    {
+      while (isDefinition (pig))
+      {
+      }
 
-    // Eliminate inline comments.
-    std::string::size_type hash = line.find ('#');
-    if (hash != std::string::npos)
-      line.resize (hash);
+      if (isEOF (pig))
+      {
+        std::cout << "# Grammar::isGrammar\n";
+        return true;
+      }
+    }
+  }
+
+  pig.restoreTo (checkpoint);
+  return false;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definition <-- Identifier LEFTARROW Rule
