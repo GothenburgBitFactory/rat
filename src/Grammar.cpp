@@ -58,7 +58,7 @@ bool Grammar::isGrammar (Pig& pig)
 
       if (isEOF (pig))
       {
-        std::cout << "# Grammar::isGrammar\n";
+        std::cout << "# Grammar::isGrammar " << pig.cursor () << " (" << pig.peek (16) << ")\n";
         return true;
       }
     }
@@ -72,13 +72,12 @@ bool Grammar::isGrammar (Pig& pig)
 // Definition <-- Identifier LEFTARROW Rule
 bool Grammar::isDefinition (Pig& pig)
 {
-  std::cout << "Grammar::isDefinition " << pig.dump () << "\n";
   auto checkpoint = pig.cursor ();
   if (isIdentifier (pig) &&
       isLeftArrow  (pig) &&
       isRule       (pig))
   {
-    std::cout << "# Grammar::isDefinition\n";
+    std::cout << "# Grammar::isDefinition " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -96,7 +95,7 @@ bool Grammar::isRule (Pig& pig)
     {
     }
 
-    std::cout << "# Grammar::isRule " << pig.cursor () << " (" << pig.peek (4) << ")\n";
+    std::cout << "# Grammar::isRule " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -123,7 +122,7 @@ bool Grammar::isIdentifier (Pig& pig)
     }
 
     isSpacing (pig);
-    std::cout << "# Grammar::isIdentifier\n";
+    std::cout << "# Grammar::isIdentifier " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -138,7 +137,7 @@ bool Grammar::isIdentStart (Pig& pig)
       pig.peek () == '_')
   {
     pig.skipN (1);
-    std::cout << "# Grammar::isIdentStart\n";
+    std::cout << "# Grammar::isIdentStart " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -151,12 +150,15 @@ bool Grammar::isIdentStart (Pig& pig)
 bool Grammar::isIdentCont (Pig& pig)
 {
   if (isIdentStart (pig))
+  {
+    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
+  }
 
   if (unicodeLatinDigit (pig.peek ()))
   {
     pig.skipN (1);
-    std::cout << "# Grammar::isIdentCont\n";
+    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -199,7 +201,7 @@ bool Grammar::isLineComment (Pig& pig)
       pig.skipN (1);
     }
 
-    std::cout << "# Grammar::isLineComment\n";
+    std::cout << "# Grammar::isLineComment " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -215,7 +217,7 @@ bool Grammar::isLineTerminator (Pig& pig)
       pig.skip ('\f'))
   {
     pig.skip ('\f');
-    std::cout << "# Grammar::isLineTerminator\n";
+    std::cout << "# Grammar::isLineTerminator " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
@@ -229,7 +231,7 @@ bool Grammar::isLeftArrow (Pig& pig)
   if (pig.skipLiteral ("<--") &&
       isSpacing (pig))
   {
-    std::cout << "# Grammar::isLeftArrow\n";
+    std::cout << "# Grammar::isLeftArrow " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 
