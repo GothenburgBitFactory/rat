@@ -61,6 +61,14 @@ void Grammar::initialize (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Rule <-- Sequence+
+bool Grammar::isRule (Pig& pig)
+{
+  // TODO Implement.
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Identifier <-- IdentStart IdentCont* Spacing
 bool Grammar::isIdentifier (Pig& pig)
 {
