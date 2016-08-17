@@ -28,6 +28,7 @@
 #define INCLUDED_GRAMMAR
 
 #include <FS.h>
+#include <Pig.h>
 #include <string>
 
 class Grammar
@@ -37,6 +38,9 @@ public:
   void initialize (const std::string&);
   void debug (bool);
   std::string dump () const;
+
+private:
+  bool isEOF            (Pig&);
 
 private:
   bool        _debug {false};

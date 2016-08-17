@@ -102,9 +102,11 @@ void Grammar::initialize (const std::string& input)
   if (_debug)
     std::cout << dump () << "\n";
 
-  // TODO Validate the parsed grammar.
-  // TODO - _first != "".
-  // TODO - all rules referenced.
+////////////////////////////////////////////////////////////////////////////////
+// EOF <-- !(Char)
+bool Grammar::isEOF (Pig& pig)
+{
+  return pig.eos ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
