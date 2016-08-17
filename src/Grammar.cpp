@@ -239,6 +239,20 @@ bool Grammar::isSlash (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// AND <-- '&' Spacing
+bool Grammar::isAnd (Pig& pig)
+{
+  if (pig.skip ('&') &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isAnd " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // LEFTARROW <-- '<--' Spacing
 bool Grammar::isLeftArrow (Pig& pig)
 {

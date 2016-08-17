@@ -51,6 +51,7 @@ private:
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);
   bool isLineTerminator (Pig&);
+  bool isAnd            (Pig&);
   bool isLeftArrow      (Pig&);
   bool isSlash          (Pig&);
   bool isEOF            (Pig&);
