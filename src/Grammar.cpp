@@ -35,9 +35,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load and parse PG.
+// Tokenizer/Lexer-free.
 void Grammar::initialize (const std::string& input)
 {
-  std::string rule_name = "";
+  Pig pig (input);
+  if (! isGrammar (pig))
+    throw std::string ("Syntax error in grammar.");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Grammar <-- Spacing Definition+ EOF
@@ -224,6 +228,7 @@ bool Grammar::isEOF (Pig& pig)
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::debug (bool value)
 {
+  std::cout << "Grammar debug mode.\n";
   _debug = value;
 }
 
