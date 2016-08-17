@@ -63,6 +63,7 @@ private:
   bool isPlus           (Pig&);
   bool isLeftArrow      (Pig&);
   bool isOpen           (Pig&);
+  bool isClose          (Pig&);
   bool isSlash          (Pig&);
   bool isEOF            (Pig&);
 

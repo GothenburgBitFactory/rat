@@ -336,6 +336,20 @@ bool Grammar::isOpen (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// CLOSE <-- ')' Spacing
+bool Grammar::isClose (Pig& pig)
+{
+  if (pig.skip (')') &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isClose " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // SLASH <-- '/' Spacing
 bool Grammar::isSlash (Pig& pig)
 {
