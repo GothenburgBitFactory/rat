@@ -69,6 +69,21 @@ void Grammar::initialize (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// IdentStart <-- Alpha / '_'
+bool Grammar::isIdentStart (Pig& pig)
+{
+  if (unicodeLatinAlpha (pig.peek ()) ||
+      pig.peek () == '_')
+  {
+    pig.skipN (1);
+    std::cout << "# Grammar::isIdentStart\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // IdentCont <-- IdentStart / Digit
 // What is this?   IdentCont <-- IdentStart / Digit / '''
 bool Grammar::isIdentCont (Pig& pig)

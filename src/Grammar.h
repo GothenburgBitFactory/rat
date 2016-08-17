@@ -40,6 +40,7 @@ public:
   std::string dump () const;
 
 private:
+  bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
   bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
