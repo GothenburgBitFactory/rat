@@ -53,6 +53,7 @@ private:
   bool isLineTerminator (Pig&);
   bool isAnd            (Pig&);
   bool isNot            (Pig&);
+  bool isQuestion       (Pig&);
   bool isLeftArrow      (Pig&);
   bool isSlash          (Pig&);
   bool isEOF            (Pig&);
