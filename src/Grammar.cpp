@@ -174,6 +174,24 @@ bool Grammar::isUnaryItem (Pig& pig)
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
 bool Grammar::isPrimaryItem (Pig& pig)
 {
+  if (isPrimaryItem   (pig) ||
+      isCharLiteral   (pig) ||
+      isStringLiteral (pig))
+  {
+    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  auto checkpoint = pig.cursor ();
+  if (isOpen     (pig) &&
+      isSequence (pig) &&
+      isClose    (pig))
+  {
+    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
   return false;
 }
 
