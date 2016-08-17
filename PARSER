@@ -14,12 +14,13 @@ Parsing Grammars - PG
 
 Grammar Grammar:
 
-  Start          <-- Spacing Definition* EOF
+  Grammar        <-- Spacing Definition+ EOF
   Definition     <-- Identifier LEFTARROW Rule
-  Rule           <-- SeqMatcher (SLASH SeqMatcher)*
-  SeqMatcher     <-- AND UnaryRule / NOT UnaryRule / UnaryRule
-  UnaryRule      <-- PrimRule QUESTION / PrimRule STAR / PrimRule PLUS / PrimRule
-  PrimRule       <-- Identifier / CharLiteral / StringLiteral / OPEN Rule CLOSE
+  Rule           <-- Sequence+
+  Sequence       <-- Alternative (SLASH Alternative)*
+  Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
+  UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
+  PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
   Identifier     <-- IdentStart IdentCont* Spacing
   IdentStart     <-- Alpha / '_'
   IdentCont      <-- IdentStart / Digit / '''
