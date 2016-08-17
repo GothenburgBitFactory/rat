@@ -322,6 +322,20 @@ bool Grammar::isLineTerminator (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// OPEN <-- '(' Spacing
+bool Grammar::isOpen (Pig& pig)
+{
+  if (pig.skip ('(') &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isOpen " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // SLASH <-- '/' Spacing
 bool Grammar::isSlash (Pig& pig)
 {
