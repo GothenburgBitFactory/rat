@@ -56,7 +56,17 @@ void Grammar::initialize (const std::string& input)
     if (line == "" and rule_name == "")
       continue;
 
-    if (line != "")
+  pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Identifier <-- IdentStart IdentCont* Spacing
+bool Grammar::isIdentifier (Pig& pig)
+{
+  if (isIdentStart (pig))
+  {
+    while (isIdentCont (pig))
     {
     }
 
