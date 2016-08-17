@@ -174,7 +174,7 @@ bool Grammar::isUnaryItem (Pig& pig)
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
 bool Grammar::isPrimaryItem (Pig& pig)
 {
-  if (isPrimaryItem   (pig) ||
+  if (isIdentifier    (pig) ||
       isCharLiteral   (pig) ||
       isStringLiteral (pig))
   {
