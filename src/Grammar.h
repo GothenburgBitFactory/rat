@@ -40,6 +40,7 @@ public:
   std::string dump () const;
 
 private:
+  bool isDefinition     (Pig&);
   bool isRule           (Pig&);
   bool isIdentifier     (Pig&);
   bool isIdentStart     (Pig&);

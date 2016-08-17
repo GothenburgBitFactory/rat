@@ -51,10 +51,19 @@ void Grammar::initialize (const std::string& input)
     if (hash != std::string::npos)
       line.resize (hash);
 
-    // Skip blank lines with no semantics.
-    line = Lexer::trim (line);
-    if (line == "" and rule_name == "")
-      continue;
+////////////////////////////////////////////////////////////////////////////////
+// Definition <-- Identifier LEFTARROW Rule
+bool Grammar::isDefinition (Pig& pig)
+{
+  std::cout << "Grammar::isDefinition " << pig.dump () << "\n";
+  auto checkpoint = pig.cursor ();
+  if (isIdentifier (pig) &&
+      isLeftArrow  (pig) &&
+      isRule       (pig))
+  {
+    std::cout << "# Grammar::isDefinition\n";
+    return true;
+  }
 
   pig.restoreTo (checkpoint);
   return false;
