@@ -73,8 +73,8 @@ bool Grammar::isGrammar (Pig& pig)
 bool Grammar::isDefinition (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
-  if (isIdentifier (pig) &&
-      isLeftArrow  (pig) &&
+  if (isIdentifier (pig)        &&
+      isLiteral    (pig, "<--") &&
       isRule       (pig))
   {
     std::cout << "# Grammar::isDefinition " << pig.cursor () << " (" << pig.peek (16) << ")\n";
@@ -108,7 +108,7 @@ bool Grammar::isSequence (Pig& pig)
 {
   if (isAlternative (pig))
   {
-    while (isSlash (pig) &&
+    while (isLiteral (pig, "/") &&
            isAlternative (pig))
     {
     }
@@ -125,7 +125,7 @@ bool Grammar::isSequence (Pig& pig)
 bool Grammar::isAlternative (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
-  if (isAnd (pig) &&
+  if (isLiteral (pig, "&") &&
       isUnaryItem (pig))
   {
     std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
@@ -133,7 +133,7 @@ bool Grammar::isAlternative (Pig& pig)
   }
 
   pig.restoreTo (checkpoint);
-  if (isNot (pig) &&
+  if (isLiteral (pig, "!") &&
       isUnaryItem (pig))
   {
     std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
@@ -157,9 +157,9 @@ bool Grammar::isUnaryItem (Pig& pig)
 {
   if (isPrimaryItem (pig))
   {
-    if (isQuestion (pig) ||
-        isStar     (pig) ||
-        isPlus     (pig))
+    if (isLiteral (pig, "?") ||
+        isLiteral (pig, "*") ||
+        isLiteral (pig, "+"))
     {
     }
 
@@ -183,9 +183,9 @@ bool Grammar::isPrimaryItem (Pig& pig)
   }
 
   auto checkpoint = pig.cursor ();
-  if (isOpen     (pig) &&
-      isSequence (pig) &&
-      isClose    (pig))
+  if (isLiteral  (pig, "(") &&
+      isSequence (pig)      &&
+      isLiteral  (pig, ")"))
   {
     std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
@@ -340,125 +340,14 @@ bool Grammar::isLineTerminator (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// OPEN <-- '(' Spacing
-bool Grammar::isOpen (Pig& pig)
+bool Grammar::isLiteral (
+  Pig& pig,
+  const std::string& thing)
 {
-  if (pig.skip ('(') &&
+  if (pig.skipLiteral (thing) &&
       isSpacing (pig))
   {
-    std::cout << "# Grammar::isOpen " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// CLOSE <-- ')' Spacing
-bool Grammar::isClose (Pig& pig)
-{
-  if (pig.skip (')') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isClose " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// SLASH <-- '/' Spacing
-bool Grammar::isSlash (Pig& pig)
-{
-  if (pig.skip ('/') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isSlash " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// AND <-- '&' Spacing
-bool Grammar::isAnd (Pig& pig)
-{
-  if (pig.skip ('&') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isAnd " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// NOT <-- '!' Spacing
-bool Grammar::isNot (Pig& pig)
-{
-  if (pig.skip ('!') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isNot " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// QUESTION <-- '!' Spacing
-bool Grammar::isQuestion (Pig& pig)
-{
-  if (pig.skip ('?') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isQuestion " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// STAR <-- '!' Spacing
-bool Grammar::isStar (Pig& pig)
-{
-  if (pig.skip ('*') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isStar " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// PLUS <-- '!' Spacing
-bool Grammar::isPlus (Pig& pig)
-{
-  if (pig.skip ('+') &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isPlus " << pig.cursor () << " (" << pig.peek (16) << ")\n";
-    return true;
-  }
-
-  return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// LEFTARROW <-- '<--' Spacing
-bool Grammar::isLeftArrow (Pig& pig)
-{
-  if (pig.skipLiteral ("<--") &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isLeftArrow " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isLiteral('" << thing << "') " << pig.cursor () << " (" << pig.peek (16) << ")\n";
     return true;
   }
 

@@ -56,15 +56,7 @@ private:
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);
   bool isLineTerminator (Pig&);
-  bool isAnd            (Pig&);
-  bool isNot            (Pig&);
-  bool isQuestion       (Pig&);
-  bool isStar           (Pig&);
-  bool isPlus           (Pig&);
-  bool isLeftArrow      (Pig&);
-  bool isOpen           (Pig&);
-  bool isClose          (Pig&);
-  bool isSlash          (Pig&);
+  bool isLiteral        (Pig&, const std::string&);
   bool isEOF            (Pig&);
 
 private:
