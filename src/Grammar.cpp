@@ -225,6 +225,20 @@ bool Grammar::isLineTerminator (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// SLASH <-- '/' Spacing
+bool Grammar::isSlash (Pig& pig)
+{
+  if (pig.skip ('/') &&
+      isSpacing (pig))
+  {
+    std::cout << "# Grammar::isSlash " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // LEFTARROW <-- '<--' Spacing
 bool Grammar::isLeftArrow (Pig& pig)
 {
