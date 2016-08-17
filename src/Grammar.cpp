@@ -103,6 +103,22 @@ void Grammar::initialize (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// LineTerminator <-- CR LF / CR / LF
+bool Grammar::isLineTerminator (Pig& pig)
+{
+  if (pig.skip ('\n') ||
+      pig.skip ('\r') ||
+      pig.skip ('\f'))
+  {
+    pig.skip ('\f');
+    std::cout << "# Grammar::isLineTerminator\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // LEFTARROW <-- '<--' Spacing
 bool Grammar::isLeftArrow (Pig& pig)
 {
