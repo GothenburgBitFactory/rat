@@ -106,7 +106,35 @@ bool Grammar::isRule (Pig& pig)
 // Sequence <-- Alternative (SLASH Alternative)*
 bool Grammar::isSequence (Pig& pig)
 {
-  // TODO Implement.
+  if (isAlternative (pig))
+  {
+    while (isSlash (pig) &&
+           isAlternative (pig))
+    {
+    }
+
+    std::cout << "# Grammar::isSequence " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// UnaryItem <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
+bool Grammar::isUnaryItem (Pig& pig)
+{
+  if (isPrimaryItem (pig))
+  {
+    if (isQuestion (pig) ||
+        isStar     (pig) ||
+        isPlus     (pig))
+    {
+    }
+
+    std::cout << "# Grammar::isUnaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
 
   return false;
 }
