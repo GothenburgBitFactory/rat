@@ -249,6 +249,20 @@ bool Grammar::isCharLiteral (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// StringLiteral <-- '"' (!('"') QuotedChar)* '"' Spacing
+bool Grammar::isStringLiteral (Pig& pig)
+{
+  std::string value;
+  if (pig.getQuoted ('"', value))
+  {
+    std::cout << "# Grammar::isStringLiteral " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Spacing <-- (SpaceChar / LineComment)*
 bool Grammar::isSpacing (Pig& pig)
 {

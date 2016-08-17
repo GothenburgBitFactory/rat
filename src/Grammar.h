@@ -51,6 +51,7 @@ private:
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
   bool isCharLiteral    (Pig&);
+  bool isStringLiteral  (Pig&);
   bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);
