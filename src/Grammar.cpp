@@ -232,6 +232,23 @@ bool Grammar::isIdentCont (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// CharLiteral <-- ''' (!(''') QuotedChar) ''' Spacing
+bool Grammar::isCharLiteral (Pig& pig)
+{
+  auto checkpoint = pig.cursor ();
+  std::string value;
+  if (pig.getQuoted ('\'', value) &&
+      value.length () == 1)
+  {
+    std::cout << "# Grammar::isCharLiteral " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Spacing <-- (SpaceChar / LineComment)*
 bool Grammar::isSpacing (Pig& pig)
 {
