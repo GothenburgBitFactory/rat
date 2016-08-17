@@ -28,6 +28,7 @@
 #include <Grammar.h>
 #include <Lexer.h>
 #include <shared.h>
+#include <unicode.h>
 #include <format.h>
 #include <iostream>
 #include <sstream>
@@ -65,6 +66,19 @@ void Grammar::initialize (const std::string& input)
   }
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Spacing <-- (SpaceChar / LineComment)*
+bool Grammar::isSpacing (Pig& pig)
+{
+  while (isSpaceChar   (pig) ||
+         isLineComment (pig))
+  {
+  }
+
+  // Always true because of '*'.
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

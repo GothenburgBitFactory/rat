@@ -40,6 +40,7 @@ public:
   std::string dump () const;
 
 private:
+  bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);
   bool isLineTerminator (Pig&);
