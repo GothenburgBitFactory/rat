@@ -58,7 +58,7 @@ bool Grammar::isGrammar (Pig& pig)
 
       if (isEOF (pig))
       {
-        std::cout << "# Grammar::isGrammar " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+        std::cout << "# Grammar::isGrammar " << pig.cursor () << " [" << pig.peek (16) << "]\n";
         return true;
       }
     }
@@ -77,7 +77,7 @@ bool Grammar::isDefinition (Pig& pig)
       isLiteral    (pig, "<--") &&
       isRule       (pig))
   {
-    std::cout << "# Grammar::isDefinition " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isDefinition " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -95,7 +95,7 @@ bool Grammar::isRule (Pig& pig)
     {
     }
 
-    std::cout << "# Grammar::isRule " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isRule " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -113,7 +113,7 @@ bool Grammar::isSequence (Pig& pig)
     {
     }
 
-    std::cout << "# Grammar::isSequence " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isSequence " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -128,7 +128,7 @@ bool Grammar::isAlternative (Pig& pig)
   if (isLiteral (pig, "&") &&
       isUnaryItem (pig))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -136,14 +136,14 @@ bool Grammar::isAlternative (Pig& pig)
   if (isLiteral (pig, "!") &&
       isUnaryItem (pig))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
   pig.restoreTo (checkpoint);
   if (isUnaryItem (pig))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -163,7 +163,7 @@ bool Grammar::isUnaryItem (Pig& pig)
     {
     }
 
-    std::cout << "# Grammar::isUnaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isUnaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -178,7 +178,7 @@ bool Grammar::isPrimaryItem (Pig& pig)
       isCharLiteral   (pig) ||
       isStringLiteral (pig))
   {
-    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -187,7 +187,7 @@ bool Grammar::isPrimaryItem (Pig& pig)
       isSequence (pig)      &&
       isLiteral  (pig, ")"))
   {
-    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -206,7 +206,7 @@ bool Grammar::isIdentifier (Pig& pig)
     }
 
     isSpacing (pig);
-    std::cout << "# Grammar::isIdentifier " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isIdentifier " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -221,7 +221,7 @@ bool Grammar::isIdentStart (Pig& pig)
       pig.peek () == '_')
   {
     pig.skipN (1);
-    std::cout << "# Grammar::isIdentStart " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isIdentStart " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -235,14 +235,14 @@ bool Grammar::isIdentCont (Pig& pig)
 {
   if (isIdentStart (pig))
   {
-    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
   if (unicodeLatinDigit (pig.peek ()))
   {
     pig.skipN (1);
-    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isIdentCont " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -258,7 +258,7 @@ bool Grammar::isCharLiteral (Pig& pig)
   if (pig.getQuoted ('\'', value) &&
       value.length () == 1)
   {
-    std::cout << "# Grammar::isCharLiteral " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isCharLiteral " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -273,7 +273,7 @@ bool Grammar::isStringLiteral (Pig& pig)
   std::string value;
   if (pig.getQuoted ('"', value))
   {
-    std::cout << "# Grammar::isStringLiteral " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isStringLiteral " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -316,7 +316,7 @@ bool Grammar::isLineComment (Pig& pig)
       pig.skipN (1);
     }
 
-    std::cout << "# Grammar::isLineComment " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isLineComment " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -332,7 +332,7 @@ bool Grammar::isLineTerminator (Pig& pig)
       pig.skip ('\f'))
   {
     pig.skip ('\f');
-    std::cout << "# Grammar::isLineTerminator " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isLineTerminator " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -347,7 +347,7 @@ bool Grammar::isLiteral (
   if (pig.skipLiteral (thing) &&
       isSpacing (pig))
   {
-    std::cout << "# Grammar::isLiteral('" << thing << "') " << pig.cursor () << " (" << pig.peek (16) << ")\n";
+    std::cout << "# Grammar::isLiteral('" << thing << "') " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
