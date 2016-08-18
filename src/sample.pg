@@ -1,4 +1,4 @@
 # Comment
 
-  rule <-- nonterminal "terminal" () ('a' / 'b' / 'c') optional? any* mandatory+ &(positive_lookahead) !(negative_lookahead)   # Comment
+  rule <-- nonterminal "terminal" ('a' / 'b' / 'c') optional? any* mandatory+ &(positive_lookahead) !(negative_lookahead)   # Comment
 
