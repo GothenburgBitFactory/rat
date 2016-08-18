@@ -35,7 +35,59 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load and parse PG.
-// Tokenizer/Lexer-free.
+// Note: This grammar includes whitespace handling, so there is no tokenizer.
+//
+// Parsing Grammars - PG
+//
+//   ()              Empty string, always succeeds.
+//   a               Terminal, consume and succeed.
+//   A               Non-terminal, recurse and succeed.
+//   e1,e2, ...en    Sequence, e1 and e2 ...
+//   e1/e2/.../en    Choice, e1 or e2 ...
+//   e*              Greedy repetition, always succeeds.
+//   e+              Greedy positive repetition.
+//   e?              Optional.
+//   &(e)            Positive lookahead, succeed in presence of e but do not consume e.
+//   !(e)            Negative lookahead, succeed in absence of e but do not consume e.
+//
+// Grammar Grammar:
+//
+//   Grammar        <-- Spacing Definition+ EOF
+//   Definition     <-- Identifier LEFTARROW Rule
+//   Rule           <-- Sequence+
+//   Sequence       <-- Alternative (SLASH Alternative)*
+//   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
+//   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
+//   PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
+//   Identifier     <-- IdentStart IdentCont* Spacing
+//   IdentStart     <-- Alpha / '_'
+//   IdentCont      <-- IdentStart / Digit / '''
+//   CharLiteral    <-- ''' (!(''') QuotedChar) ''' Spacing
+//   StringLiteral  <-- '"' (!('"') QuotedChar)* '"' Spacing
+//   QuotedChar     <-- '\n' / '\r' / '\t' / '\\' / '\'' / '\"' / !('\') Char
+//   Spacing        <-- (SpaceChar / LineComment)*
+//   SpaceChar      <-- ' ' / TAB / CR / LF
+//   LineComment    <-- '#' (!(LineTerminator) Char)* LineTerminator
+//   LineTerminator <-- CR LF / CR / LF
+//   CR             <-- '\r'
+//   LF             <-- '\n'
+//   TAB            <-- '\t'
+//   EOF            <-- !(Char)
+//   AND            <-- '&' Spacing
+//   NOT            <-- '!' Spacing
+//   QUESTION       <-- '?' Spacing
+//   STAR           <-- '*' Spacing
+//   PLUS           <-- '+' Spacing
+//   LEFTARROW      <-- '<--' Spacing
+//   OPEN           <-- '(' Spacing
+//   CLOSE          <-- ')' Spacing
+//   SLASH          <-- '/' Spacing
+//
+//   Built-ins:
+//     Alpha
+//     Digit
+//     Char
+//
 void Grammar::initialize (const std::string& input)
 {
   Pig pig (input);
