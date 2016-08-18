@@ -256,7 +256,8 @@ bool Grammar::isCharLiteral (Pig& pig)
   auto checkpoint = pig.cursor ();
   std::string value;
   if (pig.getQuoted ('\'', value) &&
-      value.length () == 1)
+      value.length () == 1        &&
+      isSpacing (pig))
   {
     std::cout << "# Grammar::isCharLiteral " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
@@ -271,7 +272,8 @@ bool Grammar::isCharLiteral (Pig& pig)
 bool Grammar::isStringLiteral (Pig& pig)
 {
   std::string value;
-  if (pig.getQuoted ('"', value))
+  if (pig.getQuoted ('"', value) &&
+      isSpacing (pig))
   {
     std::cout << "# Grammar::isStringLiteral " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
