@@ -15,8 +15,7 @@ Parsing Grammars - PG
 Grammar Grammar:
 
   Grammar        <-- Spacing Definition+ EOF
-  Definition     <-- Identifier LEFTARROW Rule
-  Rule           <-- Sequence+
+  Definition     <-- Identifier LEFTARROW Sequence+
   Sequence       <-- Alternative (SLASH Alternative)*
   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem

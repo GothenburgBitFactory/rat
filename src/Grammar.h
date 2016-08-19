@@ -39,10 +39,11 @@ public:
   void debug (bool);
   std::string dump () const;
 
+  enum class Quant { ZeroOrOne, ZeroOrMore, One, OneOrMore };
+
 private:
   bool isGrammar        (Pig&);
   bool isDefinition     (Pig&);
-  bool isRule           (Pig&);
   bool isSequence       (Pig&);
   bool isAlternative    (Pig&);
   bool isUnaryItem      (Pig&);
