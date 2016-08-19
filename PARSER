@@ -15,7 +15,7 @@ Parsing Grammars - PG
 Grammar Grammar:
 
   Grammar        <-- Spacing Definition+ EOF
-  Definition     <-- Identifier LEFTARROW Sequence+
+  Definition     <-- Identifier LEFTARROW Sequence DEFTERMINATOR
   Sequence       <-- Alternative (SLASH Alternative)*
   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
@@ -43,6 +43,7 @@ Grammar Grammar:
   OPEN           <-- '(' Spacing
   CLOSE          <-- ')' Spacing
   SLASH          <-- '/' Spacing
+  DEFTERMINATOR  <-- ';' Spacing
 
   Built-ins:
     Alpha

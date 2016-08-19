@@ -53,7 +53,7 @@
 // Grammar Grammar:
 //
 //   Grammar        <-- Spacing Definition+ EOF
-//   Definition     <-- Identifier LEFTARROW Sequence+
+//   Definition     <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
 //   Sequence       <-- Alternative (SLASH Alternative)*
 //   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
 //   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
@@ -120,7 +120,7 @@ bool Grammar::isGrammar (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Definition <-- Identifier LEFTARROW Sequence+
+// Definition <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
 bool Grammar::isDefinition (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
@@ -132,8 +132,11 @@ bool Grammar::isDefinition (Pig& pig)
     {
     }
 
-    std::cout << "# Grammar::isDefinition " << pig.cursor () << " [" << pig.peek (16) << "]\n";
-    return true;
+    if (isLiteral (pig, ";"))
+    {
+      std::cout << "# Grammar::isDefinition " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+      return true;
+    }
   }
 
   pig.restoreTo (checkpoint);
