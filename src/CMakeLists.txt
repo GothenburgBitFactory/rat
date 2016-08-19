@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${RAT_INCLUDE_DIRS})
 
 set (rat_SRCS rat.cpp
-              Grammar.cpp Grammar.h)
+              Grammar.cpp Grammar.h
+              Packrat.cpp Packrat.h)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Color.cpp         libshared/src/Color.h

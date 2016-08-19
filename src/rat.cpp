@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Grammar.h>
+#include <Packrat.h>
 #include <FS.h>
 #include <cstdio>
 #include <cstring>
@@ -97,9 +98,11 @@ int main (int argc, char** argv)
     // Test commandLine against grammar.
     if (commandLine != "")
     {
-      // TODO Create parser.
-      // TODO Set debug mode.
-      // TODO Parse commandLine.
+      Packrat packrat;
+      packrat.debug (debug);
+
+      // TODO output = packrat (grammar, commandLine);
+      // TODO dump output
     }
   }
 
