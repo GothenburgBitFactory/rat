@@ -64,7 +64,7 @@ protected:
 
 private:
   bool isGrammar        (Pig&);
-  bool isDefinition     (Pig&);
+  bool isRule           (Pig&);
   bool isSequence       (Pig&);
   bool isAlternative    (Pig&);
   bool isUnaryItem      (Pig&);

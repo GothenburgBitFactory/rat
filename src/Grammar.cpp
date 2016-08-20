@@ -42,8 +42,8 @@
 //   ()              Empty string, always succeeds.
 //   a               Terminal, consume and succeed.
 //   A               Non-terminal, recurse and succeed.
-//   e1,e2, ...en    Sequence, e1 and e2 ...
-//   e1/e2/.../en    Choice, e1 or e2 ...
+//   e1 e2 ... en    Sequence, e1 and e2 ...
+//   e1/e2/... en    Choice, e1 or e2 ...
 //   e*              Greedy repetition, always succeeds.
 //   e+              Greedy positive repetition.
 //   e?              Optional.
@@ -52,13 +52,8 @@
 //
 // Grammar Grammar:
 //
-
-/*
-TODO  Rename 'Definition' to 'Rule'
-*/
-
-//   Grammar        <-- Spacing Definition+ EOF
-//   Definition     <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
+//   Grammar        <-- Spacing Rule+ EOF
+//   Rule           <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
 //   Sequence       <-- Alternative (SLASH Alternative)*
 //   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
 //   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
@@ -100,15 +95,15 @@ void Grammar::initialize (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Grammar <-- Spacing Definition+ EOF
+// Grammar <-- Spacing Rule+ EOF
 bool Grammar::isGrammar (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
   if (isSpacing (pig))
   {
-    if (isDefinition (pig))
+    if (isRule (pig))
     {
-      while (isDefinition (pig))
+      while (isRule (pig))
       {
       }
 
@@ -125,8 +120,8 @@ bool Grammar::isGrammar (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Definition <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
-bool Grammar::isDefinition (Pig& pig)
+// Rule <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
+bool Grammar::isRule (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
   if (isIdentifier (pig)        &&
@@ -139,7 +134,7 @@ bool Grammar::isDefinition (Pig& pig)
 
     if (isLiteral (pig, ";"))
     {
-      std::cout << "# Grammar::isDefinition " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+      std::cout << "# Grammar::isRule " << pig.cursor () << " [" << pig.peek (16) << "]\n";
       return true;
     }
   }
