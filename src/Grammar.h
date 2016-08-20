@@ -39,7 +39,28 @@ public:
   void debug (bool);
   std::string dump () const;
 
+protected:
   enum class Quant { ZeroOrOne, ZeroOrMore, One, OneOrMore };
+
+  class Token
+  {
+  public:
+    Token (const std::string& value)         { _token      = value; }
+    void quantifier (Grammar::Quant q)       { _quantifier = q;     }
+
+    std::string    _token;
+    Grammar::Quant _quantifier;
+  };
+
+/*
+  class Production : public std::vector <Token>
+  {
+  };
+
+  class Rule : public std::vector <Production>
+  {
+  };
+*/
 
 private:
   bool isGrammar        (Pig&);
@@ -63,6 +84,10 @@ private:
 private:
   bool        _debug {false};
   std::string _first {};
+
+  //           rule name    rule         production   decorated token
+  //           |            |            |            |
+  // std::map <std::string, std::vector <std::vector <Grammar::Token>>> _rules;
 };
 
 #endif

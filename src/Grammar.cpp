@@ -52,12 +52,17 @@
 //
 // Grammar Grammar:
 //
+
+/*
+TODO  Rename 'Definition' to 'Rule'
+*/
+
 //   Grammar        <-- Spacing Definition+ EOF
 //   Definition     <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
 //   Sequence       <-- Alternative (SLASH Alternative)*
 //   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
 //   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
-//   PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
+//   PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
 //   Identifier     <-- IdentStart IdentCont* Spacing
 //   IdentStart     <-- Alpha / '_'
 //   IdentCont      <-- IdentStart / Digit / '''
@@ -212,7 +217,7 @@ bool Grammar::isUnaryItem (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
+// PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
 bool Grammar::isPrimaryItem (Pig& pig)
 {
   if (isIdentifier    (pig) ||
@@ -224,12 +229,14 @@ bool Grammar::isPrimaryItem (Pig& pig)
   }
 
   auto checkpoint = pig.cursor ();
-  if (isLiteral  (pig, "(") &&
-      isSequence (pig)      &&
-      isLiteral  (pig, ")"))
+  if (isLiteral (pig, "("))
   {
-    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
-    return true;
+    isSequence (pig);
+    if (isLiteral (pig, ")"))
+    {
+      std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+      return true;
+    }
   }
 
   pig.restoreTo (checkpoint);
