@@ -19,7 +19,7 @@ Grammar Grammar:
   Sequence       <-- Alternative (SLASH Alternative)*
   Alternative    <-- AND UnaryItem / NOT UnaryItem / UnaryItem
   UnaryItem      <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
-  PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence CLOSE
+  PrimaryItem    <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
   Identifier     <-- IdentStart IdentCont* Spacing
   IdentStart     <-- Alpha / '_'
   IdentCont      <-- IdentStart / Digit / '''
