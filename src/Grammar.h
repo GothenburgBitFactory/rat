@@ -74,8 +74,8 @@ private:
   bool isIdentifier     (Pig&, Grammar::Token&);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
-  bool isCharLiteral    (Pig&);
   bool isStringLiteral  (Pig&);
+  bool isCharLiteral    (Pig&, Grammar::Token&);
   bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);

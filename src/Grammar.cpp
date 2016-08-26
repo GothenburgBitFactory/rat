@@ -220,8 +220,8 @@ bool Grammar::isPrimaryItem (Pig& pig)
 {
   Grammar::Token primary;
   if (isIdentifier    (pig, primary) ||
-      isCharLiteral   (pig) ||
       isStringLiteral (pig))
+      isCharLiteral   (pig, primary) ||
   {
     std::cout << "# Grammar::isPrimaryItem '" << primary._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
@@ -305,7 +305,7 @@ bool Grammar::isIdentCont (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // CharLiteral <-- ''' (!(''') QuotedChar) ''' Spacing
-bool Grammar::isCharLiteral (Pig& pig)
+bool Grammar::isCharLiteral (Pig& pig, Grammar::Token& token)
 {
   auto checkpoint = pig.cursor ();
   std::string value;
@@ -313,7 +313,10 @@ bool Grammar::isCharLiteral (Pig& pig)
       value.length () == 1        &&
       isSpacing (pig))
   {
-    std::cout << "# Grammar::isCharLiteral " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    token._token = value;
+    token._quantifier = Grammar::Quant::One;
+    token._type = Grammar::Type::Literal;
+    std::cout << "# Grammar::isCharLiteral '" << value << "' Literal\n";
     return true;
   }
 
