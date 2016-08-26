@@ -90,7 +90,9 @@
 void Grammar::initialize (const std::string& input)
 {
   Pig pig (input);
-  if (! isGrammar (pig))
+  if (isGrammar (pig))
+    std::cout << "Grammar loaded.\n";
+  else
     throw std::string ("Syntax error in grammar.");
 }
 
@@ -109,7 +111,7 @@ bool Grammar::isGrammar (Pig& pig)
 
       if (isEOF (pig))
       {
-        std::cout << "# Grammar::isGrammar " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+        //std::cout << "# Grammar::isGrammar " << pig.cursor () << " [" << pig.peek (16) << "]\n";
         return true;
       }
     }
