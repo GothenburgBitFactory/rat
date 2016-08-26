@@ -406,14 +406,8 @@ bool Grammar::isLiteral (
   Pig& pig,
   const std::string& thing)
 {
-  if (pig.skipLiteral (thing) &&
-      isSpacing (pig))
-  {
-    std::cout << "# Grammar::isLiteral('" << thing << "') " << pig.cursor () << " [" << pig.peek (16) << "]\n";
-    return true;
-  }
-
-  return false;
+  return pig.skipLiteral (thing) &&
+         isSpacing (pig);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
