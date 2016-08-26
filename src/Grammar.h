@@ -82,8 +82,12 @@ private:
   bool isEOF            (Pig&);
 
 private:
-  bool        _debug {false};
-  std::string _first {};
+  // TODO Store the parse tree.
+  void addRule (const std::string&);
+
+private:
+  bool          _debug      {false};
+  std::string   _first      {};
 
   //           rule name    rule         production   decorated token
   //           |            |            |            |
