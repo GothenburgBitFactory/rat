@@ -40,16 +40,18 @@ public:
   std::string dump () const;
 
 protected:
+  enum class Type  { Empty, NonTerminal, Literal };
   enum class Quant { ZeroOrOne, ZeroOrMore, One, OneOrMore };
 
   class Token
   {
   public:
+    Token () = default;
     Token (const std::string& value)         { _token      = value; }
-    void quantifier (Grammar::Quant q)       { _quantifier = q;     }
 
-    std::string    _token;
-    Grammar::Quant _quantifier;
+    std::string    _token      {};
+    Grammar::Quant _quantifier {Grammar::Quant::One};
+    Grammar::Type  _type       {Grammar::Type::Literal};
   };
 
 /*
