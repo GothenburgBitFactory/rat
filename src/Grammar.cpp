@@ -126,7 +126,8 @@ bool Grammar::isGrammar (Pig& pig)
 bool Grammar::isRule (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
-  if (isIdentifier (pig)        &&
+  Grammar::Token rule_name;
+  if (isIdentifier (pig, rule_name) &&
       isLiteral    (pig, "<--") &&
       isSequence   (pig))
   {
@@ -136,7 +137,7 @@ bool Grammar::isRule (Pig& pig)
 
     if (isLiteral (pig, ";"))
     {
-      std::cout << "# Grammar::isRule " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+      std::cout << "# Grammar::isRule '" << rule_name._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
       return true;
     }
   }
@@ -217,11 +218,12 @@ bool Grammar::isUnaryItem (Pig& pig)
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
 bool Grammar::isPrimaryItem (Pig& pig)
 {
-  if (isIdentifier    (pig) ||
+  Grammar::Token primary;
+  if (isIdentifier    (pig, primary) ||
       isCharLiteral   (pig) ||
       isStringLiteral (pig))
   {
-    std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    std::cout << "# Grammar::isPrimaryItem '" << primary._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -242,19 +244,26 @@ bool Grammar::isPrimaryItem (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Identifier <-- IdentStart IdentCont* Spacing
-bool Grammar::isIdentifier (Pig& pig)
+bool Grammar::isIdentifier (Pig& pig, Grammar::Token& token)
 {
+  auto checkpoint = pig.cursor ();
   if (isIdentStart (pig))
   {
     while (isIdentCont (pig))
     {
     }
 
+    token._token = pig.substr (checkpoint, pig.cursor ());
+    token._quantifier = Grammar::Quant::One;
+    token._type = Grammar::Type::NonTerminal;
+    std::cout << "# Grammar::isIdentifier '" << token._token << "' NonTerminal\n";
+
     isSpacing (pig);
-    std::cout << "# Grammar::isIdentifier " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    //std::cout << "# Grammar::isIdentifier " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
+  pig.restoreTo (checkpoint);
   return false;
 }
 

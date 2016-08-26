@@ -71,7 +71,7 @@ private:
   bool isAlternative    (Pig&);
   bool isUnaryItem      (Pig&);
   bool isPrimaryItem    (Pig&);
-  bool isIdentifier     (Pig&);
+  bool isIdentifier     (Pig&, Grammar::Token&);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
   bool isCharLiteral    (Pig&);
