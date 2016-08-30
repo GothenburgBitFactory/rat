@@ -29,6 +29,8 @@
 
 #include <FS.h>
 #include <Pig.h>
+#include <map>
+#include <vector>
 #include <string>
 
 class Grammar
@@ -88,12 +90,12 @@ private:
   void addRule (const std::string&);
 
 private:
-  bool          _debug      {false};
-  std::string   _first      {};
+  bool        _debug {false};
+  std::string _first {};
 
-  //           rule name    rule         production   decorated token
-  //           |            |            |            |
-  // std::map <std::string, std::vector <std::vector <Grammar::Token>>> _rules;
+  //        rule name    rule         sequence     decorated token
+  //        |            |            |            |
+  std::map <std::string, std::vector <std::vector <Grammar::Token>>> _rules;
 };
 
 #endif
