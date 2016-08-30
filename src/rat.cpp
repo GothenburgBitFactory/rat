@@ -94,6 +94,8 @@ int main (int argc, char** argv)
     Grammar grammar;
     grammar.debug (debug);
     grammar.initialize (contents);
+    if (debug)
+      std::cout << grammar.dump ();
 
     // Test commandLine against grammar.
     if (commandLine != "")

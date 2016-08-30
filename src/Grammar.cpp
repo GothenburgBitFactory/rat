@@ -433,7 +433,15 @@ std::string Grammar::dump () const
   std::stringstream out;
   out << "Grammar\n";
 
-  // TODO Dump state here.
+  for (auto& rule : _rules)
+  {
+    out << "  " << (rule.first == _first ? ">" : "") << rule.first << " <--";
+    for (auto& sequence : rule.second)
+      for (auto& alt : sequence)
+        out << ' ' << alt._token;
+
+    out << '\n';
+  }
 
   return out.str ();
 }
