@@ -86,10 +86,6 @@ private:
   bool isEOF            (Pig&);
 
 private:
-  // TODO Store the parse tree.
-  void addRule (const std::string&);
-
-private:
   bool        _debug {false};
   std::string _first {};
 

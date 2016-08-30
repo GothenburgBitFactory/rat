@@ -415,12 +415,6 @@ bool Grammar::isEOF (Pig& pig)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Grammar::addRule (const std::string& token)
-{
-  std::cout << "Grammar::addRule '" << token << "'\n";
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void Grammar::debug (bool value)
 {
   std::cout << "Grammar debug mode.\n";
