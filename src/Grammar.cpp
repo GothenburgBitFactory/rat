@@ -123,19 +123,26 @@ bool Grammar::isGrammar (Pig& pig)
 bool Grammar::isRule (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
-  Grammar::Token rule_name;
-  if (isIdentifier (pig, rule_name) &&
-      isLiteral    (pig, "<--") &&
-      isSequence   (pig))
+  Grammar::Token rule;
+  if (isIdentifier (pig, rule) &&
+      isLiteral    (pig, "<--"))
   {
-    while (isSequence (pig))
+    if (isSequence (pig))
     {
-    }
+      while (isSequence (pig))
+      {
+      }
 
-    if (isLiteral (pig, ";"))
-    {
-      std::cout << "# Grammar::isRule '" << rule_name._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
-      return true;
+      if (isLiteral (pig, ";"))
+      {
+        // Keep track of the first rule found.
+        if (_first == "")
+          _first = rule._token;
+
+        _rules[rule._token] = {};
+        //std::cout << "# Grammar::isRule '" << rule._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+        return true;
+      }
     }
   }
 
