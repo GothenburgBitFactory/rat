@@ -110,10 +110,7 @@ bool Grammar::isGrammar (Pig& pig)
       }
 
       if (isEOF (pig))
-      {
-        //std::cout << "# Grammar::isGrammar " << pig.cursor () << " [" << pig.peek (16) << "]\n";
         return true;
-      }
     }
   }
 
