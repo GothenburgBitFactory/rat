@@ -39,10 +39,11 @@ void usage ()
             << "Usage: rat [options] <grammar> [<args>]\n"
             << "\n"
             << "Options are:\n"
+            << "  -v/--version    Version number\n"
             << "  -h/--help       Command usage\n"
             << "  -d/--debug      Debug mode\n"
             << "\n";
-  exit (-1);
+  exit (0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,10 +60,22 @@ int main (int argc, char** argv)
   {
     if (argv[i][0] == '-')
     {
-           if (!strcmp (argv[i], "-h"))         usage ();
-      else if (!strcmp (argv[i], "--help"))     usage ();
-      else if (!strcmp (argv[i], "-d"))         debug = true;
-      else if (!strcmp (argv[i], "--debug"))    debug = true;
+      if (!strcmp (argv[i], "-h") ||
+          !strcmp (argv[i], "--help"))
+      {
+        usage ();
+      }
+      else if (!strcmp (argv[i], "-d") ||
+               !strcmp (argv[i], "--debug"))
+      {
+        debug = true;
+      }
+      else if (!strcmp (argv[i], "-v") ||
+               !strcmp (argv[i], "--version"))
+      {
+        std::cout << VERSION << '\n';
+        exit (0);
+      }
       else
       {
         std::cout << "Unrecognized option '" << argv[i] << "'" << std::endl;
