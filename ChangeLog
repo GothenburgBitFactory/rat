@@ -5,6 +5,7 @@
           (Thanks to Jörg Krause, Ben Boeckel).
 - TW-1845 Cygwin build fails, missing get_current_dir_name
           (thanks to hosaka).
+- Added test framework.
 
 ------ current release ---------------------------
 
