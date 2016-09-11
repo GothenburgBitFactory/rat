@@ -31,7 +31,6 @@
 #include <unicode.h>
 #include <format.h>
 #include <iostream>
-#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load and parse PG.
@@ -139,7 +138,7 @@ bool Grammar::isRule (Pig& pig)
         if (_first == "")
           _first = rule._token;
 
-        _rules[rule._token] = {};
+        //_rules[rule._token] = sequences;
         //std::cout << "# Grammar::isRule '" << rule._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
         return true;
       }
@@ -431,20 +430,7 @@ void Grammar::debug (bool value)
 ////////////////////////////////////////////////////////////////////////////////
 std::string Grammar::dump () const
 {
-  std::stringstream out;
-  out << "Grammar\n";
-
-  for (auto& rule : _rules)
-  {
-    out << "  " << (rule.first == _first ? ">" : "") << rule.first << " <--";
-    for (auto& sequence : rule.second)
-      for (auto& alt : sequence)
-        out << ' ' << alt._token;
-
-    out << '\n';
-  }
-
-  return out.str ();
+  return _rules.dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

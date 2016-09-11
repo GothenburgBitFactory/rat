@@ -27,6 +27,7 @@
 #ifndef INCLUDED_GRAMMAR
 #define INCLUDED_GRAMMAR
 
+#include <Tree.h>
 #include <FS.h>
 #include <Pig.h>
 #include <map>
@@ -49,27 +50,17 @@ protected:
   {
   public:
     Token () = default;
-    Token (const std::string& value)         { _token      = value; }
+    Token (const std::string& value) { _token = value; }
 
     std::string    _token      {};
     Grammar::Quant _quantifier {Grammar::Quant::One};
     Grammar::Type  _type       {Grammar::Type::Literal};
   };
 
-/*
-  class Production : public std::vector <Token>
-  {
-  };
-
-  class Rule : public std::vector <Production>
-  {
-  };
-*/
-
 private:
   bool isGrammar        (Pig&);
   bool isRule           (Pig&);
-  bool isSequence       (Pig&);
+  bool isSequence       (Pig&, std::vector <Grammar::Token>&);
   bool isAlternative    (Pig&);
   bool isUnaryItem      (Pig&);
   bool isPrimaryItem    (Pig&);
@@ -88,10 +79,7 @@ private:
 private:
   bool        _debug {false};
   std::string _first {};
-
-  //        rule name    rule         sequence     decorated token
-  //        |            |            |            |
-  std::map <std::string, std::vector <std::vector <Grammar::Token>>> _rules;
+  Tree        _rules {"Grammar"};
 };
 
 #endif
