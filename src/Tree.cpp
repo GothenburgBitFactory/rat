@@ -232,7 +232,7 @@ Tree* Tree::find (const std::string& path)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Tree::dumpNode (Tree* t, int depth, std::stringstream& output)
+void Tree::dumpNode (const Tree* t, int depth, std::stringstream& output) const
 {
   // Dump node
   for (int i = 0; i < depth; ++i)
@@ -276,7 +276,7 @@ void Tree::dumpNode (Tree* t, int depth, std::stringstream& output)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Tree::dump ()
+std::string Tree::dump () const
 {
   std::stringstream output;
   output << "Tree (" << count () << " nodes)\n";

@@ -64,10 +64,10 @@ public:
 
   Tree* find (const std::string&);
 
-  std::string dump ();
+  std::string dump () const;
 
 private:
-  void dumpNode (Tree*, int, std::stringstream&);
+  void dumpNode (const Tree*, int, std::stringstream&) const;
 
 public:
   Tree*                               _trunk;       // Parent.
