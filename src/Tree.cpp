@@ -247,7 +247,7 @@ void Tree::dumpNode (const Tree* t, int depth, std::stringstream& output) const
   std::string atts;
   for (auto& a : t->_attributes)
   {
-    if (atts == "")
+    if (atts != "")
       atts += " ";
 
     atts += a.first + "='\033[33m" + a.second + "\033[0m'";
