@@ -27,12 +27,15 @@
 #ifndef INCLUDED_PACKRAT
 #define INCLUDED_PACKRAT
 
+#include <Grammar.h>
 #include <string>
 
 class Packrat
 {
 public:
   Packrat () = default;
+  bool parse (const Grammar&, const std::string&);
+
   void debug (bool);
   std::string dump () const;
 

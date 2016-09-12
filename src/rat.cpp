@@ -101,9 +101,11 @@ int main (int argc, char** argv)
 
   try
   {
+    // Read the grammar file.
     std::string contents;
     File (grammarFile).read (contents);
 
+    // Parse the grammar.
     Grammar grammar;
     grammar.debug (debug);
     grammar.initialize (contents);
@@ -113,11 +115,15 @@ int main (int argc, char** argv)
     // Test commandLine against grammar.
     if (commandLine != "")
     {
+      // Create the parser.
       Packrat packrat;
       packrat.debug (debug);
+      if (packrat.parse (grammar, commandLine))
+      {
+      }
 
-      // TODO output = packrat (grammar, commandLine);
-      // TODO dump output
+      if (debug)
+        std::cout << packrat.dump ();
     }
   }
 
