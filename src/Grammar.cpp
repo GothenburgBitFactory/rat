@@ -313,9 +313,7 @@ bool Grammar::isIdentifier (Pig& pig, Tree* parseTree)
     {
     }
 
-    parseTree->attribute ("token",      pig.substr (checkpoint, pig.cursor ()));
-    parseTree->attribute ("quantifier", "one");
-    parseTree->attribute ("type",       "nonterminal");
+    parseTree->attribute ("token", pig.substr (checkpoint, pig.cursor ()));
 
     isSpacing (pig);
     return true;
@@ -367,9 +365,7 @@ bool Grammar::isCharLiteral (Pig& pig, Tree* parseTree)
       value.length () == 1        &&
       isSpacing (pig))
   {
-    parseTree->attribute ("token",      value);
-    parseTree->attribute ("quantifier", "one");
-    parseTree->attribute ("type",       "literal");
+    parseTree->attribute ("token", value);
     return true;
   }
 
@@ -385,9 +381,7 @@ bool Grammar::isStringLiteral (Pig& pig, Tree* parseTree)
   if (pig.getQuoted ('"', value) &&
       isSpacing (pig))
   {
-    parseTree->attribute ("token",      value);
-    parseTree->attribute ("quantifier", "one");
-    parseTree->attribute ("type",       "literal");
+    parseTree->attribute ("token", value);
     return true;
   }
 
