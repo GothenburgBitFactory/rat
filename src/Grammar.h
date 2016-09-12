@@ -58,17 +58,17 @@ protected:
   };
 
 private:
-  bool isGrammar        (Pig&);
-  bool isRule           (Pig&);
-  bool isSequence       (Pig&, std::vector <Grammar::Token>&);
-  bool isAlternative    (Pig&);
-  bool isUnaryItem      (Pig&);
-  bool isPrimaryItem    (Pig&);
-  bool isIdentifier     (Pig&, Grammar::Token&);
+  bool isGrammar        (Pig&, Tree*);
+  bool isRule           (Pig&, Tree*);
+  bool isSequence       (Pig&, Tree*);
+  bool isAlternative    (Pig&, Tree*);
+  bool isUnaryItem      (Pig&, Tree*);
+  bool isPrimaryItem    (Pig&, Tree*);
+  bool isIdentifier     (Pig&, Tree*);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
-  bool isCharLiteral    (Pig&, Grammar::Token&);
-  bool isStringLiteral  (Pig&, Grammar::Token&);
+  bool isCharLiteral    (Pig&, Tree*);
+  bool isStringLiteral  (Pig&, Tree*);
   bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);

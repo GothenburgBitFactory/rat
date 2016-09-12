@@ -89,7 +89,7 @@
 void Grammar::initialize (const std::string& input)
 {
   Pig pig (input);
-  if (isGrammar (pig))
+  if (isGrammar (pig, &_rules))
     std::cout << "Grammar loaded.\n";
   else
     throw std::string ("Syntax error in grammar.");
@@ -97,20 +97,29 @@ void Grammar::initialize (const std::string& input)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Grammar <-- Spacing Rule+ EOF
-bool Grammar::isGrammar (Pig& pig)
+bool Grammar::isGrammar (Pig& pig, Tree* parseTree)
 {
   auto checkpoint = pig.cursor ();
   if (isSpacing (pig))
   {
-    if (isRule (pig))
+    Tree* rule = new Tree ("Rule");
+    if (isRule (pig, rule))
     {
-      while (isRule (pig))
+      parseTree->addBranch (rule);
+
+      rule = new Tree ("Rule");
+      while (isRule (pig, rule))
       {
+        parseTree->addBranch (rule);
+        rule = new Tree ("Rule");
       }
 
+      delete rule;
       if (isEOF (pig))
         return true;
     }
+    else
+      delete rule;
   }
 
   pig.restoreTo (checkpoint);
@@ -119,126 +128,174 @@ bool Grammar::isGrammar (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Rule <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
-bool Grammar::isRule (Pig& pig)
+bool Grammar::isRule (Pig& pig, Tree* parseTree)
 {
   auto checkpoint = pig.cursor ();
-  Grammar::Token rule;
-  if (isIdentifier (pig, rule) &&
+
+  Tree* name = new Tree ("Identifier");
+  if (isIdentifier (pig, name) &&
       isLiteral    (pig, "<--"))
   {
-    if (isSequence (pig))
+    std::vector <Tree*> sequences;
+    Tree* sequence = new Tree ("Sequence");
+    if (isSequence (pig, sequence))
     {
-      while (isSequence (pig))
+      sequences.push_back (sequence);
+
+      sequence = new Tree ("Sequence");
+      while (isSequence (pig, sequence))
       {
+        sequences.push_back (sequence);
+        sequence = new Tree ("Sequence");
       }
+
+      delete sequence;
 
       if (isLiteral (pig, ";"))
       {
-        // Keep track of the first rule found.
-        if (_first == "")
-          _first = rule._token;
+        parseTree->addBranch (name);
+        for (auto s : sequences)
+          parseTree->addBranch (s);
 
-        //_rules[rule._token] = sequences;
-        //std::cout << "# Grammar::isRule '" << rule._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
         return true;
       }
     }
+    else
+      delete sequence;
   }
 
+  delete name;
   pig.restoreTo (checkpoint);
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Sequence <-- Alternative (SLASH Alternative)*
-bool Grammar::isSequence (Pig& pig)
+bool Grammar::isSequence (Pig& pig, Tree* parseTree)
 {
-  if (isAlternative (pig))
+  Tree* alternative = new Tree ("Alternative");
+  if (isAlternative (pig, alternative))
   {
+    parseTree->addBranch (alternative);
+
+    alternative = new Tree ("Alternative");
     while (isLiteral (pig, "/") &&
-           isAlternative (pig))
+           isAlternative (pig, alternative))
     {
+      parseTree->addBranch (alternative);
+      alternative = new Tree ("Alternative");
     }
 
-    std::cout << "# Grammar::isSequence " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    delete alternative;
     return true;
   }
 
+  delete alternative;
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Alternative <-- AND UnaryItem / NOT UnaryItem / UnaryItem
-bool Grammar::isAlternative (Pig& pig)
+bool Grammar::isAlternative (Pig& pig, Tree* parseTree)
 {
   auto checkpoint = pig.cursor ();
+
+  Tree* unaryItem = new Tree ("UnaryItem");
   if (isLiteral (pig, "&") &&
-      isUnaryItem (pig))
+      isUnaryItem (pig, unaryItem))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    unaryItem->tag ("positive");
+    unaryItem->tag ("lookahead");
+    parseTree->addBranch (unaryItem);
     return true;
   }
 
   pig.restoreTo (checkpoint);
   if (isLiteral (pig, "!") &&
-      isUnaryItem (pig))
+      isUnaryItem (pig, unaryItem))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    unaryItem->tag ("negative");
+    unaryItem->tag ("lookahead");
+    parseTree->addBranch (unaryItem);
     return true;
   }
 
   pig.restoreTo (checkpoint);
-  if (isUnaryItem (pig))
+  if (isUnaryItem (pig, unaryItem))
   {
-    std::cout << "# Grammar::isAlternative " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    parseTree->addBranch (unaryItem);
     return true;
   }
 
+  delete unaryItem;
   pig.restoreTo (checkpoint);
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // UnaryItem <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
-bool Grammar::isUnaryItem (Pig& pig)
+bool Grammar::isUnaryItem (Pig& pig, Tree* parseTree)
 {
-  if (isPrimaryItem (pig))
+  Tree* primaryItem = new Tree ("PrimaryItem");
+  if (isPrimaryItem (pig, primaryItem))
   {
-    if (isLiteral (pig, "?") ||
-        isLiteral (pig, "*") ||
-        isLiteral (pig, "+"))
-    {
-    }
+         if (isLiteral (pig, "?")) primaryItem->tag ("question");
+    else if (isLiteral (pig, "*")) primaryItem->tag ("star");
+    else if (isLiteral (pig, "+")) primaryItem->tag ("plus");
 
-    std::cout << "# Grammar::isUnaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    parseTree->addBranch (primaryItem);
     return true;
   }
 
+  delete primaryItem;
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
-bool Grammar::isPrimaryItem (Pig& pig)
+bool Grammar::isPrimaryItem (Pig& pig, Tree* parseTree)
 {
-  Grammar::Token primary;
-  if (isIdentifier    (pig, primary) ||
-      isCharLiteral   (pig, primary) ||
-      isStringLiteral (pig, primary))
+  Tree* identifier = new Tree ("Identifier");
+  if (isIdentifier (pig, identifier))
   {
-    std::cout << "# Grammar::isPrimaryItem '" << primary._token << "' " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+    parseTree->addBranch (identifier);
     return true;
   }
+  else
+    delete identifier;
+
+  Tree* charLiteral = new Tree ("CharLiteral");
+  if (isCharLiteral (pig, charLiteral))
+  {
+    parseTree->addBranch (charLiteral);
+    return true;
+  }
+  else
+    delete charLiteral;
+
+  Tree* stringLiteral = new Tree ("StringLiteral");
+  if (isStringLiteral (pig, stringLiteral))
+  {
+    parseTree->addBranch (stringLiteral);
+    return true;
+  }
+  else
+    delete stringLiteral;
 
   auto checkpoint = pig.cursor ();
   if (isLiteral (pig, "("))
   {
-    isSequence (pig);
+    Tree* sequence = new Tree ("Sequence");
+    if (! isSequence (pig, sequence))
+      sequence->tag ("empty");
+
     if (isLiteral (pig, ")"))
     {
-      std::cout << "# Grammar::isPrimaryItem " << pig.cursor () << " [" << pig.peek (16) << "]\n";
+      parseTree->addBranch (sequence);
       return true;
     }
+
+    delete sequence;
   }
 
   pig.restoreTo (checkpoint);
@@ -247,7 +304,7 @@ bool Grammar::isPrimaryItem (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Identifier <-- IdentStart IdentCont* Spacing
-bool Grammar::isIdentifier (Pig& pig, Grammar::Token& token)
+bool Grammar::isIdentifier (Pig& pig, Tree* parseTree)
 {
   auto checkpoint = pig.cursor ();
   if (isIdentStart (pig))
@@ -256,13 +313,11 @@ bool Grammar::isIdentifier (Pig& pig, Grammar::Token& token)
     {
     }
 
-    token._token = pig.substr (checkpoint, pig.cursor ());
-    token._quantifier = Grammar::Quant::One;
-    token._type = Grammar::Type::NonTerminal;
-    std::cout << "# Grammar::isIdentifier '" << token._token << "' NonTerminal\n";
+    parseTree->attribute ("token",      pig.substr (checkpoint, pig.cursor ()));
+    parseTree->attribute ("quantifier", "one");
+    parseTree->attribute ("type",       "nonterminal");
 
     isSpacing (pig);
-    //std::cout << "# Grammar::isIdentifier " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -278,7 +333,6 @@ bool Grammar::isIdentStart (Pig& pig)
       pig.peek () == '_')
   {
     pig.skipN (1);
-    //std::cout << "# Grammar::isIdentStart " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -287,19 +341,16 @@ bool Grammar::isIdentStart (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // IdentCont <-- IdentStart / Digit
-// What is this?   IdentCont <-- IdentStart / Digit / '''
 bool Grammar::isIdentCont (Pig& pig)
 {
   if (isIdentStart (pig))
   {
-    //std::cout << "# Grammar::isIdentCont " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
   if (unicodeLatinDigit (pig.peek ()))
   {
     pig.skipN (1);
-    //std::cout << "# Grammar::isIdentCont " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -308,7 +359,7 @@ bool Grammar::isIdentCont (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // CharLiteral <-- ''' (!(''') QuotedChar) ''' Spacing
-bool Grammar::isCharLiteral (Pig& pig, Grammar::Token& token)
+bool Grammar::isCharLiteral (Pig& pig, Tree* parseTree)
 {
   auto checkpoint = pig.cursor ();
   std::string value;
@@ -316,10 +367,9 @@ bool Grammar::isCharLiteral (Pig& pig, Grammar::Token& token)
       value.length () == 1        &&
       isSpacing (pig))
   {
-    token._token = value;
-    token._quantifier = Grammar::Quant::One;
-    token._type = Grammar::Type::Literal;
-    std::cout << "# Grammar::isCharLiteral '" << value << "' Literal\n";
+    parseTree->attribute ("token",      value);
+    parseTree->attribute ("quantifier", "one");
+    parseTree->attribute ("type",       "literal");
     return true;
   }
 
@@ -329,16 +379,15 @@ bool Grammar::isCharLiteral (Pig& pig, Grammar::Token& token)
 
 ////////////////////////////////////////////////////////////////////////////////
 // StringLiteral <-- '"' (!('"') QuotedChar)* '"' Spacing
-bool Grammar::isStringLiteral (Pig& pig, Grammar::Token& token)
+bool Grammar::isStringLiteral (Pig& pig, Tree* parseTree)
 {
   std::string value;
   if (pig.getQuoted ('"', value) &&
       isSpacing (pig))
   {
-    token._token = value;
-    token._quantifier = Grammar::Quant::One;
-    token._type = Grammar::Type::Literal;
-    std::cout << "# Grammar::isStringLiteral '" << value << "' Literal\n";
+    parseTree->attribute ("token",      value);
+    parseTree->attribute ("quantifier", "one");
+    parseTree->attribute ("type",       "literal");
     return true;
   }
 
@@ -381,7 +430,6 @@ bool Grammar::isLineComment (Pig& pig)
       pig.skipN (1);
     }
 
-    //std::cout << "# Grammar::isLineComment " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
@@ -397,7 +445,6 @@ bool Grammar::isLineTerminator (Pig& pig)
       pig.skip ('\f'))
   {
     pig.skip ('\f');
-    //std::cout << "# Grammar::isLineTerminator " << pig.cursor () << " [" << pig.peek (16) << "]\n";
     return true;
   }
 
