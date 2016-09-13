@@ -153,10 +153,7 @@ void Tree::enumerate (std::vector <Tree*>& all) const
 ////////////////////////////////////////////////////////////////////////////////
 bool Tree::hasTag (const std::string& tag) const
 {
-  if (std::find (_tags.begin (), _tags.end (), tag) != _tags.end ())
-    return true;
-
-  return false;
+  return std::find (_tags.begin (), _tags.end (), tag) != _tags.end ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
