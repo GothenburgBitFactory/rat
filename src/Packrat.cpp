@@ -38,7 +38,7 @@ void Packrat::debug (bool value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Packrat::parse (const Grammar& grammar, const std::string& text)
+bool Packrat::parse (const Grammar&, const std::string&)
 {
   return false;
 }
