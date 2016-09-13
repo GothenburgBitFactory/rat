@@ -33,21 +33,30 @@ int main (int, const char*[])
   UnitTest ut (10);
 
   // Construct tree as shown above.
-  Tree t ("root");
+  Tree t;
+  t._name = "root";
   ut.is (t.countTags (), 0, "countTags == 0");
 
-  Tree* b = t.addBranch (new Tree ("c1"));
+  std::shared_ptr <Tree> b = std::make_shared <Tree> ();
+  b->_name = "c1";
   b->attribute ("name", "c1");
   b->tag ("tag");
+  t.addBranch (b);
 
-  b = t.addBranch (new Tree ("c2"));
+  b = std::make_shared <Tree> ();
+  b->_name = "c2";
   b->attribute ("name", "c2");
+  t.addBranch (b);
 
-  b = t.addBranch (new Tree ("c3"));
+  b = std::make_shared <Tree> ();
+  b->_name = "c3";
   b->attribute ("name", "c3");
+  t.addBranch (b);
 
-  Tree* l = b->addBranch (new Tree ("c4"));
+  std::shared_ptr <Tree> l = std::make_shared <Tree> ();
+  l->_name = "c4";
   l->attribute ("name", "c4");
+  b->addBranch (l);
 
   // Iterate over tree.
   ut.is (t._branches[0]->attribute ("name"), "c1", "c1");
