@@ -30,22 +30,20 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <sstream>
+#include <memory>
 
 class Tree;
 
 class Tree
 {
 public:
-  Tree (const std::string&);
-  ~Tree ();
-  Tree (const Tree&) = delete;
-  Tree& operator= (const Tree&) = delete;
+  Tree () = default;
+  Tree (const Tree&) = default;
 
-  Tree* addBranch (Tree*);
-  void removeBranch (Tree*);
+  void addBranch (std::shared_ptr <Tree>);
+  void removeBranch (std::shared_ptr <Tree>);
   void removeAllBranches ();
-  void replaceBranch (Tree*, Tree*);
+  void replaceBranch (std::shared_ptr <Tree>, std::shared_ptr <Tree>);
 
   void attribute (const std::string&, const std::string&);
   void attribute (const std::string&, const int);
@@ -53,7 +51,7 @@ public:
   std::string attribute (const std::string&);
   void removeAttribute (const std::string&);
 
-  void enumerate (std::vector <Tree*>& all) const;
+  void enumerate (std::vector <std::shared_ptr <Tree>>& all) const;
 
   bool hasTag (const std::string&) const;
   void tag (const std::string&);
@@ -62,19 +60,18 @@ public:
 
   int count () const;
 
-  Tree* find (const std::string&);
+  std::shared_ptr <Tree> find (const std::string&);
 
   std::string dump () const;
 
 private:
-  void dumpNode (const Tree*, int, std::stringstream&) const;
+  std::string dumpNode (const std::shared_ptr <Tree>, int) const;
 
 public:
-  Tree*                               _trunk;       // Parent.
-  std::string                         _name;        // Name.
-  std::vector <Tree*>                 _branches;    // Children.
-  std::map <std::string, std::string> _attributes;  // Attributes (name->value).
-  std::vector <std::string>           _tags;        // Tags (tag, tag ...).
+  std::string                          _name       {"Unknown"};  // Name.
+  std::vector <std::shared_ptr <Tree>> _branches   {};  // Children.
+  std::map <std::string, std::string>  _attributes {};  // Attributes (name->value).
+  std::vector <std::string>            _tags       {};  // Tags (tag, tag ...).
 };
 
 #endif

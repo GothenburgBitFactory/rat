@@ -28,6 +28,7 @@
 #include <Tree.h>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <shared.h>
 #include <format.h>
 
@@ -38,39 +39,22 @@
 //  - The destructor will delete all branches recursively.
 //  - Tree::enumerate is a snapshot, and is invalidated by modification.
 //  - Branch sequence is preserved.
-Tree::Tree (const std::string& name)
-: _trunk (nullptr)
-, _name (name)
-{
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Tree::~Tree ()
-{
-  for (auto& branch : _branches)
-    delete branch;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Tree* Tree::addBranch (Tree* branch)
+void Tree::addBranch (std::shared_ptr <Tree> branch)
 {
   if (! branch)
     throw "Failed to allocate memory for parse tree.";
 
-  branch->_trunk = this;
   _branches.push_back (branch);
-  return branch;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Tree::removeBranch (Tree* branch)
+void Tree::removeBranch (std::shared_ptr <Tree> branch)
 {
   for (auto i = _branches.begin (); i != _branches.end (); ++i)
   {
     if (branch == *i)
     {
       _branches.erase (i);
-      delete branch;
       return;
     }
   }
@@ -83,13 +67,12 @@ void Tree::removeAllBranches ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Tree::replaceBranch (Tree* from, Tree* to)
+void Tree::replaceBranch (std::shared_ptr <Tree> from, std::shared_ptr <Tree> to)
 {
   for (unsigned int i = 0; i < _branches.size (); ++i)
   {
     if (_branches[i] == from)
     {
-      to->_trunk = this;
       _branches[i] = to;
       return;
     }
@@ -136,12 +119,12 @@ void Tree::removeAttribute (const std::string& name)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Recursively builds a list of Tree* objects, left to right, depth first. The
-// reason for the depth-first enumeration is that a client may wish to traverse
-// the tree and delete nodes.  With a depth-first iteration, this is a safe
-// mechanism, and a node pointer will never be dereferenced after it has been
-// deleted.
-void Tree::enumerate (std::vector <Tree*>& all) const
+// Recursively builds a list of std::shared_ptr <Tree> objects, left to right,
+// depth first. The reason for the depth-first enumeration is that a client may
+// wish to traverse the tree and delete nodes.  With a depth-first iteration,
+// this is a safe mechanism, and a node pointer will never be dereferenced after
+// it has been deleted.
+void Tree::enumerate (std::vector <std::shared_ptr <Tree>>& all) const
 {
   for (auto& i : _branches)
   {
@@ -191,19 +174,19 @@ int Tree::count () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Tree* Tree::find (const std::string& path)
+std::shared_ptr <Tree> Tree::find (const std::string& path)
 {
   std::vector <std::string> elements = split (path, '/');
 
   // Must start at the trunk.
-  Tree* cursor = this;
+  std::shared_ptr <Tree> cursor = std::make_shared <Tree> (*this);
   auto it = elements.begin ();
   if (cursor->_name != *it)
     return nullptr;
 
   // Perhaps the trunk is what is needed?
   if (elements.size () == 1)
-    return this;
+    return cursor;
 
   // Now look for the next branch.
   for (++it; it != elements.end (); ++it)
@@ -229,16 +212,20 @@ Tree* Tree::find (const std::string& path)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Tree::dumpNode (const Tree* t, int depth, std::stringstream& output) const
+std::string Tree::dumpNode (
+  const std::shared_ptr <Tree> t,
+  int depth) const
 {
+  std::stringstream out;
+
   // Dump node
   for (int i = 0; i < depth; ++i)
-    output << "  ";
+    out << "  ";
 
-  output
-         // Useful for debugging tree node new/delete errors.
-         // << std::hex << t << " "
-         << "\033[1m" << t->_name << "\033[0m";
+  out
+      // Useful for debugging tree node new/delete errors.
+      // << std::hex << t << " "
+      << "\033[1m" << t->_name << "\033[0m";
 
   // Dump attributes.
   std::string atts;
@@ -251,7 +238,7 @@ void Tree::dumpNode (const Tree* t, int depth, std::stringstream& output) const
   }
 
   if (atts.length ())
-    output << " " << atts;
+    out << " " << atts;
 
   // Dump tags.
   std::string tags;
@@ -264,21 +251,24 @@ void Tree::dumpNode (const Tree* t, int depth, std::stringstream& output) const
   }
 
   if (tags.length ())
-    output << ' ' << tags;
-  output << "\n";
+    out << ' ' << tags;
+  out << "\n";
 
   // Recurse for branches.
   for (auto& b : t->_branches)
-    dumpNode (b, depth + 1, output);
+    out << dumpNode (b, depth + 1);
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string Tree::dump () const
 {
-  std::stringstream output;
-  output << "Tree (" << count () << " nodes)\n";
-  dumpNode (this, 1, output);
-  return output.str ();
+  std::stringstream out;
+  out << "Tree (" << count () << " nodes)\n"
+      << dumpNode (std::make_shared <Tree> (*this), 1);
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
