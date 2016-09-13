@@ -43,17 +43,17 @@ public:
   std::string dump () const;
 
 private:
-  bool isGrammar        (Pig&, Tree*);
-  bool isRule           (Pig&, Tree*);
-  bool isSequence       (Pig&, Tree*);
-  bool isAlternative    (Pig&, Tree*);
-  bool isUnaryItem      (Pig&, Tree*);
-  bool isPrimaryItem    (Pig&, Tree*);
-  bool isIdentifier     (Pig&, Tree*);
+  bool isGrammar        (Pig&, std::shared_ptr <Tree>);
+  bool isRule           (Pig&, std::shared_ptr <Tree>);
+  bool isSequence       (Pig&, std::shared_ptr <Tree>);
+  bool isAlternative    (Pig&, std::shared_ptr <Tree>);
+  bool isUnaryItem      (Pig&, std::shared_ptr <Tree>);
+  bool isPrimaryItem    (Pig&, std::shared_ptr <Tree>);
+  bool isIdentifier     (Pig&, std::shared_ptr <Tree>);
   bool isIdentStart     (Pig&);
   bool isIdentCont      (Pig&);
-  bool isCharLiteral    (Pig&, Tree*);
-  bool isStringLiteral  (Pig&, Tree*);
+  bool isCharLiteral    (Pig&, std::shared_ptr <Tree>);
+  bool isStringLiteral  (Pig&, std::shared_ptr <Tree>);
   bool isSpacing        (Pig&);
   bool isSpaceChar      (Pig&);
   bool isLineComment    (Pig&);
@@ -62,9 +62,9 @@ private:
   bool isEOF            (Pig&);
 
 private:
-  bool        _debug {false};
-  std::string _first {};
-  Tree        _rules {"Grammar"};
+  bool                   _debug {false};
+  std::string            _first {};
+  std::shared_ptr <Tree> _rules {std::make_shared <Tree> ()};
 };
 
 #endif

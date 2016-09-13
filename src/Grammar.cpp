@@ -89,7 +89,8 @@
 void Grammar::initialize (const std::string& input)
 {
   Pig pig (input);
-  if (isGrammar (pig, &_rules))
+  _rules->_name = "Grammar";
+  if (isGrammar (pig, _rules))
     std::cout << "Grammar loaded.\n";
   else
     throw std::string ("Syntax error in grammar.");
@@ -97,29 +98,29 @@ void Grammar::initialize (const std::string& input)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Grammar <-- Spacing Rule+ EOF
-bool Grammar::isGrammar (Pig& pig, Tree* parseTree)
+bool Grammar::isGrammar (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
   if (isSpacing (pig))
   {
-    Tree* rule = new Tree ("Rule");
+    std::shared_ptr <Tree> rule = std::make_shared <Tree> ();
+    rule->_name = "Rule";
     if (isRule (pig, rule))
     {
       parseTree->addBranch (rule);
 
-      rule = new Tree ("Rule");
+      rule = std::make_shared <Tree> ();
+      rule->_name = "Rule";
       while (isRule (pig, rule))
       {
         parseTree->addBranch (rule);
-        rule = new Tree ("Rule");
+        rule = std::make_shared <Tree> ();
+        rule->_name = "Rule";
       }
 
-      delete rule;
       if (isEOF (pig))
         return true;
     }
-    else
-      delete rule;
   }
 
   pig.restoreTo (checkpoint);
@@ -128,28 +129,30 @@ bool Grammar::isGrammar (Pig& pig, Tree* parseTree)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Rule <-- Identifier LEFTARROW Sequence+ DEFTERMINATOR
-bool Grammar::isRule (Pig& pig, Tree* parseTree)
+bool Grammar::isRule (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
 
-  Tree* name = new Tree ("Identifier");
+  std::shared_ptr <Tree> name = std::make_shared <Tree> ();
+  name->_name = "Identifier";
   if (isIdentifier (pig, name) &&
       isLiteral    (pig, "<--"))
   {
-    std::vector <Tree*> sequences;
-    Tree* sequence = new Tree ("Sequence");
+    std::vector <std::shared_ptr <Tree>> sequences;
+    std::shared_ptr <Tree> sequence = std::make_shared <Tree> ();
+    sequence->_name = "Sequence";
     if (isSequence (pig, sequence))
     {
       sequences.push_back (sequence);
 
-      sequence = new Tree ("Sequence");
+      sequence = std::make_shared <Tree> ();
+      sequence->_name = "Sequence";
       while (isSequence (pig, sequence))
       {
         sequences.push_back (sequence);
-        sequence = new Tree ("Sequence");
+        sequence = std::make_shared <Tree> ();
+        sequence->_name = "Sequence";
       }
-
-      delete sequence;
 
       if (isLiteral (pig, ";"))
       {
@@ -160,47 +163,46 @@ bool Grammar::isRule (Pig& pig, Tree* parseTree)
         return true;
       }
     }
-    else
-      delete sequence;
   }
 
-  delete name;
   pig.restoreTo (checkpoint);
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Sequence <-- Alternative (SLASH Alternative)*
-bool Grammar::isSequence (Pig& pig, Tree* parseTree)
+bool Grammar::isSequence (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  Tree* alternative = new Tree ("Alternative");
+  std::shared_ptr <Tree> alternative = std::make_shared <Tree> ();
+  alternative->_name = "Alternative";
   if (isAlternative (pig, alternative))
   {
     parseTree->addBranch (alternative);
 
-    alternative = new Tree ("Alternative");
+    alternative = std::make_shared <Tree> ();
+    alternative->_name = "Alternative";
     while (isLiteral (pig, "/") &&
            isAlternative (pig, alternative))
     {
       parseTree->addBranch (alternative);
-      alternative = new Tree ("Alternative");
+      alternative = std::make_shared <Tree> ();
+      alternative->_name = "Alternative";
     }
 
-    delete alternative;
     return true;
   }
 
-  delete alternative;
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Alternative <-- AND UnaryItem / NOT UnaryItem / UnaryItem
-bool Grammar::isAlternative (Pig& pig, Tree* parseTree)
+bool Grammar::isAlternative (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
 
-  Tree* unaryItem = new Tree ("UnaryItem");
+  std::shared_ptr <Tree> unaryItem = std::make_shared <Tree> ();
+  unaryItem->_name = "UnaryItem";
   if (isLiteral (pig, "&") &&
       isUnaryItem (pig, unaryItem))
   {
@@ -227,16 +229,16 @@ bool Grammar::isAlternative (Pig& pig, Tree* parseTree)
     return true;
   }
 
-  delete unaryItem;
   pig.restoreTo (checkpoint);
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // UnaryItem <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
-bool Grammar::isUnaryItem (Pig& pig, Tree* parseTree)
+bool Grammar::isUnaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  Tree* primaryItem = new Tree ("PrimaryItem");
+  std::shared_ptr <Tree> primaryItem = std::make_shared <Tree> ();
+  primaryItem->_name = "PrimaryItem";
   if (isPrimaryItem (pig, primaryItem))
   {
          if (isLiteral (pig, "?")) primaryItem->tag ("question");
@@ -247,45 +249,42 @@ bool Grammar::isUnaryItem (Pig& pig, Tree* parseTree)
     return true;
   }
 
-  delete primaryItem;
   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
-bool Grammar::isPrimaryItem (Pig& pig, Tree* parseTree)
+bool Grammar::isPrimaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  Tree* identifier = new Tree ("Identifier");
+  std::shared_ptr <Tree> identifier = std::make_shared <Tree> ();
+  identifier->_name = "Identifier";
   if (isIdentifier (pig, identifier))
   {
     parseTree->addBranch (identifier);
     return true;
   }
-  else
-    delete identifier;
 
-  Tree* charLiteral = new Tree ("CharLiteral");
+  std::shared_ptr <Tree> charLiteral = std::make_shared <Tree> ();
+  charLiteral->_name = "CharLiteral";
   if (isCharLiteral (pig, charLiteral))
   {
     parseTree->addBranch (charLiteral);
     return true;
   }
-  else
-    delete charLiteral;
 
-  Tree* stringLiteral = new Tree ("StringLiteral");
+  std::shared_ptr <Tree> stringLiteral = std::make_shared <Tree> ();
+  stringLiteral->_name = "StringLiteral";
   if (isStringLiteral (pig, stringLiteral))
   {
     parseTree->addBranch (stringLiteral);
     return true;
   }
-  else
-    delete stringLiteral;
 
   auto checkpoint = pig.cursor ();
   if (isLiteral (pig, "("))
   {
-    Tree* sequence = new Tree ("Sequence");
+    std::shared_ptr <Tree> sequence = std::make_shared <Tree> ();
+    sequence->_name = "Sequence";
     if (! isSequence (pig, sequence))
       sequence->tag ("empty");
 
@@ -294,8 +293,6 @@ bool Grammar::isPrimaryItem (Pig& pig, Tree* parseTree)
       parseTree->addBranch (sequence);
       return true;
     }
-
-    delete sequence;
   }
 
   pig.restoreTo (checkpoint);
@@ -304,7 +301,7 @@ bool Grammar::isPrimaryItem (Pig& pig, Tree* parseTree)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Identifier <-- IdentStart IdentCont* Spacing
-bool Grammar::isIdentifier (Pig& pig, Tree* parseTree)
+bool Grammar::isIdentifier (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
   if (isIdentStart (pig))
@@ -357,7 +354,7 @@ bool Grammar::isIdentCont (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // CharLiteral <-- ''' (!(''') QuotedChar) ''' Spacing
-bool Grammar::isCharLiteral (Pig& pig, Tree* parseTree)
+bool Grammar::isCharLiteral (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
   std::string value;
@@ -375,7 +372,7 @@ bool Grammar::isCharLiteral (Pig& pig, Tree* parseTree)
 
 ////////////////////////////////////////////////////////////////////////////////
 // StringLiteral <-- '"' (!('"') QuotedChar)* '"' Spacing
-bool Grammar::isStringLiteral (Pig& pig, Tree* parseTree)
+bool Grammar::isStringLiteral (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   std::string value;
   if (pig.getQuoted ('"', value) &&
@@ -473,7 +470,7 @@ void Grammar::debug (bool value)
 ////////////////////////////////////////////////////////////////////////////////
 std::string Grammar::dump () const
 {
-  return _rules.dump ();
+  return _rules->dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
