@@ -31,6 +31,7 @@
 #include <unicode.h>
 #include <format.h>
 #include <iostream>
+#include <cassert>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load and parse PG.
@@ -94,6 +95,13 @@ void Grammar::initialize (const std::string& input)
     std::cout << "Grammar loaded.\n";
   else
     throw std::string ("Syntax error in grammar.");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::shared_ptr <Tree> Grammar::tree () const
+{
+  assert (_rules->_branches.size ());
+  return _rules;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
