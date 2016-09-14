@@ -118,9 +118,9 @@ int main (int argc, char** argv)
       // Create the parser.
       Packrat packrat;
       packrat.debug (debug);
-      if (packrat.parse (grammar, commandLine))
-      {
-      }
+      packrat.parse (grammar, commandLine);
+
+      // TODO Parse complete, ready for eval.
 
       if (debug)
         std::cout << packrat.dump ();
