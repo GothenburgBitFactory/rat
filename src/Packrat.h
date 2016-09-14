@@ -28,19 +28,25 @@
 #define INCLUDED_PACKRAT
 
 #include <Grammar.h>
+#include <Tree.h>
+#include <Pig.h>
 #include <string>
 
 class Packrat
 {
 public:
   Packrat () = default;
-  bool parse (const Grammar&, const std::string&);
+  void parse (const Grammar&, const std::string&);
 
   void debug (bool);
   std::string dump () const;
 
 private:
-  bool _debug {false};
+  bool isThing (Pig&, std::shared_ptr <Tree>, std::shared_ptr <Tree>);
+
+private:
+  bool                   _debug {false};
+  std::shared_ptr <Tree> _tree {std::make_shared <Tree> ()};
 };
 
 #endif

@@ -38,8 +38,35 @@ void Packrat::debug (bool value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Packrat::parse (const Grammar&, const std::string&)
+// Walk the grammar tree to parse the input text, resulting in a parse tree.
+void Packrat::parse (const Grammar& grammar, const std::string& input)
 {
+  // Used to walk the grammar tree. Initially the top of the tree.
+  auto g = grammar.tree ();
+
+  // The pig that will be sent down the pipe.
+  Pig pig (input);
+
+  // The resulting parse tree.
+  std::shared_ptr <Tree> p = std::make_shared <Tree> ();
+
+  // The top-level parse involves just one node.
+  if (! isThing (pig, g, p))
+    throw std::string ("Syntax error in input.");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Packrat::isThing (
+  Pig& pig,
+  std::shared_ptr <Tree> g,
+  std::shared_ptr <Tree> p)
+{
+  auto checkpoint = pig.cursor ();
+
+  // Check if the pig matches the node in g, using recusion. If it matches,
+  // augment p.
+
+  pig.restoreTo (checkpoint);
   return false;
 }
 
