@@ -39,7 +39,7 @@ class Grammar
 public:
   Grammar () = default;
   void initialize (const std::string&);
-  std::shared_ptr <Tree> tree () const;
+  std::shared_ptr <Tree> syntax () const;
   void debug (bool);
   std::string dump () const;
 

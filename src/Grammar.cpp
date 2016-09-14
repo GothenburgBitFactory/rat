@@ -98,7 +98,7 @@ void Grammar::initialize (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::shared_ptr <Tree> Grammar::tree () const
+std::shared_ptr <Tree> Grammar::syntax () const
 {
   assert (_rules->_branches.size ());
   return _rules;
