@@ -91,10 +91,10 @@ void Grammar::initialize (const std::string& input)
 {
   Pig pig (input);
   _rules->_name = "Grammar";
-  if (isGrammar (pig, _rules))
-    std::cout << "Grammar loaded.\n";
-  else
+  if (! isGrammar (pig, _rules))
     throw std::string ("Syntax error in grammar.");
+
+  std::cout << "Grammar loaded.\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
