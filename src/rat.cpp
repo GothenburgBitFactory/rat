@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Grammar.h>
+#include <PEG.h>
 #include <Packrat.h>
 #include <FS.h>
 #include <cstdio>
@@ -106,11 +106,11 @@ int main (int argc, char** argv)
     File (grammarFile).read (contents);
 
     // Parse the grammar.
-    Grammar grammar;
-    grammar.debug (debug);
-    grammar.initialize (contents);
+    PEG peg;
+    peg.debug (debug);
+    peg.loadFromString (contents);
     if (debug)
-      std::cout << grammar.dump ();
+      std::cout << peg.dump ();
 
     // Test commandLine against grammar.
     if (commandLine != "")
@@ -118,7 +118,7 @@ int main (int argc, char** argv)
       // Create the parser.
       Packrat packrat;
       packrat.debug (debug);
-      packrat.parse (grammar, commandLine);
+      packrat.parse (peg, commandLine);
 
       // TODO Parse complete, ready for eval.
 

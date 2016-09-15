@@ -27,7 +27,7 @@
 #ifndef INCLUDED_PACKRAT
 #define INCLUDED_PACKRAT
 
-#include <Grammar.h>
+#include <PEG.h>
 #include <Tree.h>
 #include <Pig.h>
 #include <string>
@@ -35,14 +35,13 @@
 class Packrat
 {
 public:
-  Packrat () = default;
-  void parse (const Grammar&, const std::string&);
+  void parse (const PEG&, const std::string&);
 
   void debug (bool);
   std::string dump () const;
 
 private:
-  bool isThing (Pig&, std::shared_ptr <Tree>, std::shared_ptr <Tree>);
+  bool isThing (Pig&, const std::map <std::string, PEG::Rule>&, std::shared_ptr <Tree>);
 
 private:
   bool                   _debug {false};
