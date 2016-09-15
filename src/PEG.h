@@ -46,6 +46,8 @@ public:
     std::string _token      {};
     Quantifier  _quantifier {Quantifier::one};
     Lookahead   _lookahead  {Lookahead::none};
+    // TODO Added Lexer::Type support, which allows the PEG to specify
+    //      "<Lexer::Type>" as a built-in type.
   };
 
   class Production : public std::vector <Token>
@@ -60,6 +62,7 @@ public:
   void loadFromFile (File&);
   void loadFromString (const std::string&);
   std::map <std::string, PEG::Rule> syntax () const;
+  std::string firstRule () const;
   void debug (bool);
   std::string dump () const;
 
