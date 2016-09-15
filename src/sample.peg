@@ -2,13 +2,12 @@
 
   rule: nonterminal
         "terminal"
-        ('a' / 'b' / 'c')
         optional?
         any*
         mandatory+
-        &(positive_lookahead)
-        !(negative_lookahead)
-        ()
+        &"positive_lookahead"
+        !negative_lookahead
+        є
 
 #nested <-- "one" ("two" "three")? "four"
 
