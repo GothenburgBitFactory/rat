@@ -109,8 +109,6 @@ int main (int argc, char** argv)
     PEG peg;
     peg.debug (debug);
     peg.loadFromString (contents);
-    if (debug)
-      std::cout << peg.dump ();
 
     // Test commandLine against grammar.
     if (commandLine != "")
@@ -119,11 +117,10 @@ int main (int argc, char** argv)
       Packrat packrat;
       packrat.debug (debug);
       packrat.parse (peg, commandLine);
-
-      // TODO Parse complete, ready for eval.
-
       if (debug)
         std::cout << packrat.dump ();
+
+      // TODO Ready for eval.
     }
   }
 
