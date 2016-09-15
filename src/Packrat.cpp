@@ -42,7 +42,7 @@ void Packrat::debug (bool value)
 void Packrat::parse (const Grammar& grammar, const std::string& input)
 {
   // Used to walk the grammar tree. Initially the top of the tree.
-  auto g = grammar.tree ();
+  auto g = grammar.syntax ();
 
   // The pig that will be sent down the pipe.
   Pig pig (input);
@@ -63,8 +63,18 @@ bool Packrat::isThing (
 {
   auto checkpoint = pig.cursor ();
 
-  // Check if the pig matches the node in g, using recusion. If it matches,
+  // Check if the pig matches the node in g, using recursion. If it matches,
   // augment p.
+  std::cout << "# checking grammar '" << g->_name << "'\n";
+
+  if (g->_branches.size ())
+  {
+    std::cout << "#   non-terminal...\n";
+  }
+  else
+  {
+    std::cout << "#   terminal...\n";
+  }
 
   pig.restoreTo (checkpoint);
   return false;
