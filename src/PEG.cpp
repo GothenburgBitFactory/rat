@@ -69,7 +69,7 @@ void PEG::loadFromString (const std::string& input)
   // This is a state machine.  Read each line.
   for (auto& line : split (input, '\n'))
   {
-    // Skip whole-line comments.
+    // Skip whole-line comments, they have no semantics.
     if (line[0] == '#')
       continue;
 
@@ -87,7 +87,17 @@ void PEG::loadFromString (const std::string& input)
     {
       int token_count = 0;
 
+      // Instantiate and configure the Lexer.
       Lexer l (line);
+      l.noDate ();
+      l.noDuration ();
+      l.noUUID ();
+      l.noHexNumber ();
+      l.noURL ();
+      l.noPath ();
+      l.noPattern ();
+      //l.noOperator ();
+
       Lexer::Type type;
       std::string token;
       while (l.token (token, type))
