@@ -266,12 +266,12 @@ void PEG::validate () const
     {
       for (const auto& token : production)
       {
-        if (token._token.front () != '"' and
-            token._token.front () != '/')
+        if (token._token.front () != '"' and  // Literals are not included.
+            token._token.front () != '\'')    // Literals are not included.
           allTokens.push_back (token._token);
 
-        if (token._token == production[0]._token &&
-            rule.first == production[0]._token   &&
+        if (token._token == production[0]._token and
+            rule.first == production[0]._token   and
             production.size () == 1)
           allLeftRecursive.push_back (token._token);
       }
@@ -295,7 +295,7 @@ void PEG::validate () const
 
   for (const auto& r : allRules)
     if (r[0] == '"' or
-        r[0] == '/')
+        r[0] == '\'')
       throw format ("Definition '{1}' must not be a literal.");
 
   // Unused definitions - these are names in _rules that are never
