@@ -179,7 +179,7 @@ std::shared_ptr <Tree> Tree::find (const std::string& path)
   std::vector <std::string> elements = split (path, '/');
 
   // Must start at the trunk.
-  std::shared_ptr <Tree> cursor = std::make_shared <Tree> (*this);
+  auto cursor = std::make_shared <Tree> (*this);
   auto it = elements.begin ();
   if (cursor->_name != *it)
     return nullptr;

@@ -37,9 +37,6 @@ class Tree;
 class Tree
 {
 public:
-  Tree () = default;
-  Tree (const Tree&) = default;
-
   void addBranch (std::shared_ptr <Tree>);
   void removeBranch (std::shared_ptr <Tree>);
   void removeAllBranches ();
