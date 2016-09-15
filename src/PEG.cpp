@@ -50,9 +50,9 @@ void PEG::loadFromFile (File& file)
 //   rule-name:  alternate1-token1 alternate1-token2
 //               alternate2-token1
 //
-// - Rules are aligned at left margin only, followed by a comma.
+// - Rules are aligned at left margin only, followed by colon.
 // - Productions are indented and never at left margin.
-// - Blank line between rules.
+// - Blank lines delineate rules.
 //
 // Details:
 // - Literals are always double-quoted.
