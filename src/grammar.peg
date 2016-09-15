@@ -3,7 +3,7 @@
 Expr:     Product add_sub Product
           Product
 
-Product:  Value mul_div Value
+Product:  Value mul_div Value &"positive-lookahead" !negative-lookahead
           Value
 
 add_sub:  '+'
@@ -15,9 +15,9 @@ mul_div:  '*'
 Value:    '(' Expr ')'
           Number
 
-Number:   digit+
+Number:   Digit+
 
-digit:    '0'
+Digit:    '0'
           '1'
           '2'
           '3'
