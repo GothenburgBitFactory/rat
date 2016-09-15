@@ -1,6 +1,6 @@
 # Comment
 
-  rule: nonterminal
+  rule: number
         "terminal"
         optional?
         any*
@@ -24,3 +24,8 @@ digit: '0'
        '8'
        '9'
 
+# definitions, to pass validation.
+optional:           "dummy1"
+any:                "dummy2"
+mandatory:          "dummy3"
+negative_lookahead: "dummy4"
