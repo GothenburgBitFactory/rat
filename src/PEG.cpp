@@ -164,10 +164,22 @@ std::string PEG::dump () const
 {
   std::stringstream out;
   out << "PEG\n";
+
+  // Determine longest rule name, for display alignment.
+  size_t longest = 0;
+  for (const auto& rule : _rules)
+    if (rule.first.length () > longest)
+      longest = rule.first.length ();
+
   for (const auto& rule : _rules)
   {
     // Indicate the start Rule.
-    out << "  " << (rule.first == _start ? "▶" : " ") << " " << rule.first << ": ";
+    out << "  "
+        << (rule.first == _start ? "▶" : " ")
+        << ' '
+        << rule.first
+        << ':'
+        << std::string (2 + longest - rule.first.length (), ' ');
 
     int count = 0;
     for (const auto& production : rule.second)
