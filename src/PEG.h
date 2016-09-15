@@ -38,11 +38,14 @@ public:
   class Token
   {
   public:
-    Token (const std::string& value)         { _token      = value; }
-    void decorate (const std::string& value) { _decoration = value; }
+    Token (const std::string& value) { _token = value; }
 
-    std::string _token;
-    std::string _decoration;
+    enum class Quantifier { one, zero_or_one, one_or_more, zero_or_more };
+    enum class Lookahead  { none, positive, negative };
+
+    std::string _token      {};
+    Quantifier  _quantifier {Quantifier::one};
+    Lookahead   _lookahead  {Lookahead::none};
   };
 
   class Production : public std::vector <Token>

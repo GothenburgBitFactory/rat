@@ -104,6 +104,7 @@ void PEG::loadFromString (const std::string& input)
       {
         ++token_count;
 
+        // Rule definitions end in a colon.
         if (token.back () == ':')
         {
           // Capture the Rule_name.
@@ -116,21 +117,54 @@ void PEG::loadFromString (const std::string& input)
           _rules[rule_name] = PEG::Rule ();
           token_count = 0;
         }
-        else if (token.front () == ':')
-        {
-          // Decorate the most recent token, of the most recent Production,
-          // of the current Rule.
-          _rules[rule_name].back ().back ().decorate (token);
-        }
+        // Production definition.
         else
         {
           // If no Production was added yet, add one.
           if (token_count <= 1)
             _rules[rule_name].push_back (PEG::Production ());
 
+          // Decorate the token, if necessary.
+          std::string::size_type start = 0;
+          std::string::size_type end = token.length ();
+
+          Token::Quantifier q = Token::Quantifier::one;
+          Token::Lookahead l = Token::Lookahead::none;
+
+          if (token.back () == '?')
+          {
+            q = Token::Quantifier::zero_or_one;
+            --end;
+          }
+          else if (token.back () == '+')
+          {
+            q = Token::Quantifier::one_or_more;
+            --end;
+          }
+          else if (token.back () == '*')
+          {
+            q = Token::Quantifier::zero_or_more;
+            --end;
+          }
+
+          if (token.front () == '&')
+          {
+            l = Token::Lookahead::positive;
+            ++start;
+          }
+          else if (token.front () == '!')
+          {
+            l = Token::Lookahead::negative;
+            ++start;
+          }
+
+          PEG::Token t (token.substr (start, end - start));
+          t._quantifier = q;
+          t._lookahead = l;
+
           // Add the new Token to the most recent Production, of the current
           // Rule.
-          _rules[rule_name].back ().push_back (PEG::Token (token));
+          _rules[rule_name].back ().push_back (t);
         }
       }
     }
