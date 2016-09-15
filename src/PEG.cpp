@@ -96,7 +96,7 @@ void PEG::loadFromString (const std::string& input)
       l.noURL ();
       l.noPath ();
       l.noPattern ();
-      //l.noOperator ();
+      l.noOperator ();
 
       Lexer::Type type;
       std::string token;
