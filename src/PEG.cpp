@@ -179,22 +179,18 @@ std::string PEG::dump () const
         << ' '
         << rule.first
         << ':'
-        << std::string (2 + longest - rule.first.length (), ' ');
+        << std::string (1 + longest - rule.first.length (), ' ');
 
     int count = 0;
     for (const auto& production : rule.second)
     {
       if (count)
-        out << "| ";
+        out << std::string (6 + longest, ' ');
 
       for (const auto& token : production)
-      {
-        out << token._token;
-        if (token._decoration != "")
-          out << " " << token._decoration;
-        out << " ";
-      }
+        out << " " << token._token;
 
+      out << "\n";
       ++count;
     }
 
