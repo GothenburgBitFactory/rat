@@ -111,7 +111,7 @@ bool Grammar::isGrammar (Pig& pig, std::shared_ptr <Tree> parseTree)
   auto checkpoint = pig.cursor ();
   if (isSpacing (pig))
   {
-    std::shared_ptr <Tree> rule = std::make_shared <Tree> ();
+    auto rule = std::make_shared <Tree> ();
     rule->_name = "Rule";
     if (isRule (pig, rule))
     {
@@ -141,13 +141,13 @@ bool Grammar::isRule (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
 
-  std::shared_ptr <Tree> name = std::make_shared <Tree> ();
+  auto name = std::make_shared <Tree> ();
   name->_name = "Identifier";
   if (isIdentifier (pig, name) &&
       isLiteral    (pig, "<--"))
   {
     std::vector <std::shared_ptr <Tree>> sequences;
-    std::shared_ptr <Tree> sequence = std::make_shared <Tree> ();
+    auto sequence = std::make_shared <Tree> ();
     sequence->_name = "Sequence";
     if (isSequence (pig, sequence))
     {
@@ -181,7 +181,7 @@ bool Grammar::isRule (Pig& pig, std::shared_ptr <Tree> parseTree)
 // Sequence <-- Alternative (SLASH Alternative)*
 bool Grammar::isSequence (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  std::shared_ptr <Tree> alternative = std::make_shared <Tree> ();
+  auto alternative = std::make_shared <Tree> ();
   alternative->_name = "Alternative";
   if (isAlternative (pig, alternative))
   {
@@ -209,7 +209,7 @@ bool Grammar::isAlternative (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
 
-  std::shared_ptr <Tree> unaryItem = std::make_shared <Tree> ();
+  auto unaryItem = std::make_shared <Tree> ();
   unaryItem->_name = "UnaryItem";
   if (isLiteral (pig, "&") &&
       isUnaryItem (pig, unaryItem))
@@ -245,7 +245,7 @@ bool Grammar::isAlternative (Pig& pig, std::shared_ptr <Tree> parseTree)
 // UnaryItem <-- PrimaryItem QUESTION / PrimaryItem STAR / PrimaryItem PLUS / PrimaryItem
 bool Grammar::isUnaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  std::shared_ptr <Tree> primaryItem = std::make_shared <Tree> ();
+  auto primaryItem = std::make_shared <Tree> ();
   primaryItem->_name = "PrimaryItem";
   if (isPrimaryItem (pig, primaryItem))
   {
@@ -264,7 +264,7 @@ bool Grammar::isUnaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
 // PrimaryItem  <-- Identifier / CharLiteral / StringLiteral / OPEN Sequence? CLOSE
 bool Grammar::isPrimaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
 {
-  std::shared_ptr <Tree> identifier = std::make_shared <Tree> ();
+  auto identifier = std::make_shared <Tree> ();
   identifier->_name = "Identifier";
   if (isIdentifier (pig, identifier))
   {
@@ -272,7 +272,7 @@ bool Grammar::isPrimaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
     return true;
   }
 
-  std::shared_ptr <Tree> charLiteral = std::make_shared <Tree> ();
+  auto charLiteral = std::make_shared <Tree> ();
   charLiteral->_name = "CharLiteral";
   if (isCharLiteral (pig, charLiteral))
   {
@@ -280,7 +280,7 @@ bool Grammar::isPrimaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
     return true;
   }
 
-  std::shared_ptr <Tree> stringLiteral = std::make_shared <Tree> ();
+  auto stringLiteral = std::make_shared <Tree> ();
   stringLiteral->_name = "StringLiteral";
   if (isStringLiteral (pig, stringLiteral))
   {
@@ -291,7 +291,7 @@ bool Grammar::isPrimaryItem (Pig& pig, std::shared_ptr <Tree> parseTree)
   auto checkpoint = pig.cursor ();
   if (isLiteral (pig, "("))
   {
-    std::shared_ptr <Tree> sequence = std::make_shared <Tree> ();
+    auto sequence = std::make_shared <Tree> ();
     sequence->_name = "Sequence";
     if (! isSequence (pig, sequence))
       sequence->tag ("empty");
