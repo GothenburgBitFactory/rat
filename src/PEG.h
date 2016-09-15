@@ -24,15 +24,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_BNF
-#define INCLUDED_BNF
+#ifndef INCLUDED_PEG
+#define INCLUDED_PEG
 
 #include <FS.h>
 #include <string>
 #include <vector>
 #include <map>
 
-class BNF
+class PEG
 {
 public:
   class Token
@@ -56,7 +56,7 @@ public:
 public:
   void loadFromFile (File&);
   void loadFromString (const std::string&);
-  std::map <std::string, BNF::Rule> syntax () const;
+  std::map <std::string, PEG::Rule> syntax () const;
   void debug (bool);
   std::string dump () const;
 
@@ -66,7 +66,7 @@ private:
 private:
   //        rule name    rule
   //        |            |
-  std::map <std::string, BNF::Rule> _rules {};
+  std::map <std::string, PEG::Rule> _rules {};
   std::string                       _start {};
   bool                              _debug {false};
 };

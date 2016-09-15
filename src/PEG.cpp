@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <BNF.h>
+#include <PEG.h>
 #include <Lexer.h>
 #include <shared.h>
 #include <format.h>
@@ -33,10 +33,10 @@
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
-void BNF::loadFromFile (File& file)
+void PEG::loadFromFile (File& file)
 {
   if (! file.exists ())
-    throw format ("BNF file '{1}' not found.", file._data);
+    throw format ("PEG file '{1}' not found.", file._data);
 
   std::string contents;
   file.read (contents);
@@ -44,7 +44,7 @@ void BNF::loadFromFile (File& file)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Load and parse BNF.
+// Load and parse PEG.
 //
 // Syntax:
 //   rule-name:  alternate1-token1 alternate1-token2
@@ -62,7 +62,7 @@ void BNF::loadFromFile (File& file)
 //   - :a  Accept abbreviations
 //   - :i  Accept caseless match
 //
-void BNF::loadFromString (const std::string& input)
+void PEG::loadFromString (const std::string& input)
 {
   std::string rule_name = "";
 
@@ -103,7 +103,7 @@ void BNF::loadFromString (const std::string& input)
           if (_start == "")
             _start = rule_name;
 
-          _rules[rule_name] = BNF::Rule ();
+          _rules[rule_name] = PEG::Rule ();
           token_count = 0;
         }
         else if (token.front () == ':')
@@ -116,11 +116,11 @@ void BNF::loadFromString (const std::string& input)
         {
           // If no Production was added yet, add one.
           if (token_count <= 1)
-            _rules[rule_name].push_back (BNF::Production ());
+            _rules[rule_name].push_back (PEG::Production ());
 
           // Add the new Token to the most recent Production, of the current
           // Rule.
-          _rules[rule_name].back ().push_back (BNF::Token (token));
+          _rules[rule_name].back ().push_back (PEG::Token (token));
         }
       }
     }
@@ -138,22 +138,22 @@ void BNF::loadFromString (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::map <std::string, BNF::Rule> BNF::syntax () const
+std::map <std::string, PEG::Rule> PEG::syntax () const
 {
   return _rules;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void BNF::debug (bool value)
+void PEG::debug (bool value)
 {
   _debug = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string BNF::dump () const
+std::string PEG::dump () const
 {
   std::stringstream out;
-  out << "BNF\n";
+  out << "PEG\n";
   for (const auto& rule : _rules)
   {
     // Indicate the start Rule.
@@ -183,7 +183,7 @@ std::string BNF::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void BNF::validate () const
+void PEG::validate () const
 {
   if (_start == "")
     throw std::string ("There are no rules defined.");
