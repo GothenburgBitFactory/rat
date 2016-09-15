@@ -222,7 +222,15 @@ std::string PEG::dump () const
         out << std::string (6 + longest, ' ');
 
       for (const auto& token : production)
-        out << " " << token._token;
+      {
+        out << " "
+            << (token._lookahead == Token::Lookahead::positive ? "&" : "")
+            << (token._lookahead == Token::Lookahead::negative ? "!" : "")
+            << token._token
+            << (token._quantifier == Token::Quantifier::zero_or_one ? "?" : "")
+            << (token._quantifier == Token::Quantifier::one_or_more ? "+" : "")
+            << (token._quantifier == Token::Quantifier::zero_or_more ? "*" : "");
+      }
 
       out << "\n";
       ++count;
