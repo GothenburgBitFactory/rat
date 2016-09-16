@@ -87,9 +87,28 @@ bool Packrat::matchProduction (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  return false;
+  std::cout << "# ::matchProduction\n";
+  auto checkpoint = pig.cursor ();
+
+  for (const auto& token : production)
+  {
+    if (! matchToken (syntax, token, quantifier, pig, parseTree))
+    {
+      pig.restoreTo (checkpoint);
+      return false;
+    }
+  }
+
+  return true;
 }
-bool Packrat::matchToken (rule, quantifier, production_index, token, pig, p)
+
+////////////////////////////////////////////////////////////////////////////////
+bool Packrat::matchToken (
+  const std::map <std::string, PEG::Rule>& syntax,
+  const PEG::Token& token,
+  PEG::Token::Quantifier quantifier,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
 {
   return false;
 }
