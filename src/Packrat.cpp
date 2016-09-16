@@ -110,9 +110,22 @@ bool Packrat::matchToken (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
+  std::cout << "# ::matchToken '" << token._token << "'\n";
+  auto checkpoint = pig.cursor ();
+
+/*
+  if (matchRule () or
+      tokenMatchCharLiteral () or
+      tokenMatchStringLiteral ())
+  {
+
+    return true;
+  }
+*/
+
+  pig.restoreTo (checkpoint);
   return false;
 }
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string Packrat::dump () const
