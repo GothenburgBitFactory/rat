@@ -32,9 +32,6 @@
 void Packrat::debug (bool value)
 {
   _debug = value;
-
-  if (value)
-    std::cout << "Packrat debug mode.\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +40,7 @@ void Packrat::parse (const PEG& peg, const std::string& input)
 {
   // Used to walk the grammar tree. Initially the top of the tree.
   auto s = peg.syntax ();
+  auto first = peg.firstRule ();
 
   // The pig that will be sent down the pipe.
   Pig pig (input);
@@ -50,37 +48,42 @@ void Packrat::parse (const PEG& peg, const std::string& input)
   // The resulting parse tree.
   std::shared_ptr <Tree> p = std::make_shared <Tree> ();
 
-  // The top-level parse involves just one node.
-  if (! isThing (pig, s, p))
-    throw std::string ("Syntax error in input.");
+  // Match the first rule.  Recursion does the rest.
+  if (! matchRule (first, PEG::Token::Quantifier::one, pig, p))
+    throw std::string ("Parse failed.");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Packrat::isThing (
+// If there is a match, pig advances further down the pipe.
+bool Packrat::matchRule (
+  const std::string& rule,
+  PEG::Token::Quantifier q,
   Pig& pig,
-  const std::map <std::string, PEG::Rule>& syntax,
   std::shared_ptr <Tree> p)
 {
   auto checkpoint = pig.cursor ();
 
-  // Check if the pig matches the node in g, using recursion. If it matches,
-  // augment p.
-/*
-  std::cout << "# checking grammar '" << g->_name << "'\n";
 
-  if (g->_branches.size ())
-  {
-    std::cout << "#   non-terminal...\n";
-  }
-  else
-  {
-    std::cout << "#   terminal...\n";
-  }
-*/
+
 
   pig.restoreTo (checkpoint);
   return false;
 }
+
+/*
+bool Packrat::matchRuleQuant (rule, quantifier, pig, p)
+{
+  return false;
+}
+bool Packrat::matchProduction (rule, quantifier, production_index, pig, p)
+{
+  return false;
+}
+bool Packrat::matchToken (rule, quantifier, production_index, token, pig, p)
+{
+  return false;
+}
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string Packrat::dump () const
