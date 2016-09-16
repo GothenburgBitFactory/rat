@@ -41,7 +41,7 @@ public:
   std::string dump () const;
 
 private:
-  bool matchRule (const std::string&, PEG::Token::Quantifier, Pig&, std::shared_ptr <Tree>);
+  bool matchRule       (const std::map <std::string, PEG::Rule>&, const std::string&,     PEG::Token::Quantifier, Pig&, std::shared_ptr <Tree>);
 
 private:
   bool                   _debug {false};
