@@ -65,19 +65,27 @@ bool Packrat::matchRule (
   std::cout << "# ::matchRule " << rule << "\n";
   auto checkpoint = pig.cursor ();
 
-
-
+  for (const auto& production : syntax.find (rule)->second)
+  {
+    auto b = std::make_shared <Tree> ();
+    if (matchProduction (syntax, production, quantifier, pig, parseTree))
+    {
+      parseTree->addBranch (b);
+      return true;
+    }
+  }
 
   pig.restoreTo (checkpoint);
   return false;
 }
 
-/*
-bool Packrat::matchRuleQuant (rule, quantifier, pig, p)
-{
-  return false;
-}
-bool Packrat::matchProduction (rule, quantifier, production_index, pig, p)
+////////////////////////////////////////////////////////////////////////////////
+bool Packrat::matchProduction (
+  const std::map <std::string, PEG::Rule>& syntax,
+  const PEG::Production& production,
+  PEG::Token::Quantifier quantifier,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
 {
   return false;
 }
