@@ -71,6 +71,7 @@ bool Packrat::matchRule (
     if (matchProduction (syntax, production, quantifier, pig, parseTree))
     {
       parseTree->addBranch (b);
+      // TODO Decorate parseTree.
       return true;
     }
   }
@@ -92,7 +93,11 @@ bool Packrat::matchProduction (
 
   for (const auto& token : production)
   {
-    if (! matchToken (syntax, token, quantifier, pig, parseTree))
+    if (matchToken (syntax, token, quantifier, pig, parseTree))
+    {
+      // TODO Decorate parseTree.
+    }
+    else
     {
       pig.restoreTo (checkpoint);
       return false;
@@ -118,7 +123,7 @@ bool Packrat::matchToken (
       tokenMatchCharLiteral () or
       tokenMatchStringLiteral ())
   {
-
+    // TODO Decorate parseTree.
     return true;
   }
 */
