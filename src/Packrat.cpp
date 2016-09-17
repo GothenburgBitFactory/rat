@@ -133,8 +133,9 @@ bool Packrat::matchToken (
   {
     return true;
   }
-/*
-  else if (matchStringLiteral ())
+  else if (token.hasTag ("literal") &&
+           token.hasTag ("string") &&
+           matchStringLiteral (token, pig, parseTree))
   {
     // TODO Decorate parseTree.
     return true;
@@ -156,6 +157,34 @@ bool Packrat::matchCharLiteral (
 
   std::string value;
   if (pig.getQuoted ('\'', value) &&
+      value == token._token)
+  {
+    // Create a populated branch.
+    auto b = std::make_shared <Tree> ();
+    b->_name = token._token;
+    for (auto& tag : token._tags)
+      b->tag (tag);
+
+    parseTree->addBranch (b);
+    std::cout << "#         match " << value << "\n";
+    return true;
+  }
+
+  pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Packrat::matchStringLiteral (
+  const PEG::Token& token,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
+{
+  std::cout << "#       matchStringLiteral '" << token._token << "'\n";
+  auto checkpoint = pig.cursor ();
+
+  std::string value;
+  if (pig.getQuoted ('"', value) &&
       value == token._token)
   {
     // Create a populated branch.
