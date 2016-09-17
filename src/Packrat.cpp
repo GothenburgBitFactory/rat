@@ -70,6 +70,7 @@ bool Packrat::matchRule (
     if (matchProduction (syntax, production, quantifier, pig, parseTree))
     {
       parseTree->addBranch (b);
+      b->attribute ("type", rule);
       // TODO Decorate parseTree.
       return true;
     }
