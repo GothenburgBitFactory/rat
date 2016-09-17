@@ -62,7 +62,7 @@ bool Packrat::matchRule (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "# ::matchRule " << rule << "\n";
+  std::cout << "# matchRule " << rule << "\n";
   auto checkpoint = pig.cursor ();
 
   for (const auto& production : syntax.find (rule)->second)
@@ -88,7 +88,7 @@ bool Packrat::matchProduction (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "# ::matchProduction\n";
+  std::cout << "#   matchProduction\n";
   auto checkpoint = pig.cursor ();
 
   for (const auto& token : production)
@@ -115,7 +115,7 @@ bool Packrat::matchToken (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "# ::matchToken '" << token._token << "'\n";
+  std::cout << "#     matchToken '" << token._token << "'\n";
   auto checkpoint = pig.cursor ();
 
 /*
