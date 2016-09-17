@@ -93,7 +93,7 @@ bool Packrat::matchProduction (
 
   for (const auto& token : production)
   {
-    if (matchToken (syntax, token, quantifier, pig, parseTree))
+    if (matchToken (token, quantifier, pig, parseTree))
     {
       // TODO Decorate parseTree.
     }
@@ -109,7 +109,6 @@ bool Packrat::matchProduction (
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Packrat::matchToken (
-  const std::map <std::string, PEG::Rule>& syntax,
   const PEG::Token& token,
   PEG::Token::Quantifier quantifier,
   Pig& pig,
