@@ -109,12 +109,13 @@ bool Packrat::matchProduction (
 ////////////////////////////////////////////////////////////////////////////////
 bool Packrat::matchToken (
   const PEG::Token& token,
-  PEG::Token::Quantifier quantifier,
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
   std::cout << "#     matchToken '" << token._token << "'\n";
   auto checkpoint = pig.cursor ();
+
+  // TODO Obey token._quantifier
 
   if (token.hasTag ("intrinsic") &&
       matchIntrinsic (token, pig, parseTree))
