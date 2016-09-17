@@ -38,18 +38,17 @@ void Packrat::debug (bool value)
 // Walk the grammar tree to parse the input text, resulting in a parse tree.
 void Packrat::parse (const PEG& peg, const std::string& input)
 {
-  // Used to walk the grammar tree. Initially the top of the tree.
+  // Used to walk the grammar tree.
+  // Note there is only one rule at the top of the syntax tree, which was the
+  // first one defined.
   auto syntax = peg.syntax ();
   auto first = peg.firstRule ();
 
   // The pig that will be sent down the pipe.
   Pig pig (input);
 
-  // The resulting parse tree.
-  std::shared_ptr <Tree> parseTree = std::make_shared <Tree> ();
-
   // Match the first rule.  Recursion does the rest.
-  if (! matchRule (syntax, first, PEG::Token::Quantifier::one, pig, parseTree))
+  if (! matchRule (syntax, first, PEG::Token::Quantifier::one, pig, _tree))
     throw std::string ("Parse failed.");
 }
 
