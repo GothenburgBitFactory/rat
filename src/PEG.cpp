@@ -162,6 +162,16 @@ void PEG::loadFromString (const std::string& input)
           t._quantifier = q;
           t._lookahead = l;
 
+          if (type == Lexer::Type::string)
+          {
+            t.tag ("literal");
+          }
+          else if (t._token.front () == '<' and
+                   t._token.back ()  == '>')
+          {
+            t.tag ("intrinsic");
+          }
+
           // Add the new Token to the most recent Production, of the current
           // Rule.
           _rules[rule_name].back ().push_back (t);
