@@ -118,18 +118,22 @@ bool Packrat::matchToken (
   std::cout << "#     matchToken '" << token._token << "'\n";
   auto checkpoint = pig.cursor ();
 
+  if (token.hasTag ("intrinsic") &&
+      matchIntrinsic (token, pig, parseTree))
+  {
+    return true;
+  }
 /*
-  if (matchRule () or
-      tokenMatchCharLiteral () or
-      tokenMatchStringLiteral ())
+  else if (isRule () &&
+           matchRule ())
   {
     // TODO Decorate parseTree.
     return true;
   }
 */
-  if (token.hasTag ("literal") &&
-      token.hasTag ("character") &&
-      matchCharLiteral (token, pig, parseTree))
+  else if (token.hasTag ("literal") &&
+           token.hasTag ("character") &&
+           matchCharLiteral (token, pig, parseTree))
   {
     return true;
   }
@@ -137,7 +141,6 @@ bool Packrat::matchToken (
            token.hasTag ("string") &&
            matchStringLiteral (token, pig, parseTree))
   {
-    // TODO Decorate parseTree.
     return true;
   }
 
