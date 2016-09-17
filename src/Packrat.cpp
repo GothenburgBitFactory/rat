@@ -127,6 +127,19 @@ bool Packrat::matchToken (
     return true;
   }
 */
+  if (token.hasTag ("literal") &&
+      token.hasTag ("character") &&
+      matchCharLiteral (token, pig, parseTree))
+  {
+    return true;
+  }
+/*
+  else if (matchStringLiteral ())
+  {
+    // TODO Decorate parseTree.
+    return true;
+  }
+*/
 
   pig.restoreTo (checkpoint);
   return false;
