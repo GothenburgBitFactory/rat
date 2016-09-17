@@ -229,13 +229,16 @@ std::string PEG::dump () const
 
       for (const auto& token : production)
       {
-        out << " "
-            << (token._lookahead == Token::Lookahead::positive ? "&" : "")
-            << (token._lookahead == Token::Lookahead::negative ? "!" : "")
+        out << ' '
+            << (token._lookahead == Token::Lookahead::positive ? "&" :
+                token._lookahead == Token::Lookahead::negative ? "!" : "")
             << token._token
-            << (token._quantifier == Token::Quantifier::zero_or_one ? "?" : "")
-            << (token._quantifier == Token::Quantifier::one_or_more ? "+" : "")
-            << (token._quantifier == Token::Quantifier::zero_or_more ? "*" : "");
+            << (token._quantifier == Token::Quantifier::zero_or_one  ? "?" :
+                token._quantifier == Token::Quantifier::one_or_more  ? "+" :
+                token._quantifier == Token::Quantifier::zero_or_more ? "*" : "");
+
+        for (const auto& tag : token._tags)
+          out << " [34m" << tag << "[0m";
       }
 
       out << "\n";
