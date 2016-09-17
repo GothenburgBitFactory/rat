@@ -5,7 +5,6 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${RAT_INCLUDE_DIRS})
 
 set (rat_SRCS rat.cpp
-              Grammar.cpp Grammar.h
               Packrat.cpp Packrat.h
               PEG.cpp     PEG.h
               Tree.cpp    Tree.h)
