@@ -6,8 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 
 set (rat_SRCS rat.cpp
               Packrat.cpp Packrat.h
-              PEG.cpp     PEG.h
-              Tree.cpp    Tree.h)
+              PEG.cpp     PEG.h)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Color.cpp         libshared/src/Color.h
@@ -25,6 +24,7 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/RX.cpp            libshared/src/RX.h
                     libshared/src/Table.cpp         libshared/src/Table.h
                     libshared/src/Timer.cpp         libshared/src/Timer.h
+                    libshared/src/Tree.cpp          libshared/src/Tree.h
                     libshared/src/format.cpp        libshared/src/format.h
                     libshared/src/shared.cpp        libshared/src/shared.h
                     libshared/src/unicode.cpp       libshared/src/unicode.h
