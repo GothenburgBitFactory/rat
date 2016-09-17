@@ -102,6 +102,7 @@ void PEG::loadFromString (const std::string& input)
       std::string token;
       while (l.token (token, type))
       {
+//        std::cout << "# token '" << token << "' " << Lexer::typeToString (type) << '\n';
         ++token_count;
 
         // Rule definitions end in a colon.
@@ -270,6 +271,7 @@ void PEG::validate () const
   std::vector <std::string> allRules;
   std::vector <std::string> allTokens;
   std::vector <std::string> allLeftRecursive;
+  std::vector <std::string> intrinsics;
 
   for (const auto& rule : _rules)
   {
@@ -279,8 +281,10 @@ void PEG::validate () const
     {
       for (const auto& token : production)
       {
-        if (token._token.front () != '"' and  // Literals are not included.
-            token._token.front () != '\'')    // Literals are not included.
+        if (token.hasTag ("intrinsic"))
+          intrinsics.push_back (token._token);
+
+        else if (! token.hasTag ("literal"))
           allTokens.push_back (token._token);
 
         if (token._token == production[0]._token and
@@ -308,14 +312,20 @@ void PEG::validate () const
 
   for (const auto& r : allRules)
     if (r[0] == '"' or
-        r[0] == '\'')
-      throw format ("Definition '{1}' must not be a literal.");
+        r[0] == '\'' or
+        r[0] == '<')
+      throw format ("Definition '{1}' must not be a literal or intrinsic.");
 
   // Unused definitions - these are names in _rules that are never
   // referenced as token.
   for (const auto& nu : notUsed)
     if (nu != _start)
       throw format ("Definition '{1}' is defined, but not referenced.", nu);
+
+  // Intrinsics must be recognized.
+  for (auto& intrinsic : intrinsics)
+    if (intrinsic != "<digit>")
+      throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
