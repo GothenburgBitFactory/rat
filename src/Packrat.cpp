@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Packrat.h>
+#include <format.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +164,7 @@ bool Packrat::matchIntrinsic (
       for (auto& tag : token._tags)
         b->tag (tag);
 
-      b->attribute ("value", digit);
+      b->attribute ("value", format ("{1}", digit));
 
       parseTree->addBranch (b);
       std::cout << "#         match '" << digit << "'\n";
