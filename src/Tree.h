@@ -66,9 +66,9 @@ private:
 
 public:
   std::string                          _name       {"Unknown"};  // Name.
-  std::vector <std::shared_ptr <Tree>> _branches   {};  // Children.
-  std::map <std::string, std::string>  _attributes {};  // Attributes (name->value).
-  std::vector <std::string>            _tags       {};  // Tags (tag, tag ...).
+  std::vector <std::shared_ptr <Tree>> _branches   {};           // Children.
+  std::map <std::string, std::string>  _attributes {};           // Attributes (name->value).
+  std::vector <std::string>            _tags       {};           // Tags (tag, tag ...).
 };
 
 #endif
