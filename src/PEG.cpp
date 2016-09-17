@@ -166,6 +166,7 @@ void PEG::loadFromString (const std::string& input)
           if (type == Lexer::Type::string)
           {
             t.tag ("literal");
+            t.tag (token[0] == '\'' ? "character" : "string");
           }
           else if (t._token.front () == '<' and
                    t._token.back ()  == '>')
