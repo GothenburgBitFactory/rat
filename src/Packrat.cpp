@@ -92,15 +92,14 @@ bool Packrat::matchProduction (
 
   for (const auto& token : production)
   {
-    if (matchToken (token, quantifier, pig, parseTree))
-    {
-      // TODO Decorate parseTree.
-    }
-    else
+    if (! matchToken (token, pig, parseTree))
     {
       pig.restoreTo (checkpoint);
       return false;
     }
+
+    // TODO Collect tokens.
+    // TODO Decorate parseTree.
   }
 
   return true;
