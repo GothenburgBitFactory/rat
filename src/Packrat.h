@@ -44,6 +44,7 @@ private:
   bool matchRule          (const std::map <std::string, PEG::Rule>&, const std::string&,     PEG::Token::Quantifier, Pig&, std::shared_ptr <Tree>);
   bool matchProduction    (const std::map <std::string, PEG::Rule>&, const PEG::Production&, PEG::Token::Quantifier, Pig&, std::shared_ptr <Tree>);
   bool matchToken         (const std::map <std::string, PEG::Rule>&, const PEG::Token&,      PEG::Token::Quantifier, Pig&, std::shared_ptr <Tree>);
+  bool matchIntrinsic     (                                          const PEG::Token&,                              Pig&, std::shared_ptr <Tree>);
   bool matchCharLiteral   (                                          const PEG::Token&,                              Pig&, std::shared_ptr <Tree>);
   bool matchStringLiteral (                                          const PEG::Token&,                              Pig&, std::shared_ptr <Tree>);
 

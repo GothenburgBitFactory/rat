@@ -140,7 +140,38 @@ bool Packrat::matchToken (
     // TODO Decorate parseTree.
     return true;
   }
-*/
+
+  pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Packrat::matchIntrinsic (
+  const PEG::Token& token,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
+{
+  std::cout << "#       matchIntrinsic '" << token._token << "'\n";
+  auto checkpoint = pig.cursor ();
+
+  if (token._token == "<digit>")
+  {
+    int digit;
+    if (pig.getDigit (digit))
+    {
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = token._token;
+      for (auto& tag : token._tags)
+        b->tag (tag);
+
+      b->attribute ("value", digit);
+
+      parseTree->addBranch (b);
+      std::cout << "#         match '" << digit << "'\n";
+      return true;
+    }
+  }
 
   pig.restoreTo (checkpoint);
   return false;
