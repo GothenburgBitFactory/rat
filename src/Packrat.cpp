@@ -48,7 +48,7 @@ void Packrat::parse (const PEG& peg, const std::string& input)
   Pig pig (input);
 
   // Match the first rule.  Recursion does the rest.
-  if (! matchRule (syntax, first, PEG::Token::Quantifier::one, pig, _tree))
+  if (! matchRule (syntax, first, pig, _tree))
     throw std::string ("Parse failed.");
 }
 
@@ -57,7 +57,6 @@ void Packrat::parse (const PEG& peg, const std::string& input)
 bool Packrat::matchRule (
   const std::map <std::string, PEG::Rule>& syntax,
   const std::string& rule,
-  PEG::Token::Quantifier quantifier,
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
