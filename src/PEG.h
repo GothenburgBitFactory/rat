@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 class PEG
 {
@@ -38,14 +39,17 @@ public:
   class Token
   {
   public:
-    Token (const std::string& value) { _token = value; }
+    Token (const std::string& value)           { _token = value; }
+    void tag (const std::string& tag)          { _tags.insert (tag); }
+    bool hasTag (const std::string& tag) const { return _tags.find (tag) != _tags.end (); };
 
     enum class Quantifier { one, zero_or_one, one_or_more, zero_or_more };
     enum class Lookahead  { none, positive, negative };
 
-    std::string _token      {};
-    Quantifier  _quantifier {Quantifier::one};
-    Lookahead   _lookahead  {Lookahead::none};
+    std::string _token           {};
+    std::set <std::string> _tags {};
+    Quantifier  _quantifier      {Quantifier::one};
+    Lookahead   _lookahead       {Lookahead::none};
     // TODO Added Lexer::Type support, which allows the PEG to specify
     //      "<Lexer::Type>" as a built-in type.
   };
