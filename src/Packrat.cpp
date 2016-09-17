@@ -67,7 +67,7 @@ bool Packrat::matchRule (
   for (const auto& production : syntax.find (rule)->second)
   {
     auto b = std::make_shared <Tree> ();
-    if (matchProduction (production, quantifier, pig, parseTree))
+    if (matchProduction (production, pig, parseTree))
     {
       parseTree->addBranch (b);
       b->attribute ("type", rule);
@@ -83,7 +83,6 @@ bool Packrat::matchRule (
 ////////////////////////////////////////////////////////////////////////////////
 bool Packrat::matchProduction (
   const PEG::Production& production,
-  PEG::Token::Quantifier quantifier,
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
