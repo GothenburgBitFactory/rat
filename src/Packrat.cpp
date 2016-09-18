@@ -317,9 +317,7 @@ std::string Packrat::dump () const
   if (_debug)
     out << '\n';
 
-  out << "Packrat"
-      << (_debug ? " (debug mode)": "")
-      << "\n"
+  out << "Packrat Parse "
       << _tree->dump ();
 
   return out.str ();
