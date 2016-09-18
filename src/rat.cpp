@@ -91,7 +91,7 @@ int main (int argc, char** argv)
       if (commandLine != "")
         commandLine += " ";
 
-      commandLine += "'" + std::string (argv[i]) + "'";
+      commandLine += std::string (argv[i]);
     }
   }
 
