@@ -67,11 +67,10 @@ bool Packrat::matchRule (
   for (const auto& production : _syntax.find (rule)->second)
   {
     auto b = std::make_shared <Tree> ();
-    if (matchProduction (production, pig, parseTree))
+    if (matchProduction (production, pig, b))
     {
-      parseTree->addBranch (b);
       b->attribute ("type", rule);
-      // TODO Decorate parseTree.
+      parseTree->addBranch (b);
       return true;
     }
   }
