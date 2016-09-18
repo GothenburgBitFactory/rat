@@ -110,7 +110,7 @@ bool Packrat::matchProduction (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Wraps calls to matchToken, while properly handling the quantifier.
+// Wraps calls to matchTokenLookahead, while properly handling the quantifier.
 bool Packrat::matchTokenQuant (
   const PEG::Token& token,
   Pig& pig,
@@ -122,7 +122,7 @@ bool Packrat::matchTokenQuant (
   // Must match exactly once, so run once and return the result.
   if (token._quantifier == PEG::Token::Quantifier::one)
   {
-    return matchToken (token, pig, parseTree);
+    return matchTokenLookahead (token, pig, parseTree);
   }
 
   // May match zero or one time.  If it matches, the cursor will be advanced.
@@ -131,7 +131,7 @@ bool Packrat::matchTokenQuant (
   else if (token._quantifier == PEG::Token::Quantifier::zero_or_one)
   {
     // Check for a single match, succeed anyway.
-    matchToken (token, pig, parseTree);
+    matchTokenLookahead (token, pig, parseTree);
     return true;
   }
 
@@ -140,10 +140,10 @@ bool Packrat::matchTokenQuant (
   // the rule fails.
   else if (token._quantifier == PEG::Token::Quantifier::one_or_more)
   {
-    if (! matchToken (token, pig, parseTree))
+    if (! matchTokenLookahead (token, pig, parseTree))
       return false;
 
-    while (matchToken (token, pig, parseTree))
+    while (matchTokenLookahead (token, pig, parseTree))
     {
       // "Forget it, he's rolling."
     }
@@ -155,13 +155,26 @@ bool Packrat::matchTokenQuant (
   // return true always.  Backtrack the cursor on failure.
   else if (token._quantifier == PEG::Token::Quantifier::zero_or_more)
   {
-    while (matchToken (token, pig, parseTree))
+    while (matchTokenLookahead (token, pig, parseTree))
     {
       // Let it go.
     }
 
     return true;
   }
+
+  throw std::string ("This should never happen.");
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Wraps calls to matchToken, while properly handling lookahead.
+bool Packrat::matchTokenLookahead (
+  const PEG::Token& token,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
+{
+  return matchToken (token, pig, parseTree);
 
   throw std::string ("This should never happen.");
   return false;
@@ -195,7 +208,7 @@ bool Packrat::matchToken (
            token.hasTag ("character") &&
            matchCharLiteral (token, pig, parseTree))
   {
-    return true;
+   return true;
   }
 
   else if (token.hasTag ("literal") &&
