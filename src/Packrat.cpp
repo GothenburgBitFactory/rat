@@ -88,17 +88,23 @@ bool Packrat::matchProduction (
   std::cout << "#   matchProduction\n";
   auto checkpoint = pig.cursor ();
 
+  std::vector <std::shared_ptr <Tree>> branches;
   for (const auto& token : production)
   {
-    if (! matchTokenQuant (token, pig, parseTree))
+    auto b = std::make_shared <Tree> ();
+    if (! matchTokenQuant (token, pig, b))
     {
       pig.restoreTo (checkpoint);
       return false;
     }
 
-    // TODO Collect tokens.
-    // TODO Decorate parseTree.
+    // Accumulate branches.
+    branches.push_back (b);
   }
+
+  // On success add all branches.
+  for (auto b : branches)
+    parseTree->addBranch (b);
 
   return true;
 }
