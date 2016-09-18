@@ -294,7 +294,13 @@ bool Packrat::matchStringLiteral (
 ////////////////////////////////////////////////////////////////////////////////
 std::string Packrat::dump () const
 {
-  return "";
+  std::stringstream out;
+  out << "Packrat"
+      << (_debug ? " (debug mode)": "")
+      << "\n"
+      << _tree->dump ();
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
