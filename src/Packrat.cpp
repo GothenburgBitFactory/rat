@@ -174,7 +174,31 @@ bool Packrat::matchTokenLookahead (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  return matchToken (token, pig, parseTree);
+  if (token._lookahead == PEG::Token::Lookahead::none)
+  {
+    return matchToken (token, pig, parseTree);
+  }
+  else if (token._lookahead == PEG::Token::Lookahead::positive)
+  {
+    auto checkpoint = pig.cursor ();
+    auto b = std::make_shared <Tree> ();
+    if (matchToken (token, pig, b))
+    {
+      pig.restoreTo (checkpoint);
+      return true;
+    }
+  }
+  else if (token._lookahead == PEG::Token::Lookahead::negative)
+  {
+    auto checkpoint = pig.cursor ();
+    auto b = std::make_shared <Tree> ();
+    if (! matchToken (token, pig, b))
+    {
+      return true;
+    }
+
+    pig.restoreTo (checkpoint);
+  }
 
   throw std::string ("This should never happen.");
   return false;
