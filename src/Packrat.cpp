@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Packrat.h>
 #include <format.h>
+#include <utf8.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +183,7 @@ bool Packrat::matchCharLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchCharLiteral '" << token._token << "'\n";
+  std::cout << "#       matchCharLiteral " << token._token << "\n";
   auto checkpoint = pig.cursor ();
 
   if (token._token.length () >= 3 &&
@@ -194,7 +195,7 @@ bool Packrat::matchCharLiteral (
     {
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
-      b->_name = token._token.substr (1, 1);
+      b->_name = utf8_character (literal);
       for (auto& tag : token._tags)
         b->tag (tag);
 
@@ -214,21 +215,20 @@ bool Packrat::matchStringLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchStringLiteral '" << token._token << "'\n";
+  std::cout << "#       matchStringLiteral " << token._token << "\n";
   auto checkpoint = pig.cursor ();
 
-  std::string value;
-  if (pig.getQuoted ('"', value) &&
-      value == token._token)
+  std::string literal = token._token.substr (1, token._token.length () - 2);
+  if (pig.skipLiteral (literal))
   {
     // Create a populated branch.
     auto b = std::make_shared <Tree> ();
-    b->_name = token._token;
+    b->_name = literal;
     for (auto& tag : token._tags)
       b->tag (tag);
 
     parseTree->addBranch (b);
-    std::cout << "#         match " << value << "\n";
+    std::cout << "#         match " << literal << "\n";
     return true;
   }
 
