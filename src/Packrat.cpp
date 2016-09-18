@@ -179,6 +179,7 @@ bool Packrat::matchToken (
   std::shared_ptr <Tree> parseTree)
 {
   auto checkpoint = pig.cursor ();
+  auto b = std::make_shared <Tree> ();
 
   if (token.hasTag ("intrinsic") &&
       matchIntrinsic (token, pig, parseTree))
@@ -187,8 +188,11 @@ bool Packrat::matchToken (
   }
 
   else if (_syntax.find (token._token) != _syntax.end () &&
-           matchRule (token._token, pig, parseTree))
+           matchRule (token._token, pig, b))
   {
+    // This is the only case that adds a sub-branch.
+    b->_name = token._token;
+    parseTree->addBranch (b);
     return true;
   }
 
