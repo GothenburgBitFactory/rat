@@ -119,7 +119,6 @@ void PEG::loadFromString (const std::string& input)
       std::string token;
       while (l.token (token, type))
       {
-//        std::cout << "# token '" << token << "' " << Lexer::typeToString (type) << '\n';
         ++token_count;
 
         // Rule definitions end in a colon.
