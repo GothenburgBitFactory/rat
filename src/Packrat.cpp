@@ -227,12 +227,9 @@ bool Packrat::matchIntrinsic (
     {
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
-      b->_name = token._token;
-      for (auto& tag : token._tags)
-        b->tag (tag);
-
+      b->_name = "intrinsic";
+      b->attribute ("expected", token._token);
       b->attribute ("value", format ("{1}", digit));
-
       parseTree->addBranch (b);
 
       if (_debug)
@@ -266,10 +263,9 @@ bool Packrat::matchCharLiteral (
     {
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
-      b->_name = utf8_character (literal);
-      for (auto& tag : token._tags)
-        b->tag (tag);
-
+      b->_name = "charLiteral";
+      b->attribute ("expected", token._token);
+      b->attribute ("value", utf8_character (literal));
       parseTree->addBranch (b);
 
       if (_debug)
@@ -299,10 +295,9 @@ bool Packrat::matchStringLiteral (
   {
     // Create a populated branch.
     auto b = std::make_shared <Tree> ();
-    b->_name = literal;
-    for (auto& tag : token._tags)
-      b->tag (tag);
-
+    b->_name = "stringLiteral";
+    b->attribute ("expected", token._token);
+    b->attribute ("value", literal);
     parseTree->addBranch (b);
 
     if (_debug)
