@@ -203,7 +203,7 @@ void PEG::loadFromString (const std::string& input)
   }
 
   if (_debug)
-    std::cout << dump () << "\n";
+    std::cout << dump ();
 
   // Validate the parsed grammar.
   validate ();
