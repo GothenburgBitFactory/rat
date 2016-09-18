@@ -257,7 +257,7 @@ std::string PEG::dump () const
         out << std::string (6 + longest, ' ');
 
       for (const auto& token : production)
-        out << token.dump ();
+        out << token.dump () << ' ';
 
       out << "\n";
       ++count;
