@@ -33,6 +33,24 @@
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string PEG::Token::dump () const
+{
+  std::stringstream out;
+  out << ' '
+      << (_lookahead == Token::Lookahead::positive ? "[34m&[0m" :
+          _lookahead == Token::Lookahead::negative ? "[34m![0m" : "")
+      << _token
+      << (_quantifier == Token::Quantifier::zero_or_one  ? "[34m?[0m" :
+          _quantifier == Token::Quantifier::one_or_more  ? "[34m+[0m" :
+          _quantifier == Token::Quantifier::zero_or_more ? "[34m*[0m" : "");
+
+  for (const auto& tag : _tags)
+    out << " [34m" << tag << "[0m";
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void PEG::loadFromFile (File& file)
 {
   if (! file.exists ())
@@ -240,18 +258,7 @@ std::string PEG::dump () const
         out << std::string (6 + longest, ' ');
 
       for (const auto& token : production)
-      {
-        out << ' '
-            << (token._lookahead == Token::Lookahead::positive ? "&" :
-                token._lookahead == Token::Lookahead::negative ? "!" : "")
-            << token._token
-            << (token._quantifier == Token::Quantifier::zero_or_one  ? "?" :
-                token._quantifier == Token::Quantifier::one_or_more  ? "+" :
-                token._quantifier == Token::Quantifier::zero_or_more ? "*" : "");
-
-        for (const auto& tag : token._tags)
-          out << " [34m" << tag << "[0m";
-      }
+        out << token.dump ();
 
       out << "\n";
       ++count;

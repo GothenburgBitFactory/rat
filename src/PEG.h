@@ -42,6 +42,7 @@ public:
     Token (const std::string& value)           { _token = value; }
     void tag (const std::string& tag)          { _tags.insert (tag); }
     bool hasTag (const std::string& tag) const { return _tags.find (tag) != _tags.end (); };
+    std::string dump () const;
 
     enum class Quantifier { one, zero_or_one, one_or_more, zero_or_more };
     enum class Lookahead  { none, positive, negative };
