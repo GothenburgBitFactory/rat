@@ -1,6 +1,6 @@
 What is rat?
 =============
 
-Rat is a packrat parser that uses TPDL grammar.
+Rat is a packrat parser that uses a TPDL-like grammar.
 
 ---
