@@ -53,7 +53,8 @@ void Packrat::parse (const PEG& peg, const std::string& input)
   _tree->_name = "Root";
 
   // Match the first rule.  Recursion does the rest.
-  if (! matchRule (first, pig, _tree))
+  if (! matchRule (first, pig, _tree) ||
+      ! pig.eos ())
     throw std::string ("Parse failed.");
 }
 
