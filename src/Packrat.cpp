@@ -69,15 +69,8 @@ bool Packrat::matchRule (
   auto checkpoint = pig.cursor ();
 
   for (const auto& production : _syntax.find (rule)->second)
-  {
-    auto b = std::make_shared <Tree> ();
-    if (matchProduction (production, pig, b))
-    {
-      b->attribute ("type", rule);
-      parseTree->addBranch (b);
+    if (matchProduction (production, pig, parseTree))
       return true;
-    }
-  }
 
   pig.restoreTo (checkpoint);
   return false;
