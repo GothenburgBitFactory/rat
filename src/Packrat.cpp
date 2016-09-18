@@ -185,19 +185,23 @@ bool Packrat::matchCharLiteral (
   std::cout << "#       matchCharLiteral '" << token._token << "'\n";
   auto checkpoint = pig.cursor ();
 
-  std::string value;
-  if (pig.getQuoted ('\'', value) &&
-      value == token._token)
+  if (token._token.length () >= 3 &&
+      token._token[0] == '\'' &&
+      token._token[2] == '\'')
   {
-    // Create a populated branch.
-    auto b = std::make_shared <Tree> ();
-    b->_name = token._token;
-    for (auto& tag : token._tags)
-      b->tag (tag);
+    int literal = token._token[1];
+    if (pig.skip (literal))
+    {
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = token._token.substr (1, 1);
+      for (auto& tag : token._tags)
+        b->tag (tag);
 
-    parseTree->addBranch (b);
-    std::cout << "#         match " << value << "\n";
-    return true;
+      parseTree->addBranch (b);
+      std::cout << "#         match " << token._token << "\n";
+      return true;
+    }
   }
 
   pig.restoreTo (checkpoint);
