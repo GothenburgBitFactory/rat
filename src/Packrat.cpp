@@ -61,7 +61,8 @@ bool Packrat::matchRule (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "# matchRule " << rule << "\n";
+  if (_debug)
+    std::cout << "trace matchRule " << rule << "\n";
   auto checkpoint = pig.cursor ();
 
   for (const auto& production : _syntax.find (rule)->second)
@@ -85,7 +86,8 @@ bool Packrat::matchProduction (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#   matchProduction\n";
+  if (_debug)
+    std::cout << "trace   matchProduction\n";
   auto checkpoint = pig.cursor ();
 
   std::vector <std::shared_ptr <Tree>> branches;
@@ -116,7 +118,8 @@ bool Packrat::matchTokenQuant (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#     matchToken " << token.dump () << "\n";
+  if (_debug)
+    std::cout << "trace     matchToken " << token.dump () << "\n";
 
   // Must match exactly once, so run once and return the result.
   if (token._quantifier == PEG::Token::Quantifier::one)
@@ -210,7 +213,8 @@ bool Packrat::matchIntrinsic (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchIntrinsic " << token.dump () << "\n";
+  if (_debug)
+    std::cout << "trace       matchIntrinsic " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   if (token._token == "<digit>")
@@ -227,12 +231,15 @@ bool Packrat::matchIntrinsic (
       b->attribute ("value", format ("{1}", digit));
 
       parseTree->addBranch (b);
-      std::cout << "#         [32mmatch[0m " << digit << "\n";
+
+      if (_debug)
+        std::cout << "trace         [32mmatch[0m " << digit << "\n";
       return true;
     }
   }
 
-  std::cout << "#         [31mfail[0m " << token._token << "\n";
+  if (_debug)
+     std::cout << "trace         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
@@ -243,7 +250,8 @@ bool Packrat::matchCharLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchCharLiteral " << token.dump () << "\n";
+  if (_debug)
+    std::cout << "trace       matchCharLiteral " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   if (token._token.length () >= 3 &&
@@ -260,12 +268,15 @@ bool Packrat::matchCharLiteral (
         b->tag (tag);
 
       parseTree->addBranch (b);
-      std::cout << "#         [32mmatch[0m " << token._token << "\n";
+
+      if (_debug)
+        std::cout << "trace         [32mmatch[0m " << token._token << "\n";
       return true;
     }
   }
 
-  std::cout << "#         [31mfail[0m " << token._token << "\n";
+  if (_debug)
+    std::cout << "trace         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
@@ -276,7 +287,8 @@ bool Packrat::matchStringLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchStringLiteral " << token.dump () << "\n";
+  if (_debug)
+    std::cout << "trace       matchStringLiteral " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   std::string literal = token._token.substr (1, token._token.length () - 2);
@@ -289,11 +301,14 @@ bool Packrat::matchStringLiteral (
       b->tag (tag);
 
     parseTree->addBranch (b);
-    std::cout << "#         [32mmatch[0m " << literal << "\n";
+
+    if (_debug)
+      std::cout << "trace         [32mmatch[0m " << literal << "\n";
     return true;
   }
 
-  std::cout << "#         [31mfail[0m " << token._token << "\n";
+  if (_debug)
+    std::cout << "trace         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
@@ -302,6 +317,9 @@ bool Packrat::matchStringLiteral (
 std::string Packrat::dump () const
 {
   std::stringstream out;
+  if (_debug)
+    out << '\n';
+
   out << "Packrat"
       << (_debug ? " (debug mode)": "")
       << "\n"
