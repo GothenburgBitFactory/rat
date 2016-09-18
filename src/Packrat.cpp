@@ -111,6 +111,8 @@ bool Packrat::matchTokenQuant (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
+  std::cout << "#     matchToken " << token.dump () << "\n";
+
   // Must match exactly once, so run once and return the result.
   if (token._quantifier == PEG::Token::Quantifier::one)
   {
@@ -165,10 +167,7 @@ bool Packrat::matchToken (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#     matchToken " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
-
-  // TODO Obey token._quantifier
 
   if (token.hasTag ("intrinsic") &&
       matchIntrinsic (token, pig, parseTree))
@@ -223,11 +222,12 @@ bool Packrat::matchIntrinsic (
       b->attribute ("value", format ("{1}", digit));
 
       parseTree->addBranch (b);
-      std::cout << "#         match '" << digit << "'\n";
+      std::cout << "#         [32mmatch[0m " << digit << "\n";
       return true;
     }
   }
 
+  std::cout << "#         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
@@ -255,11 +255,12 @@ bool Packrat::matchCharLiteral (
         b->tag (tag);
 
       parseTree->addBranch (b);
-      std::cout << "#         match " << token._token << "\n";
+      std::cout << "#         [32mmatch[0m " << token._token << "\n";
       return true;
     }
   }
 
+  std::cout << "#         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
@@ -283,10 +284,11 @@ bool Packrat::matchStringLiteral (
       b->tag (tag);
 
     parseTree->addBranch (b);
-    std::cout << "#         match " << literal << "\n";
+    std::cout << "#         [32mmatch[0m " << literal << "\n";
     return true;
   }
 
+  std::cout << "#         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
   return false;
 }
