@@ -165,7 +165,7 @@ bool Packrat::matchToken (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#     matchToken '" << token._token << "'\n";
+  std::cout << "#     matchToken " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   // TODO Obey token._quantifier
@@ -206,7 +206,7 @@ bool Packrat::matchIntrinsic (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchIntrinsic '" << token._token << "'\n";
+  std::cout << "#       matchIntrinsic " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   if (token._token == "<digit>")
@@ -238,7 +238,7 @@ bool Packrat::matchCharLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchCharLiteral " << token._token << "\n";
+  std::cout << "#       matchCharLiteral " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   if (token._token.length () >= 3 &&
@@ -270,7 +270,7 @@ bool Packrat::matchStringLiteral (
   Pig& pig,
   std::shared_ptr <Tree> parseTree)
 {
-  std::cout << "#       matchStringLiteral " << token._token << "\n";
+  std::cout << "#       matchStringLiteral " << token.dump () << "\n";
   auto checkpoint = pig.cursor ();
 
   std::string literal = token._token.substr (1, token._token.length () - 2);
