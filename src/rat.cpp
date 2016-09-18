@@ -117,8 +117,7 @@ int main (int argc, char** argv)
       Packrat packrat;
       packrat.debug (debug);
       packrat.parse (peg, commandLine);
-      if (debug)
-        std::cout << packrat.dump ();
+      std::cout << packrat.dump ();
 
       // TODO Ready for eval.
     }
