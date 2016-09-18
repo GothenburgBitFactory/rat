@@ -36,8 +36,7 @@
 std::string PEG::Token::dump () const
 {
   std::stringstream out;
-  out << ' '
-      << (_lookahead == Token::Lookahead::positive ? "[34m&[0m" :
+  out << (_lookahead == Token::Lookahead::positive ? "[34m&[0m" :
           _lookahead == Token::Lookahead::negative ? "[34m![0m" : "")
       << _token
       << (_quantifier == Token::Quantifier::zero_or_one  ? "[34m?[0m" :
