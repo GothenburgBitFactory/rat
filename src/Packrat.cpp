@@ -91,7 +91,7 @@ bool Packrat::matchProduction (
 
   for (const auto& token : production)
   {
-    if (! matchToken (token, pig, parseTree))
+    if (! matchTokenQuant (token, pig, parseTree))
     {
       pig.restoreTo (checkpoint);
       return false;
@@ -102,6 +102,61 @@ bool Packrat::matchProduction (
   }
 
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Wraps calls to matchToken, while properly handling the quantifier.
+bool Packrat::matchTokenQuant (
+  const PEG::Token& token,
+  Pig& pig,
+  std::shared_ptr <Tree> parseTree)
+{
+  // Must match exactly once, so run once and return the result.
+  if (token._quantifier == PEG::Token::Quantifier::one)
+  {
+    return matchToken (token, pig, parseTree);
+  }
+
+  // May match zero or one time.  If it matches, the cursor will be advanced.
+  // If it fails, the cursor will not be advanced, but this is still considered
+  // successful.  Return true either way, but backtrack the cursor on failure.
+  else if (token._quantifier == PEG::Token::Quantifier::zero_or_one)
+  {
+    // Check for a single match, succeed anyway.
+    matchToken (token, pig, parseTree);
+    return true;
+  }
+
+  // May match 1 or more times.  If it matches on the first attempt, continue
+  // to greedily match until it fails.  If it fails on the first attempt, then
+  // the rule fails.
+  else if (token._quantifier == PEG::Token::Quantifier::one_or_more)
+  {
+    if (! matchToken (token, pig, parseTree))
+      return false;
+
+    while (matchToken (token, pig, parseTree))
+    {
+      // "Forget it, he's rolling."
+    }
+
+    return true;
+  }
+
+  // May match zero or more times.  Keep calling while there are matches, and
+  // return true always.  Backtrack the cursor on failure.
+  else if (token._quantifier == PEG::Token::Quantifier::zero_or_more)
+  {
+    while (matchToken (token, pig, parseTree))
+    {
+      // Let it go.
+    }
+
+    return true;
+  }
+
+  throw std::string ("This should never happen.");
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

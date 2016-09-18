@@ -43,6 +43,7 @@ public:
 private:
   bool matchRule          (const std::string&,     Pig&, std::shared_ptr <Tree>);
   bool matchProduction    (const PEG::Production&, Pig&, std::shared_ptr <Tree>);
+  bool matchTokenQuant    (const PEG::Token&,      Pig&, std::shared_ptr <Tree>);
   bool matchToken         (const PEG::Token&,      Pig&, std::shared_ptr <Tree>);
   bool matchIntrinsic     (const PEG::Token&,      Pig&, std::shared_ptr <Tree>);
   bool matchCharLiteral   (const PEG::Token&,      Pig&, std::shared_ptr <Tree>);
