@@ -93,7 +93,7 @@ bool Packrat::matchProduction (
     std::cout << "trace   matchProduction\n";
   auto checkpoint = pig.cursor ();
 
-  std::vector <std::shared_ptr <Tree>> branches;
+  auto collector = std::make_shared <Tree> ();
   for (const auto& token : production)
   {
     auto b = std::make_shared <Tree> ();
@@ -104,12 +104,13 @@ bool Packrat::matchProduction (
     }
 
     // Accumulate branches.
-    branches.push_back (b);
+    collector->addBranch (b);
   }
 
-  // On success add all branches.
-  for (auto b : branches)
-    parseTree->addBranch (b);
+  // On success transfer all sub-branches.
+  for (auto& b : collector->_branches)
+    for (auto sub : b->_branches)
+      parseTree->addBranch (sub);
 
   return true;
 }
