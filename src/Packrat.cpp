@@ -119,20 +119,20 @@ bool Packrat::matchToken (
   {
     return true;
   }
-/*
-  else if (isRule () &&
-           matchRule ())
+
+  else if (_syntax.find (token._token) != _syntax.end () &&
+           matchRule (token._token, pig, parseTree))
   {
-    // TODO Decorate parseTree.
     return true;
   }
-*/
+
   else if (token.hasTag ("literal") &&
            token.hasTag ("character") &&
            matchCharLiteral (token, pig, parseTree))
   {
     return true;
   }
+
   else if (token.hasTag ("literal") &&
            token.hasTag ("string") &&
            matchStringLiteral (token, pig, parseTree))
