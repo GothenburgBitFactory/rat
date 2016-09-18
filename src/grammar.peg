@@ -1,4 +1,4 @@
-# Comment
+# ./rat -d grammar.peg '1+2*3'
 
 Expr:     Product add_sub Product
           Product

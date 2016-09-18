@@ -1,2 +1,4 @@
+# ./rat -d question.peg a
+
 thing: item?
 item: 'a'

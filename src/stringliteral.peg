@@ -1,1 +1,3 @@
+# ./rat -d stringliteral.peg abc
+
 thing: "abc"

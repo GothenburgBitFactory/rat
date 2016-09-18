@@ -1,3 +1,5 @@
-thing: item+ &yeah
-item: 'a'
-yeah: 'b'
+# ./rat -d positive.peg 'ab'
+
+thing: a &b b
+a: 'a'
+b: 'b'
