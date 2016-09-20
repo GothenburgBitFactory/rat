@@ -249,6 +249,9 @@ bool Packrat::matchToken (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Supports the following:
+//   <digit>
+//   <character>
 bool Packrat::matchIntrinsic (
   const PEG::Token& token,
   Pig& pig,
@@ -272,6 +275,23 @@ bool Packrat::matchIntrinsic (
 
       if (_debug)
         std::cout << "trace         [32mmatch[0m " << digit << "\n";
+      return true;
+    }
+  }
+  else if (token._token == "<character>")
+  {
+    int character;
+    if (pig.getCharacter (character))
+    {
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = "intrinsic";
+      b->attribute ("expected", token._token);
+      b->attribute ("value", format ("{1}", character));
+      parseTree->addBranch (b);
+
+      if (_debug)
+        std::cout << "trace         [32mmatch[0m " << character << "\n";
       return true;
     }
   }
