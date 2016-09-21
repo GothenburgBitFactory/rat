@@ -7,7 +7,7 @@ project (rat)
 include (CXXSniffer)
 include (ExternalProject)
 
-set (PROJECT_VERSION "1.4.0")
+set (PROJECT_VERSION "1.0.0")
 
 set (PACKAGE "${PROJECT_NAME}")
 set (VERSION "${PROJECT_VERSION}")
