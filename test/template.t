@@ -63,7 +63,7 @@ class TestBugNumber(TestCase):
         """Executed before each test in the class"""
         # Used to initialize objects that should be re-initialized or
         # re-created for each individual test
-        self.t = Clog()
+        self.t = Rat()
 
     def test_foo(self):
         """Test foo"""
