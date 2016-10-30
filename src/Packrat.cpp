@@ -202,7 +202,6 @@ bool Packrat::matchTokenLookahead (
     pig.restoreTo (checkpoint);
   }
 
-  throw std::string ("This should never happen.");
   return false;
 }
 
