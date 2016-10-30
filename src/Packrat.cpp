@@ -57,7 +57,7 @@ void Packrat::parse (const PEG& peg, const std::string& input)
     throw std::string ("Parse failed.");
 
   if (! pig.eos ())
-    throw format ("Parse failed - extra characters at position {1}.", pig.cursor ());
+    throw format ("Parse failed - extra character at position {1}.", pig.cursor ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
