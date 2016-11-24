@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (3);
+  UnitTest t (4);
 
   // Grammar with no input.
   try
@@ -59,6 +59,15 @@ int main (int, char**)
     t.fail ("PEG: Grammar with undefined reference");
   }
   catch (const std::string& e) { t.is (e, "Definition 'that' referenced, but not defined.", "PEG: Grammar with undefined reference"); }
+
+  // Grammar with left recursion.
+  try
+  {
+    PEG p;
+    p.loadFromString ("this: this");
+    t.fail ("PEG: Grammar with left recursion");
+  }
+  catch (const std::string& e) { t.is (e, "Definition 'this' is left recursive.", "PEG: Grammar with left recursion"); }
 
   return 0;
 }
