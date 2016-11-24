@@ -91,7 +91,7 @@ void PEG::loadFromString (const std::string& input)
       continue;
 
     // Eliminate inline comments.
-    std::string::size_type hash = line.find ('#');
+    auto hash = line.find ('#');
     if (hash != std::string::npos)
       line.resize (hash);
 
@@ -145,8 +145,8 @@ void PEG::loadFromString (const std::string& input)
           std::string::size_type start = 0;
           std::string::size_type end = token.length ();
 
-          Token::Quantifier q = Token::Quantifier::one;
-          Token::Lookahead l = Token::Lookahead::none;
+          auto q = Token::Quantifier::one;
+          auto l = Token::Lookahead::none;
 
           if (token.back () == '?')
           {

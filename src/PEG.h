@@ -44,13 +44,13 @@ public:
     bool hasTag (const std::string& tag) const { return _tags.find (tag) != _tags.end (); };
     std::string dump () const;
 
-    enum class Quantifier { one, zero_or_one, one_or_more, zero_or_more };
-    enum class Lookahead  { none, positive, negative };
+    enum class Quantifier                      { one, zero_or_one, one_or_more, zero_or_more };
+    enum class Lookahead                       { none, positive, negative };
 
-    std::string _token           {};
-    std::set <std::string> _tags {};
-    Quantifier  _quantifier      {Quantifier::one};
-    Lookahead   _lookahead       {Lookahead::none};
+    std::string _token                         {};
+    std::set <std::string> _tags               {};
+    Quantifier  _quantifier                    {Quantifier::one};
+    Lookahead   _lookahead                     {Lookahead::none};
     // TODO Added Lexer::Type support, which allows the PEG to specify
     //      "<Lexer::Type>" as a built-in type.
   };
@@ -77,9 +77,9 @@ private:
 private:
   //        rule name    rule
   //        |            |
-  std::map <std::string, PEG::Rule> _rules {};
-  std::string                       _start {};
-  bool                              _debug {false};
+  std::map <std::string, PEG::Rule> _rules     {};
+  std::string                       _start     {};
+  bool                              _debug     {false};
 };
 
 #endif
