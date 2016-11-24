@@ -8,7 +8,8 @@ set (rat_SRCS rat.cpp
               Packrat.cpp Packrat.h
               PEG.cpp     PEG.h)
 
-set (libshared_SRCS libshared/src/Datetime.cpp      libshared/src/Datetime.h
+set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
+                    libshared/src/Datetime.cpp      libshared/src/Datetime.h
                     libshared/src/Duration.cpp      libshared/src/Duration.h
                     libshared/src/FS.cpp            libshared/src/FS.h
                     libshared/src/Lexer.cpp         libshared/src/Lexer.h

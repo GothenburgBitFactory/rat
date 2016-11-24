@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <PEG.h>
 #include <Packrat.h>
+#include <Args.h>
 #include <FS.h>
 #include <cstdio>
 #include <cstring>
@@ -47,76 +48,47 @@ void usage ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int main (int argc, char** argv)
+int main (int argc, const char* argv[])
 {
   int status = 0;
 
   // Process command line arguments
-  std::string grammarFile = "";
-  std::string commandLine = "";
-  bool debug = false;
+  Args args;
+  args.addOption ("help",    false);
+  args.addOption ("version", false);
+  args.addOption ("debug",   false);
+  args.scan (argc, argv);
 
-  for (int i = 1; i < argc; ++i)
+  if (args.getOption ("help"))
+    usage ();
+
+  if (args.getOption ("version"))
   {
-    if (argv[i][0] == '-')
-    {
-      if (!strcmp (argv[i], "-h") ||
-          !strcmp (argv[i], "--help"))
-      {
-        usage ();
-      }
-      else if (!strcmp (argv[i], "-d") ||
-               !strcmp (argv[i], "--debug"))
-      {
-        debug = true;
-      }
-      else if (!strcmp (argv[i], "-v") ||
-               !strcmp (argv[i], "--version"))
-      {
-        std::cout << VERSION << '\n';
-        exit (0);
-      }
-      else
-      {
-        std::cout << "Unrecognized option '" << argv[i] << "'" << std::endl;
-        usage ();
-      }
-    }
-    else if (grammarFile == "")
-    {
-      grammarFile = argv[i];
-    }
-    else
-    {
-      if (commandLine != "")
-        commandLine += " ";
-
-      commandLine += std::string (argv[i]);
-    }
+    std::cout << VERSION << '\n';
+    exit (0);
   }
 
-  // Display usage for incorrect command line.
-  if (grammarFile == "")
+  if (args.getPositionalCount () < 2)
     usage ();
 
   try
   {
     // Read the grammar file.
-    std::string contents;
-    File (grammarFile).read (contents);
+    std::string grammar;
+    File (args.getPositional (0)).read (grammar);
 
     // Parse the grammar.
     PEG peg;
-    peg.debug (debug);
-    peg.loadFromString (contents);
+    peg.debug (args.getOption ("debug"));
+    peg.loadFromString (grammar);
 
     // Test commandLine against grammar.
-    if (commandLine != "")
+    for (int i = 1; i < args.getPositionalCount (); i++)
     {
       // Create the parser.
       Packrat packrat;
-      packrat.debug (debug);
-      packrat.parse (peg, commandLine);
+      packrat.debug (args.getOption ("debug"));
+      packrat.parse (peg, args.getPositional (i));
       std::cout << packrat.dump ();
 
       // TODO Ready for eval.
