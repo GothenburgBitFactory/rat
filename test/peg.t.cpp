@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (5);
+  UnitTest t (39);
 
   // Grammar with no input.
   try
@@ -77,6 +77,58 @@ int main (int, char**)
     t.fail ("PEG: Grammar with unreferenced definition");
   }
   catch (const std::string& e) { t.is (e, "Definition 'other' is defined, but not referenced.", "PEG: Grammar with unreferenced definition"); }
+
+  // Grammar with unsupported intrinsic.
+  try
+  {
+    PEG p;
+    p.loadFromString ("this: <thing>");
+    t.fail ("PEG: Grammar with unsupported intrinsic");
+  }
+  catch (const std::string& e) { t.is (e, "Specified intrinsic '<thing>' is not supported.", "PEG: Grammar with unsupported intrinsic"); }
+
+  // Grammar that is valid.
+  PEG p;
+  p.loadFromString ("this: that+\nthat: other?\nother: a* a &a a !a\na: 'a'");
+  //t.diag (p.dump ());
+  t.is (p.firstRule (), "this", "PEG: firstRule found");
+
+  auto rules = p.syntax ();
+  t.is (rules["this"][0][0]._token,  "that",                                       "PEG: this: that");
+  t.ok (rules["this"][0][0]._quantifier == PEG::Token::Quantifier::one_or_more,    "PEG: this: that quantifier one_or_more");
+  t.ok (rules["this"][0][0]._lookahead == PEG::Token::Lookahead::none,             "PEG: this: that lookahead none");
+  t.ok (rules["this"][0][0]._tags == std::set <std::string> {},                    "PEG: this: that tags {}");
+
+  t.is (rules["that"][0][0]._token,  "other",                                      "PEG: that: other");
+  t.ok (rules["that"][0][0]._quantifier == PEG::Token::Quantifier::zero_or_one,    "PEG: that: other quantifier zero_or_one");
+  t.ok (rules["that"][0][0]._lookahead == PEG::Token::Lookahead::none,             "PEG: that: other lookahead none");
+  t.ok (rules["that"][0][0]._tags == std::set <std::string> {},                    "PEG: that: other tags {}");
+
+  t.is (rules["other"][0][0]._token, "a",                                          "PEG: other: a");
+  t.ok (rules["other"][0][0]._quantifier == PEG::Token::Quantifier::zero_or_more,  "PEG: other: a quantifier zero_or_more");
+  t.ok (rules["other"][0][0]._lookahead == PEG::Token::Lookahead::none,            "PEG: other: a lookahead none");
+  t.ok (rules["other"][0][0]._tags == std::set <std::string> {},                   "PEG: other: a tags {}");
+  t.is (rules["other"][0][1]._token, "a",                                          "PEG: other: a");
+  t.ok (rules["other"][0][1]._quantifier == PEG::Token::Quantifier::one,           "PEG: other: a quantifier one");
+  t.ok (rules["other"][0][1]._lookahead == PEG::Token::Lookahead::none,            "PEG: other: a lookahead none");
+  t.ok (rules["other"][0][1]._tags == std::set <std::string> {},                   "PEG: other: a tags {}");
+  t.is (rules["other"][0][2]._token, "a",                                          "PEG: other: a");
+  t.ok (rules["other"][0][2]._quantifier == PEG::Token::Quantifier::one,           "PEG: other: a quantifier one");
+  t.ok (rules["other"][0][2]._lookahead == PEG::Token::Lookahead::positive,        "PEG: other: a lookahead positive");
+  t.ok (rules["other"][0][2]._tags == std::set <std::string> {},                   "PEG: other: a tags {}");
+  t.is (rules["other"][0][3]._token, "a",                                          "PEG: other: a");
+  t.ok (rules["other"][0][3]._quantifier == PEG::Token::Quantifier::one,           "PEG: other: a quantifier one");
+  t.ok (rules["other"][0][3]._lookahead == PEG::Token::Lookahead::none,            "PEG: other: a lookahead none");
+  t.ok (rules["other"][0][3]._tags == std::set <std::string> {},                   "PEG: other: a tags {}");
+  t.is (rules["other"][0][4]._token, "a",                                          "PEG: other: a");
+  t.ok (rules["other"][0][4]._quantifier == PEG::Token::Quantifier::one,           "PEG: other: a quantifier one");
+  t.ok (rules["other"][0][4]._lookahead == PEG::Token::Lookahead::negative,        "PEG: other: a lookahead negative");
+  t.ok (rules["other"][0][4]._tags == std::set <std::string> {},                   "PEG: other: a tags {}");
+
+  t.is (rules["a"][0][0]._token,     "'a'",                                        "PEG: a: 'a'");
+  t.ok (rules["a"][0][0]._quantifier == PEG::Token::Quantifier::one,               "PEG: a: 'a' quantifier one");
+  t.ok (rules["a"][0][0]._lookahead == PEG::Token::Lookahead::none,                "PEG: a: 'a' lookahead none");
+  t.ok (rules["a"][0][0]._tags == std::set <std::string> {"character", "literal"}, "PEG: a: 'a' tags {}");
 
   return 0;
 }
