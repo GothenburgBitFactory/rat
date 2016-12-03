@@ -36,14 +36,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 void usage ()
 {
-  std::cout << "\n"
+  std::cout << '\n'
             << "Usage: rat [options] <grammar> [<args>]\n"
-            << "\n"
+            << '\n'
             << "Options are:\n"
             << "  -v/--version    Version number\n"
             << "  -h/--help       Command usage\n"
             << "  -d/--debug      Debug mode\n"
-            << "\n";
+            << '\n';
   exit (0);
 }
 
