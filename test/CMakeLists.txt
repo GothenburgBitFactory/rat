@@ -11,7 +11,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 include_directories (${CMAKE_INSTALL_PREFIX}/include)
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
-set (test_SRCS intrinsic.t negative.t peg.t)
+set (test_SRCS intrinsic.t negative.t peg.t positive.t)
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS}
