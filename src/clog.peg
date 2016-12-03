@@ -1,0 +1,75 @@
+# ./rat -d clog.peg 'default rule /foo/ --> match bold red on grey20'
+
+# Grammar for the Clog rule file.
+# When complete, clog.cpp/src/Rule.* can be updated.
+
+Rules:        Directive+
+
+Directive:    Include
+              Rule
+
+Include:      "include" Path
+
+Path:         '/' Word
+              '~' Word
+
+Rule:         Section Name Trigger "-->" Response+
+
+Section:      Word
+
+Name:         Word
+
+Trigger:      Regex
+              String
+
+Regex:        '/' Word '/'
+
+String:       '"' Word '"'
+
+Word:         <character>+
+
+Response:     Action
+              Color
+
+Action:       "line"
+              "match"
+              "blank"
+              "suppress"
+
+# libshared.git Color
+Color:        Color_FG "on" Color_BG
+              Color_FG
+              "on" Color_BG
+
+Color_FG:     Color_FG_Att* Color_16
+              Color_256
+              Color_RGB
+              Color_Grey
+
+Color_BG:     Color_BG_Att? Color_16
+              Color_256
+              Color_RGB
+              Color_Grey
+
+Color_FG_Att: "bold"
+              "underline"
+
+Color_BG_Att: "bright"
+
+Color_16:     "black"
+              "red"
+              "blue"
+              "green"
+              "yellow"
+              "magenta"
+              "cyan"
+              "white"
+              "inverse"
+
+Color_256:    "color" <digit>+
+
+Color_RGB:    "rgb" <digit> <digit> <digit>
+
+Color_Grey:   "gray" <digit>+
+              "grey" <digit>+
+
