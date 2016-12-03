@@ -1,0 +1,19 @@
+# ./rat -d timewarrior.peg 'start yesterday foo bar :hint'
+
+# Grammar for the Timewarrior command line.
+# When complete, timew.git/src/CLI.* can be replaced.
+
+CLI: Command Range? Tag* Hint*
+
+Command: "start"
+         "stop"
+
+Range:   "date_from" "-"  "date_to"
+         "date_from" "to" "date_to"
+
+Tag:     Word+
+
+Word:    <character>+
+
+Hint:   ":yes"
+
