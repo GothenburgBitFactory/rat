@@ -4,6 +4,7 @@ charliteral.t
 intrinsic.t
 negative.t
 peg.t
+plus.t
 positive.t
 question.t
 stringliteral.t
