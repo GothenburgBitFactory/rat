@@ -5,3 +5,4 @@ intrinsic.t
 negative.t
 peg.t
 positive.t
+stringliteral.t
