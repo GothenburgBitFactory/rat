@@ -37,32 +37,32 @@ int main (int, char**)
   // Grammar that is valid.
   PEG peg;
   peg.loadFromString ("thing: \"abc\"");
-  t.is (peg.firstRule (), "thing",                                          "intrinsic: firstRule found");
+  t.is (peg.firstRule (), "thing",                                          "stringliteral: firstRule found");
 
   auto rules = peg.syntax ();
-  t.is (rules["thing"][0][0]._token,  "\"abc\"",                            "intrinsic: thing: 'abc'");
-  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "intrinsic: thing: 'abc' quantifier one");
-  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "intrinsic: thing: 'abc' lookahead none");
+  t.is (rules["thing"][0][0]._token,  "\"abc\"",                            "stringliteral: thing: 'abc'");
+  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "stringliteral: thing: 'abc' quantifier one");
+  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "stringliteral: thing: 'abc' lookahead none");
   t.ok (rules["thing"][0][0]._tags == std::set <std::string> {"string", "literal"},
-                                                                            "intrinsic: thing: 'abc' tags {'string', 'literal'}");
+                                                                            "stringliteral: thing: 'abc' tags {'string', 'literal'}");
 
   // 'abc' is valid.
   try
   {
     Packrat rat;
     rat.parse (peg, "abc");
-    t.pass ("intrinsic: 'abc' valid");
+    t.pass ("stringliteral: 'abc' valid");
   }
-  catch (const std::string& e) { t.fail ("intrinsic: 'abc' " + e); }
+  catch (const std::string& e) { t.fail ("stringliteral: 'abc' " + e); }
 
   // 'def' is not valid.
   try
   {
     Packrat rat;
     rat.parse (peg, "def");  // Expected to fail.
-    t.fail ("intrinsic: 'def' not valid");
+    t.fail ("stringliteral: 'def' not valid");
   }
-  catch (const std::string& e) { t.pass ("intrinsic: 'def' " + e); }
+  catch (const std::string& e) { t.pass ("stringliteral: 'def' " + e); }
 
   return 0;
 }

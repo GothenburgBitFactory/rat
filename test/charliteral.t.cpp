@@ -37,32 +37,32 @@ int main (int, char**)
   // Grammar that is valid.
   PEG peg;
   peg.loadFromString ("thing: 'a'");
-  t.is (peg.firstRule (), "thing",                                          "intrinsic: firstRule found");
+  t.is (peg.firstRule (), "thing",                                          "charliteral: firstRule found");
 
   auto rules = peg.syntax ();
-  t.is (rules["thing"][0][0]._token,  "'a'",                                "intrinsic: thing: 'a'");
-  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "intrinsic: thing: 'a' quantifier one");
-  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "intrinsic: thing: 'a' lookahead none");
+  t.is (rules["thing"][0][0]._token,  "'a'",                                "charliteral: thing: 'a'");
+  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "charliteral: thing: 'a' quantifier one");
+  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "charliteral: thing: 'a' lookahead none");
   t.ok (rules["thing"][0][0]._tags == std::set <std::string> {"character", "literal"},
-                                                                            "intrinsic: thing: 'a' tags {'character', 'literal'}");
+                                                                            "charliteral: thing: 'a' tags {'character', 'literal'}");
 
   // 'a' is valid.
   try
   {
     Packrat rat;
     rat.parse (peg, "a");
-    t.pass ("intrinsic: 'a' valid");
+    t.pass ("charliteral: 'a' valid");
   }
-  catch (const std::string& e) { t.fail ("intrinsic: 'a' " + e); }
+  catch (const std::string& e) { t.fail ("charliteral: 'a' " + e); }
 
   // 'b' is not valid.
   try
   {
     Packrat rat;
     rat.parse (peg, "b");  // Expected to fail.
-    t.fail ("intrinsic: 'b' not valid");
+    t.fail ("charliteral: 'b' not valid");
   }
-  catch (const std::string& e) { t.pass ("intrinsic: 'b' " + e); }
+  catch (const std::string& e) { t.pass ("charliteral: 'b' " + e); }
 
   return 0;
 }
