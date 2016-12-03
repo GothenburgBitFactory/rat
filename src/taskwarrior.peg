@@ -3,33 +3,33 @@
 # Grammar for the Taskwarrior command line.
 # When complete, task.git/src/CLI.* can be replaced.
 
-CLI:             Filter? Command? Modification?
+CLI:                 Filter? Command? Modification?
 
-Filter:          Filter_Term+
+Filter:              Filter_Term+
 
-Filter_Term:     ID
-#                 UUID
-                 Pair
+Filter_Term:         ID
+#                     UUID
+                     Pair
 
-Command:         "next"
-                 "list"
-                 "add"
-                 "modify"
-                 Extension
+Command:             "next"
+                     "list"
+                     "add"
+                     "modify"
+                     Extension
 
-Modification:    Mod_Term+
+Modification:        Mod_Term+
 
-Mod_Term:        Pair
-                 <character>+
+Mod_Term:            Pair
+                     <character>+
 
-ID:              <digit>+
+ID:                  <digit>+
 
-#UUID:            <xdigit> <xdigit> <xdigit>
+#UUID:                <xdigit> <xdigit> <xdigit>
 
-Pair:            Attribute ':' Expression
+Pair:                Attribute ':' Expression
 
-Attribute:       Read_Only_Attribute
-                 Writable_Attribute
+Attribute:           Read_Only_Attribute
+                     Writable_Attribute
 
 Read_Only_Attribute: "id"
                      "uuid"
@@ -39,13 +39,13 @@ Writable_Attribute:  "status"
                      "project"
                      UDA
 
-UDA:             "priority"
-                 <entity:uda>
+UDA:                 "priority"
+                     <entity:uda>
 
-Extension:       <entity:extension>
+Extension:           <entity:extension>
 
-Expression:      Expression_Term+
+Expression:          Expression_Term+
 
-Expression_Term: Word
+Expression_Term:     Word
 
-Word:            <character>+
+Word:                <character>+
