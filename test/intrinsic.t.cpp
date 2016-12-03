@@ -37,18 +37,18 @@ int main (int, char**)
   // Grammar that is valid.
   PEG peg;
   peg.loadFromString ("thing: <character> <digit>");
-  t.is (peg.firstRule (), "thing", "PEG: firstRule found");
+  t.is (peg.firstRule (), "thing",                                          "intrinsic: firstRule found");
 
   auto rules = peg.syntax ();
-  t.is (rules["thing"][0][0]._token,  "<character>",                                "PEG: thing: <character>");
-  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,            "PEG: thing: <character> quantifier one");
-  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,             "PEG: thing: <character> lookahead none");
-  t.ok (rules["thing"][0][0]._tags == std::set <std::string> {"intrinsic"},         "PEG: thing: <character> tags {'intrinsic'}");
+  t.is (rules["thing"][0][0]._token,  "<character>",                        "intrinsic: thing: <character>");
+  t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "intrinsic: thing: <character> quantifier one");
+  t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "intrinsic: thing: <character> lookahead none");
+  t.ok (rules["thing"][0][0]._tags == std::set <std::string> {"intrinsic"}, "intrinsic: thing: <character> tags {'intrinsic'}");
 
-  t.is (rules["thing"][0][1]._token,  "<digit>",                                    "PEG: thing: <digit>");
-  t.ok (rules["thing"][0][1]._quantifier == PEG::Token::Quantifier::one,            "PEG: thing: <digit> quantifier one");
-  t.ok (rules["thing"][0][1]._lookahead == PEG::Token::Lookahead::none,             "PEG: thing: <digit> lookahead none");
-  t.ok (rules["thing"][0][1]._tags == std::set <std::string> {"intrinsic"},         "PEG: thing: <digit> tags {'intrinsic'}");
+  t.is (rules["thing"][0][1]._token,  "<digit>",                            "intrinsic: thing: <digit>");
+  t.ok (rules["thing"][0][1]._quantifier == PEG::Token::Quantifier::one,    "intrinsic: thing: <digit> quantifier one");
+  t.ok (rules["thing"][0][1]._lookahead == PEG::Token::Lookahead::none,     "intrinsic: thing: <digit> lookahead none");
+  t.ok (rules["thing"][0][1]._tags == std::set <std::string> {"intrinsic"}, "intrinsic: thing: <digit> tags {'intrinsic'}");
 
   // '12' is valid.
   try
