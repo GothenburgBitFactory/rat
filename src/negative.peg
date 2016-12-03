@@ -1,6 +1,0 @@
-# ./rat -d negative.peg 'ac'
-
-thing: a !b c
-a: 'a'
-b: 'b'
-c: 'c'

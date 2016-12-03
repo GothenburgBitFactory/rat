@@ -1,4 +1,0 @@
-# ./rat -d star.peg aa
-
-thing: item*
-item: 'a'

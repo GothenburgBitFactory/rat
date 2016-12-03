@@ -1,4 +1,0 @@
-# ./rat -d plus.peg aa
-
-thing: item+
-item: 'a'

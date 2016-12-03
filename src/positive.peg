@@ -1,5 +1,0 @@
-# ./rat -d positive.peg 'ab'
-
-thing: a &b b
-a: 'a'
-b: 'b'

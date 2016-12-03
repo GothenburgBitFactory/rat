@@ -1,3 +1,0 @@
-# ./rat -d intrinsic.peg 12
-
-thing: <character> <digit>
