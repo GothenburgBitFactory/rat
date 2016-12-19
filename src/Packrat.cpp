@@ -26,9 +26,12 @@
 
 #include <cmake.h>
 #include <Packrat.h>
+#include <shared.h>
 #include <format.h>
 #include <utf8.h>
 #include <iostream>
+
+int Packrat::minimumMatchLength = 3;
 
 ////////////////////////////////////////////////////////////////////////////////
 void Packrat::debug (bool value)
@@ -58,6 +61,19 @@ void Packrat::parse (const PEG& peg, const std::string& input)
 
   if (! pig.eos ())
     throw format ("Parse failed - extra character at position {1}.", pig.cursor ());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Packrat::entity (const std::string& category, const std::string& name)
+{
+  // Walk the list of entities for category.
+  auto c = _entities.equal_range (category);
+  for (auto e = c.first; e != c.second; ++e)
+    if (e->second == name)
+      return;
+
+  // The category/name pair was not found, therefore add it.
+  _entities.insert (std::pair <std::string, std::string> (category, name));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -365,6 +381,39 @@ bool Packrat::matchStringLiteral (
   if (_debug)
     std::cout << "trace         [31mfail[0m " << token._token << "\n";
   pig.restoreTo (checkpoint);
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Search for 'value' in _entities category, return canonicalized value.
+bool Packrat::canonicalize (
+  std::string& canonicalized,
+  const std::string& category,
+  const std::string& value) const
+{
+  // Extract a list of entities for category.
+  std::vector <std::string> options;
+  auto c = _entities.equal_range (category);
+  for (auto e = c.first; e != c.second; ++e)
+  {
+    // Shortcut: if an exact match is found, success.
+    if (value == e->second)
+    {
+      canonicalized = value;
+      return true;
+    }
+
+    options.push_back (e->second);
+  }
+
+  // Match against the options, throw away results.
+  std::vector <std::string> matches;
+  if (autoComplete (value, options, matches, minimumMatchLength) == 1)
+  {
+    canonicalized = matches[0];
+    return true;
+  }
+
   return false;
 }
 
