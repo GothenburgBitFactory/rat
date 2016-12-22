@@ -333,6 +333,7 @@ void PEG::validate () const
     if (intrinsic != "<digit>" &&
         intrinsic != "<punct>" &&
         intrinsic != "<eol>"   &&
+        intrinsic != "<sep>"   &&
         intrinsic != "<character>")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
