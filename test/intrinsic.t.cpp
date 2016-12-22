@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (20);
+  UnitTest t (21);
 
   // Grammar that is valid.
   PEG peg1;
@@ -110,8 +110,10 @@ int main (int, char**)
   catch (const std::string& e) { t.pass ("intrinsic: '3' " + e); }
 
   // thing: <ws>
+  //        <alpha>
   PEG peg3;
-  peg3.loadFromString("thing: <ws>\n");
+  peg3.loadFromString("thing: <ws>\n"
+                      "       <alpha>\n");
   t.is (peg3.firstRule (), "thing", "intrinsic: firstRule found");
 
   try
@@ -133,10 +135,18 @@ int main (int, char**)
   try
   {
     Packrat rat;
-    rat.parse (peg3, "x");  // Expected to fail.
-    t.fail ("intrinsic: 'x' not valid");
+    rat.parse (peg3, "A");
+    t.pass ("intrinsic: 'A' valid");
   }
-  catch (const std::string& e) { t.pass ("intrinsic: 'x' " + e); }
+  catch (const std::string& e) { t.fail ("intrinsic: 'A' " + e); }
+
+  try
+  {
+    Packrat rat;
+    rat.parse (peg3, ",");  // Expected to fail.
+    t.fail ("intrinsic: ',' not valid");
+  }
+  catch (const std::string& e) { t.pass ("intrinsic: ',' " + e); }
 
   return 0;
 }
