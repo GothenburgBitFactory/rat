@@ -268,6 +268,7 @@ bool Packrat::matchToken (
 // Supports the following:
 //   <digit>      --> unicodeLatinDigit
 //   <character>  --> anything
+//   <alpha>      --> unicodeAlpha
 //   <punct>      --> unicodePunctuation
 //   <ws>         --> unicodeWhitespace
 //   <sep>        --> unicodeHorizontalWhitespace
@@ -321,6 +322,27 @@ bool Packrat::matchIntrinsic (
   {
     int character = pig.peek ();
     if (unicodePunctuation (character))
+    {
+      pig.skip (character);
+
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = "intrinsic";
+      b->attribute ("expected", token._token);
+      b->attribute ("value", format ("{1}", character));
+      parseTree->addBranch (b);
+
+      if (_debug)
+        std::cout << "trace         [32mmatch[0m " << character << "\n";
+      return true;
+    }
+  }
+
+  // <alpha>
+  else if (token._token == "<alpha>")
+  {
+    int character = pig.peek ();
+    if (unicodeAlpha (character))
     {
       pig.skip (character);
 

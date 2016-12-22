@@ -335,6 +335,7 @@ void PEG::validate () const
         intrinsic != "<eol>"   &&
         intrinsic != "<sep>"   &&
         intrinsic != "<ws>"    &&
+        intrinsic != "<alpha>" &&
         intrinsic != "<character>")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
