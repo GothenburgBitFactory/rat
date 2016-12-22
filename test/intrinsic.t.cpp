@@ -32,14 +32,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (11);
+  UnitTest t (14);
 
   // Grammar that is valid.
-  PEG peg;
-  peg.loadFromString ("thing: <character> <digit>");
-  t.is (peg.firstRule (), "thing",                                          "intrinsic: firstRule found");
+  PEG peg1;
+  peg1.loadFromString ("thing: <character> <digit>");
+  t.is (peg1.firstRule (), "thing",                                         "intrinsic: firstRule found");
 
-  auto rules = peg.syntax ();
+  auto rules = peg1.syntax ();
   t.is (rules["thing"][0][0]._token,  "<character>",                        "intrinsic: thing: <character>");
   t.ok (rules["thing"][0][0]._quantifier == PEG::Token::Quantifier::one,    "intrinsic: thing: <character> quantifier one");
   t.ok (rules["thing"][0][0]._lookahead == PEG::Token::Lookahead::none,     "intrinsic: thing: <character> lookahead none");
@@ -54,7 +54,7 @@ int main (int, char**)
   try
   {
     Packrat rat;
-    rat.parse (peg, "12");
+    rat.parse (peg1, "12");
     t.pass ("intrinsic: '12' valid");
   }
   catch (const std::string& e) { t.fail ("intrinsic: '12' " + e); }
@@ -63,10 +63,30 @@ int main (int, char**)
   try
   {
     Packrat rat;
-    rat.parse (peg, "1x");  // Expected to fail.
+    rat.parse (peg1, "1x");  // Expected to fail.
     t.fail ("intrinsic: '1x' not valid");
   }
   catch (const std::string& e) { t.pass ("intrinsic: '1x' " + e); }
+
+  PEG peg2;
+  peg2.loadFromString ("thing: <punct>\n");
+  t.is (peg2.firstRule (), "thing", "intrinsic: firstRule found");
+
+  try
+  {
+    Packrat rat;
+    rat.parse (peg2, ",");
+    t.pass ("intrinsic: ',' valid");
+  }
+  catch (const std::string& e) { t.fail ("intrinsic: ',' " + e); }
+
+  try
+  {
+    Packrat rat;
+    rat.parse (peg2, "3");
+    t.pass ("intrinsic: '3' not valid");
+  }
+  catch (const std::string& e) { t.pass ("intrinsic: '3' " + e); }
 
   return 0;
 }
