@@ -85,10 +85,18 @@ int main (int argc, const char* argv[])
     // Test commandLine against grammar.
     for (int i = 1; i < args.getPositionalCount (); i++)
     {
+      auto arg = args.getPositional (i);
+
+      // If the argument refers to an existing file, read it.
+      File input (arg);
+      if (input.exists () &&
+          input.readable ())
+        input.read (arg);
+
       // Create the parser.
       Packrat packrat;
       packrat.debug (args.getOption ("debug"));
-      packrat.parse (peg, args.getPositional (i));
+      packrat.parse (peg, arg);
       std::cout << packrat.dump ();
 
       // TODO Ready for eval.
