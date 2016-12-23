@@ -57,6 +57,10 @@ void PEG::loadFromFile (File& file)
 
   std::string contents;
   file.read (contents);
+
+  // TODO Instead of simply reading a file, read a file and allow lines that
+  //      match /^include <path>$/ to represent nested files.
+
   loadFromString (contents);
 }
 
