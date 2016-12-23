@@ -48,18 +48,15 @@ void Packrat::parse (const PEG& peg, const std::string& input)
   // Note there is only one rule at the top of the syntax tree, which was the
   // first one defined.
   _syntax = peg.syntax ();
-  auto first = peg.firstRule ();
+  _tree->_name = peg.firstRule ();
 
   // The pig that will be sent down the pipe.
   Pig pig (input);
   if (_debug)
     std::cout << "trace input " << pig.dump () << "\n";
 
-  // Name the root node.
-  _tree->_name = "Root";
-
   // Match the first rule.  Recursion does the rest.
-  if (! matchRule (first, pig, _tree, 0))
+  if (! matchRule (_tree->_name, pig, _tree, 0))
     throw std::string ("Parse failed.");
 
   if (! pig.eos ())
