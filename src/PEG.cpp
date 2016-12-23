@@ -76,12 +76,9 @@ void PEG::loadFromFile (File& file)
 // - Blank lines delineate rules.
 //
 // Details:
-// - Literals are always double-quoted.
-// - "*", "+" and "?" suffixes have POSIX semantics.
-// - "є" means empty set.
-// - Literal modifiers:
-//   - :a  Accept abbreviations
-//   - :i  Accept caseless match
+// - String literals are always double-quoted.
+// - Character literals are alをays single-quoted.
+// - "*", "+" and "?" suffixes have POSIX wildcard semantics.
 //
 void PEG::loadFromString (const std::string& input)
 {
@@ -312,8 +309,7 @@ void PEG::validate () const
   // Undefined value - these are definitions that appear in token, but are
   // not in _rules.
   for (const auto& nd : notDefined)
-    if (nd != "є")
-      throw format ("Definition '{1}' referenced, but not defined.", nd);
+    throw format ("Definition '{1}' referenced, but not defined.", nd);
 
   // Circular definitions - these are names in _rules that also appear as
   // the only token in any of the alternates for that definition.
@@ -321,10 +317,13 @@ void PEG::validate () const
     throw format ("Definition '{1}' is left recursive.", lr);
 
   for (const auto& r : allRules)
+    if (r[0] == '<')
+      throw format ("Definition '{1}' may not redefine an intrinsic.");
+
+  for (const auto& r : allRules)
     if (r[0] == '"' or
-        r[0] == '\'' or
-        r[0] == '<')
-      throw format ("Definition '{1}' must not be a literal or intrinsic.");
+        r[0] == '\'')
+      throw format ("Definition '{1}' may not be a literal.");
 
   // Unused definitions - these are names in _rules that are never
   // referenced as token.
