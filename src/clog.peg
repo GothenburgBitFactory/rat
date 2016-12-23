@@ -8,16 +8,14 @@ Rules:        Directive+
 Directive:    Include
               Rule
 
-Include:      "include" Path
+Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
 
 Path:         '/' Word
               '~' Word
 
-Rule:         Section Name Trigger "-->" Response+
+Rule:         <sep>* Section <sep>+ "rule" <sep>+ Trigger <sep>* "-->" <sep>* Response <sep>* <eol>*
 
 Section:      Word
-
-Name:         Word
 
 Trigger:      Regex
               String
@@ -26,9 +24,11 @@ Regex:        '/' Word '/'
 
 String:       '"' Word '"'
 
-Word:         <character>+
+Word:         <alpha>+
 
-Response:     Action
+Response:     Action <sep>+ Color
+              Action
+              Color <sep>+ Action
               Color
 
 Action:       "line"
@@ -36,40 +36,44 @@ Action:       "line"
               "blank"
               "suppress"
 
-# libshared.git Color
-Color:        Color_FG "on" Color_BG
-              Color_FG
-              "on" Color_BG
 
-Color_FG:     Color_FG_Att* Color_16
-              Color_256
-              Color_RGB
-              Color_Grey
+# color.peg
+Color:           Color_FG <sep>* "on" <sep>+ Color_BG
+                 Color_FG
+                 "on" <sep>+ Color_BG
 
-Color_BG:     Color_BG_Att? Color_16
-              Color_256
-              Color_RGB
-              Color_Grey
 
-Color_FG_Att: "bold"
-              "underline"
+Color_FG:        Color_bold? Color_underline? Color_16
+                 Color_underline? Color_bold? Color_16
+                 Color_underline? Color_256
+                 Color_underline? Color_RGB
+                 Color_underline? Color_Grey
 
-Color_BG_Att: "bright"
+Color_BG:        Color_bright? Color_16
+                 Color_256
+                 Color_RGB
+                 Color_Grey
 
-Color_16:     "black"
-              "red"
-              "blue"
-              "green"
-              "yellow"
-              "magenta"
-              "cyan"
-              "white"
-              "inverse"
+Color_bold:      "bold" <sep>*
 
-Color_256:    "color" <digit>+
+Color_underline: "underline" <sep>*
 
-Color_RGB:    "rgb" <digit> <digit> <digit>
+Color_bright:    "bright" <sep>*
 
-Color_Grey:   "gray" <digit>+
-              "grey" <digit>+
+Color_16:        "black"
+                 "red"
+                 "blue"
+                 "green"
+                 "yellow"
+                 "magenta"
+                 "cyan"
+                 "white"
+                 "inverse"
+
+Color_256:       "color" <digit>+
+
+Color_RGB:       "rgb" <digit> <digit> <digit>
+
+Color_Grey:      "gray" <digit>+
+                 "grey" <digit>+
 

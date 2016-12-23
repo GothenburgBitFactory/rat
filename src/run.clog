@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./rat -d clog.peg 'default rule "foo" --> suppress
+default rule /foo/ --> red line
+'
+
