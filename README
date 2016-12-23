@@ -1,6 +1,98 @@
 What is rat?
 =============
 
-Rat is a packrat parser that uses a TPDL-like grammar.
+Rat is a packrat parser that uses a TPDL-like grammar. There are two components
+involved: PEG and Packrat. PEG is responsible for loading and validating the
+grammar file. Packrat uses the syntax defined by the grammar to parse input.
+
+
+Grammar Syntax
+--------------
+
+The grammar syntax is a text file which may contain comments that begin with
+the '#' character:
+
+   # This is a comment
+
+A valid grammar defines at least one rule, contains no undefined rules, no
+defined but unreferenced rules, and no left-recursion. The first rule defined
+is the top-level or entry rule, and represents the entire syntax. Here is a
+typical first rule:
+
+   first: "this"
+          "that"
+
+There are several syntactical elements here. The rule name is followed by a
+colon, which makes this a rule definition. Everything between the colon and the
+next blank line is the rule definition. This rule is named "first", and contains
+two alternate productions, each of which is a string literal ("this" and "that")
+followed by a blank line which terminates the definition.
+
+String literals always use double quotes. Character literals use single quotes,
+and the above could also be represented by the more verbose and less efficient:
+
+   first: 't' 'h' 'i' 's'
+          't' 'h' 'a' 't'
+
+The indentation of the second line is only important in that it is not aligned
+at the left margin.
+
+Any unquoted word represents a grammar rule that must be defined. A rule may be
+followed by a quantifier, either '?', '+' or '*'. These correspond to the POSIX
+wildcard semantics of zero-or-one, one-or-more, and zero-or-more matches. Here
+is a grammar defining positive integers:
+
+   positive_integer: sign? digit+
+
+   sign:  '+'
+          '-'
+
+   digit: '0'
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8'
+          '9'
+
+Note the blank line between definitions, and only one production per line. Note
+that 'sign' and 'digit' are leaf nodes, which contain no other rule references.
+
+There are several built-in categories of character/token named intrinsics, and
+these may be used to simplїfy grammar and speed parsing. The example above can
+use the <digit> intrinsic:
+
+   positive_integer: sign? <digit>+
+
+   sign: '+'
+         '-'
+
+Supported intrinsics are:
+
+   <digit>           Numeric digits: 0, 1, 2, 3 ... 9
+   <punct>           Punctuation: . , ; : ' " ! ? etc
+   <alpha>           Any single character that is printable, and not punctuation
+                     or whitespace
+   <character>       Any one character
+   <ws>              Any single white space character
+   <sep>             Horizontal whitespace only
+   <eol>             Vertical whitespace only
+   <word>            Any consecutive string of non-whitespace
+
+
+How to Construct a Grammar
+--------------------------
+
+A grammar is a tree structure. The easiest way to construct that tree is one
+branch at a time. Start by defining the first rule which references a leaf node
+and add to that. Test the syntax at every step by running something like this:
+
+   $ ./rat -d integer.peg '-23'
+
+This will load the grammar in the integer.peg file, and if valid, will attempt
+to parse the input '-23' against that grammar.
 
 ---
