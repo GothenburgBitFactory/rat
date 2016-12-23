@@ -334,13 +334,14 @@ void PEG::validate () const
 
   // Intrinsics must be recognized.
   for (auto& intrinsic : intrinsics)
-    if (intrinsic != "<digit>" &&
-        intrinsic != "<punct>" &&
-        intrinsic != "<eol>"   &&
-        intrinsic != "<sep>"   &&
-        intrinsic != "<ws>"    &&
-        intrinsic != "<alpha>" &&
-        intrinsic != "<character>")
+    if (intrinsic != "<digit>"     &&
+        intrinsic != "<punct>"     &&
+        intrinsic != "<eol>"       &&
+        intrinsic != "<sep>"       &&
+        intrinsic != "<ws>"        &&
+        intrinsic != "<alpha>"     &&
+        intrinsic != "<character>" &&
+        intrinsic != "<word>")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
 
