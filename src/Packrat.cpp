@@ -52,6 +52,8 @@ void Packrat::parse (const PEG& peg, const std::string& input)
 
   // The pig that will be sent down the pipe.
   Pig pig (input);
+  if (_debug)
+    std::cout << "trace input " << pig.dump () << "\n";
 
   // Name the root node.
   _tree->_name = "Root";
@@ -154,6 +156,8 @@ bool Packrat::matchTokenQuant (
   {
     // Check for a single match, succeed anyway.
     matchTokenLookahead (token, pig, parseTree, indent + 1);
+    if (_debug)
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch ?[0m " << token.dump () << "\n";
     return true;
   }
 
@@ -170,6 +174,8 @@ bool Packrat::matchTokenQuant (
       // "Forget it, he's rolling."
     }
 
+    if (_debug)
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch +[0m " << token.dump () << "\n";
     return true;
   }
 
@@ -182,6 +188,8 @@ bool Packrat::matchTokenQuant (
       // Let it go.
     }
 
+    if (_debug)
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch *[0m " << token.dump () << "\n";
     return true;
   }
 
