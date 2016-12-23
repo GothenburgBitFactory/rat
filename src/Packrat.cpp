@@ -197,6 +197,9 @@ bool Packrat::matchTokenLookahead (
   std::shared_ptr <Tree> parseTree,
   int indent)
 {
+  if (_debug)
+    std::cout << "trace " << std::string (indent, ' ') << "matchTokenLookahead " << token.dump () << "\n";
+
   if (token._lookahead == PEG::Token::Lookahead::none)
   {
     return matchToken (token, pig, parseTree, indent + 1);
@@ -233,6 +236,9 @@ bool Packrat::matchToken (
   std::shared_ptr <Tree> parseTree,
   int indent)
 {
+  if (_debug)
+    std::cout << "trace " << std::string (indent, ' ') << "matchToken " << token.dump () << "\n";
+
   auto checkpoint = pig.cursor ();
   auto b = std::make_shared <Tree> ();
 
