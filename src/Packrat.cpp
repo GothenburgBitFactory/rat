@@ -453,13 +453,20 @@ bool Packrat::matchIntrinsic (
     }
   }
 
-  // <word> consecutive non-<sep>.
+  // <word> consecutive non-<sep>, non-<punct>.
   else if (token._token == "<word>")
   {
-    std::string word {};
-    if (pig.getUntilWS (word) &&
-        word != "")
+    int character;
+    while (pig.getCharacter (character)    &&
+           ! unicodeWhitespace (character) &&
+           ! unicodePunctuation (character))
     {
+    }
+
+    if (pig.cursor () > checkpoint)
+    {
+      auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
+
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
       b->_name = "intrinsic";
