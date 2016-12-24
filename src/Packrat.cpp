@@ -154,7 +154,8 @@ bool Packrat::matchTokenQuant (
     // Check for a single match, succeed anyway.
     matchTokenLookahead (token, pig, parseTree, indent + 1);
     if (_debug)
-      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch ?[0m " << token.dump () << "\n";
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch ?[0m " << token.dump () << "\n"
+                << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
     return true;
   }
 
@@ -172,7 +173,8 @@ bool Packrat::matchTokenQuant (
     }
 
     if (_debug)
-      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch +[0m " << token.dump () << "\n";
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch +[0m " << token.dump () << "\n"
+                << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
     return true;
   }
 
@@ -186,7 +188,8 @@ bool Packrat::matchTokenQuant (
     }
 
     if (_debug)
-      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch *[0m " << token.dump () << "\n";
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch *[0m " << token.dump () << "\n"
+                << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
     return true;
   }
 
@@ -314,7 +317,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << digit << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << digit << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -333,7 +337,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -354,7 +359,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -375,7 +381,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -396,7 +403,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -417,7 +425,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -438,7 +447,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << character << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -458,7 +468,8 @@ bool Packrat::matchIntrinsic (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -495,7 +506,8 @@ bool Packrat::matchCharLiteral (
       parseTree->addBranch (b);
 
       if (_debug)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << token._token << "\n";
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << token._token << "\n"
+                  << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
       return true;
     }
   }
@@ -528,7 +540,8 @@ bool Packrat::matchStringLiteral (
     parseTree->addBranch (b);
 
     if (_debug)
-      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << literal << "\n";
+      std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << literal << "\n"
+                << "trace " << std::string (indent, ' ') << pig.dump () << "\n";
     return true;
   }
 
