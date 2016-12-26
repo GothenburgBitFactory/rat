@@ -79,7 +79,8 @@ int main (int argc, const char* argv[])
 
     // Parse the grammar.
     PEG peg;
-    peg.debug (args.getOption ("debug"));
+    if (args.getOption ("debug"))
+      peg.debug ();
     peg.loadFromString (grammar);
 
     // Test commandLine against grammar.

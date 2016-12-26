@@ -68,7 +68,7 @@ public:
   void loadFromString (const std::string&);
   std::map <std::string, PEG::Rule> syntax () const;
   std::string firstRule () const;
-  void debug (bool);
+  void debug ();
   std::string dump () const;
 
 private:
@@ -79,7 +79,7 @@ private:
   //        |            |
   std::map <std::string, PEG::Rule> _rules     {};
   std::string                       _start     {};
-  bool                              _debug     {false};
+  int                               _debug     {0};
 };
 
 #endif
