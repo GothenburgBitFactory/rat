@@ -1,0 +1,15 @@
+# ./rat -d duration.peg 'P1Y2M3DT4H5M6S'
+# libshared.git Duration
+
+Duration:        Duration_Char+
+
+Duration_Char:   <digit>
+                 '.'
+                 'P'
+                 'Y'
+                 'M'
+                 'D'
+                 'T'
+                 'H'
+                 'M'
+                 'S'

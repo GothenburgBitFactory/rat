@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./rat -d duration.peg 'P1Y2M3DT4H5M6S'
+
