@@ -79,7 +79,7 @@ int main (int argc, const char* argv[])
 
     // Parse the grammar.
     PEG peg;
-    if (args.getOption ("debug"))
+    for (auto i = 0; i < args.getOptionCount ("debug"); i++)
       peg.debug ();
     peg.loadFromString (grammar);
 
@@ -96,7 +96,7 @@ int main (int argc, const char* argv[])
 
       // Create the parser.
       Packrat packrat;
-      if (args.getOption ("debug"))
+      for (auto i = 0; i < args.getOptionCount ("debug"); i++)
         packrat.debug ();
       packrat.parse (peg, arg);
       std::cout << packrat.dump ();
