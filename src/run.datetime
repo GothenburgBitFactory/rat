@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./rat -d datetime.peg '2016-12-26T18:28:00Z'
+

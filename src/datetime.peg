@@ -1,0 +1,11 @@
+# ./rat -d datetime.peg '2016-12-27T18:28:00Z'
+# libshared.git Datetime
+
+Datetime:        Datetime_Char+
+
+Datetime_Char:   <digit>
+                 '-'
+                 'T'
+                 ':'
+                 'Z'
+
