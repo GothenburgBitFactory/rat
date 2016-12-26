@@ -466,11 +466,14 @@ bool Packrat::matchIntrinsic (
   // <word> consecutive non-<sep>, non-<punct>.
   else if (token._token == "<word>")
   {
-    int character;
-    while (pig.getCharacter (character)    &&
-           ! unicodeWhitespace (character) &&
-           ! unicodePunctuation (character))
+    while (auto character = pig.peek ())
     {
+      if (! character ||
+          unicodeWhitespace (character) ||
+          unicodePunctuation (character))
+        break;
+
+      pig.skip (character);
     }
 
     if (pig.cursor () > checkpoint)
