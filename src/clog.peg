@@ -10,21 +10,19 @@ Directive:    Include
 
 Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
 
-Path:         '/' Word
-              '~' Word
+Path:         '/' <token>
+              '~' <token>
 
 Rule:         <sep>* Section <sep>+ "rule" <sep>+ Trigger <sep>* "-->" <sep>* Response <sep>* <eol>*
 
-Section:      Word
+Section:      <word>
 
 Trigger:      Regex
               String
 
-Regex:        '/' Word '/'
+Regex:        '/' <word> '/'
 
-String:       '"' Word '"'
-
-Word:         <alpha>+
+String:       '"' <word> '"'
 
 Response:     Action <sep>+ Color
               Action
@@ -35,7 +33,6 @@ Action:       "line"
               "match"
               "blank"
               "suppress"
-
 
 # color.peg
 Color:           Color_FG <sep>* "on" <sep>+ Color_BG

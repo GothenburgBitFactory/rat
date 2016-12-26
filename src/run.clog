@@ -1,6 +1,11 @@
 #!/bin/bash
 
-./rat -d clog.peg 'default rule "foo" --> suppress
-default rule /foo/ --> red line
-'
+#./rat -d clog.peg 'default rule "foo" --> suppress'
 
+./rat -d clog.peg 'include /path/to/file
+
+default rule "foo" --> suppress
+default rule "foo" --> red line'
+
+# TODO The /foo/ is not currently parseable.
+#default rule /foo/ --> red line
