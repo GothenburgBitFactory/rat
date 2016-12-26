@@ -96,7 +96,8 @@ int main (int argc, const char* argv[])
 
       // Create the parser.
       Packrat packrat;
-      packrat.debug (args.getOption ("debug"));
+      if (args.getOption ("debug"))
+        packrat.debug ();
       packrat.parse (peg, arg);
       std::cout << packrat.dump ();
 
