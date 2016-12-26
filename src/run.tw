@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./rat -d tw.peg 'add This is a test pro:P +tag due:eom'
+
