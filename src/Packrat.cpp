@@ -296,6 +296,7 @@ bool Packrat::matchToken (
 //   <sep>        --> unicodeHorizontalWhitespace
 //   <eol>        --> unicodeVerticalWhitespace
 //   <word>       --> <alpha>
+//   <token>      --> consecutive non <ws>
 bool Packrat::matchIntrinsic (
   const PEG::Token& token,
   Pig& pig,
@@ -463,7 +464,7 @@ bool Packrat::matchIntrinsic (
     }
   }
 
-  // <word> consecutive non-<sep>, non-<punct>.
+  // <word> consecutive non-<ws>, non-<punct>.
   else if (token._token == "<word>")
   {
     while (auto character = pig.peek ())
@@ -471,6 +472,37 @@ bool Packrat::matchIntrinsic (
       if (! character ||
           unicodeWhitespace (character) ||
           unicodePunctuation (character))
+        break;
+
+      pig.skip (character);
+    }
+
+    if (pig.cursor () > checkpoint)
+    {
+      auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
+
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = "intrinsic";
+      b->attribute ("expected", token._token);
+      b->attribute ("value", word);
+      parseTree->addBranch (b);
+
+      if (_debug > 1)
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n";
+      if (_debug)
+        std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
+      return true;
+    }
+  }
+
+  // <token> consecutive non-<ws>.
+  else if (token._token == "<token>")
+  {
+    while (auto character = pig.peek ())
+    {
+      if (! character ||
+          unicodeWhitespace (character))
         break;
 
       pig.skip (character);

@@ -340,7 +340,8 @@ void PEG::validate () const
         intrinsic != "<ws>"        &&
         intrinsic != "<alpha>"     &&
         intrinsic != "<character>" &&
-        intrinsic != "<word>")
+        intrinsic != "<word>"      &&
+        intrinsic != "<token>")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
 

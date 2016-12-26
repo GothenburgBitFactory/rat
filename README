@@ -80,7 +80,8 @@ Supported intrinsics are:
    <ws>              Any single white space character
    <sep>             Horizontal whitespace only
    <eol>             Vertical whitespace only
-   <word>            Any consecutive string of non-whitespace
+   <word>            Any consecutive string of non-whitespace, non-punctuation
+   <token>           Any consecutive string of non-whitespace
 
 
 How to Construct a Grammar
