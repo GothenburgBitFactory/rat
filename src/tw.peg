@@ -15,7 +15,7 @@ Command:             "next"
                      "list"
                      "add"
                      "modify"
-                     Extension
+#                     Extension
 
 Modification:        Mod_Term+
 
@@ -30,6 +30,7 @@ Pair:                Attribute ':' Expression
 
 Attribute:           Read_Only_Attribute
                      Writable_Attribute
+                     Pseudo_Attribute
 
 Read_Only_Attribute: "id"
                      "uuid"
@@ -39,13 +40,14 @@ Writable_Attribute:  "status"
                      "project"
                      UDA
 
-UDA:                 "priority"
-                     <entity:uda>
+Pseudo_Attribute:    "limit"
 
-Extension:           <entity:extension>
+UDA:                 "priority"
+#                     <entity:uda>
+
+#Extension:           <entity:extension>
 
 Expression:          Expression_Term+
 
-Expression_Term:     Word
+Expression_Term:     <token>
 
-Word:                <character>+
