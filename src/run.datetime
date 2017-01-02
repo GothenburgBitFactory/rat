@@ -1,4 +1,12 @@
 #!/bin/bash
 
-./rat -d datetime.peg '2016-12-26T18:28:00Z'
+#./rat -d datetime.peg '2016-12-26T18:28:00Z'
+#./rat -d datetime.peg '2016-12-26T18:28:00+12:34'
+#./rat -d datetime.peg '2016-W50'
+#./rat -d datetime.peg '2016-366'
+
+#./rat -d datetime.peg '20161226T182800Z'
+#./rat -d datetime.peg '20161226T182800+1234'
+#./rat -d datetime.peg '2016W50'
+./rat -d datetime.peg '2016366'
 
