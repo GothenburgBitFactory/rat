@@ -5,7 +5,7 @@
 ./rat -d clog.peg 'include /path/to/file
 
 default rule "foo" --> suppress
-default rule "foo" --> red line'
+default rule "bar" --> red line'
 
 # TODO The /foo/ is not currently parseable.
 #default rule /foo/ --> red line
