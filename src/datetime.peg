@@ -51,8 +51,8 @@ Datetime_ISO_Date_Ext: Datetime_ISO_YYYY '-' Datetime_ISO_MM '-' Datetime_ISO_DD
 # YYYYMMDD
 # YYYYMM
 Datetime_ISO_Date: Datetime_ISO_YYYY 'W' Datetime_ISO_WW
-                   Datetime_ISO_YYYY Datetime_ISO_DDD
                    Datetime_ISO_YYYY Datetime_ISO_MM Datetime_ISO_DD?
+                   Datetime_ISO_YYYY Datetime_ISO_DDD
 
 Datetime_ISO_YYYY: <digit> <digit> <digit> <digit>
 
