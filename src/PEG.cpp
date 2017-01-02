@@ -87,17 +87,24 @@ void PEG::loadFromString (const std::string& input)
   // This is a state machine.  Read each line.
   for (auto& line : split (input, '\n'))
   {
-    // Skip whole-line comments, they have no semantics.
-    if (line[0] == '#')
-      continue;
+    line = trim (line);
 
     // Eliminate inline comments.
     auto hash = line.find ('#');
     if (hash != std::string::npos)
+    {
       line.resize (hash);
+      line = trim (line);
+
+      if (line == "")
+        continue;
+    }
+    else
+    {
+      line = trim (line);
+    }
 
     // Skip blank lines with no semantics.
-    line = Lexer::trim (line);
     if (line == "" and rule_name == "")
       continue;
 
