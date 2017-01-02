@@ -1,7 +1,7 @@
-# ./rat -d clog.peg 'default rule /foo/ --> match bold red on grey20'
+# ./rat -d clog.peg 'default rule "foo" --> match bold red on grey20'
 
 # Grammar for the Clog rule file.
-# When complete, clog.cpp/src/Rule.* can be updated.
+# When complete, clog.git/src/Rule.* can be updated.
 
 Rules:        Directive+
 
