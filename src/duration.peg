@@ -1,15 +1,126 @@
 # ./rat -d duration.peg 'P1Y2M3DT4H5M6S'
 # libshared.git Duration
 
-Duration:        Duration_Char+
+Duration: Duration_ISO_Week
+          Duration_ISO
+          Duration_Units
+          Duration_Seconds
 
-Duration_Char:   <digit>
-                 '.'
-                 'P'
-                 'Y'
-                 'M'
-                 'D'
-                 'T'
-                 'H'
-                 'M'
-                 'S'
+# At least three digits. Note: was > 60.
+Duration_Seconds: <digit> <digit> <digit>+
+
+# 'P' [nn 'Y'] [nn 'M'] [nn 'D'] ['T' [nn 'H'] [nn 'M'] [nn 'S']]
+Duration_ISO: 'P' Duration_ISO_Date? Duration_ISO_Time?
+
+Duration_ISO_Date: Duration_ISO_Year? Duration_ISO_Month? Duration_ISO_Day?
+
+Duration_ISO_Time: 'T' Duration_ISO_Hour? Duration_ISO_Minute? Duration_ISO_Second?
+
+Duration_ISO_Year:   Duration_Number 'Y'
+
+Duration_ISO_Month:  Duration_Number 'M'
+
+Duration_ISO_Day:    Duration_Number 'D'
+
+Duration_ISO_Hour:   Duration_Number 'H'
+
+Duration_ISO_Minute: Duration_Number 'M'
+
+Duration_ISO_Second: Duration_Number 'S'
+
+# 'P' [nn 'W']
+Duration_ISO_Week: 'P' Duration_Number 'W'
+
+Duration_Units:  Duration_Number Duration_Unit_Type
+                 Duration_Standalone_Unit_Type
+
+Duration_Standalone_Unit_Type: "annual"
+                               "biannual"
+                               "bimonthly"
+                               "biweekly"
+                               "biyearly"
+                               "daily"
+                               "day"
+                               "fortnight"
+                               "hour"
+                               "hr"
+                               "minute"
+                               "min"
+                               "monthly"
+                               "month"
+                               "mth"
+                               "mo"
+                               "quarterly"
+                               "quarter"
+                               "qrtr"
+                               "qtr"
+                               "semiannual"
+                               "second"
+                               "sec"
+                               "weekdays"
+                               "weekly"
+                               "week"
+                               "wk"
+                               "yearly"
+                               "year"
+                               "yr"
+
+Duration_Unit_Type: "annual"
+                    "biannual"
+                    "bimonthly"
+                    "biweekly"
+                    "biyearly"
+                    "daily"
+                    "days"
+                    "day"
+                    "d"
+                    "fortnight"
+                    "hours"
+                    "hour"
+                    "hrs"
+                    "hr"
+                    "h"
+                    "minutes"
+                    "minute"
+                    "mins"
+                    "min"
+                    "monthly"
+                    "months"
+                    "month"
+                    "mnths"
+                    "mths"
+                    "mth"
+                    "mos"
+                    "mo"
+                    "m"
+                    "quarterly"
+                    "quarters"
+                    "quarter"
+                    "qrtrs"
+                    "qrtr"
+                    "qtrs"
+                    "qtr"
+                    "q"
+                    "semiannual"
+                    "sennight"
+                    "seconds"
+                    "second"
+                    "secs"
+                    "sec"
+                    "s"
+                    "weekdays"
+                    "weekly"
+                    "weeks"
+                    "week"
+                    "wks"
+                    "wk"
+                    "w"
+                    "yearly"
+                    "years"
+                    "year"
+                    "yrs"
+                    "yr"
+                    "y"
+
+Duration_Number:    <digit>+ '.' <digit>+
+                    <digit>+

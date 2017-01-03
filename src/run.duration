@@ -1,4 +1,7 @@
 #!/bin/bash
 
-./rat -d duration.peg 'P1Y2M3DT4H5M6S'
+#./rat -d duration.peg '12345'
+#./rat -d duration.peg 'P1Y2M3DT4H5M6S'
+#./rat -d duration.peg 'P26W'
+./rat -d duration.peg '2.5wks'
 
