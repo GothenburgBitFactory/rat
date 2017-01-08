@@ -196,6 +196,9 @@ void PEG::loadFromString (const std::string& input)
                    t._token.back ()  == '>')
           {
             t.tag ("intrinsic");
+
+            if (t._token.substr (0, 8) == "<entity:")
+              t.tag ("entity");
           }
 
           // Add the new Token to the most recent Production, of the current
@@ -348,7 +351,8 @@ void PEG::validate () const
         intrinsic != "<alpha>"     &&
         intrinsic != "<character>" &&
         intrinsic != "<word>"      &&
-        intrinsic != "<token>")
+        intrinsic != "<token>"     &&
+        intrinsic.substr (0, 8) != "<entity:")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
 
