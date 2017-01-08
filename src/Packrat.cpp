@@ -559,7 +559,7 @@ bool Packrat::matchCharLiteral (
       parseTree->addBranch (b);
 
       if (_debug > 1)
-        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << token._token << "\n"; 
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << token._token << "\n";
       if (_debug)
         std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
       return true;
@@ -648,6 +648,13 @@ std::string Packrat::dump () const
 
   out << "Packrat Parse "
       << _tree->dump ();
+
+  if (_entities.size ())
+  {
+    out << "  Entities\n";
+    for (const auto& entity : _entities)
+      out << "    " << entity.first << ':' << entity.second << '\n';
+  }
 
   return out.str ();
 }
