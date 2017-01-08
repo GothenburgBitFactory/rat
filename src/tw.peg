@@ -43,7 +43,7 @@ Writable_Attribute:  "status"
 Pseudo_Attribute:    "limit"
 
 UDA:                 "priority"
-#                     <entity:uda>
+                     <entity:uda>
 
 #Extension:           <entity:extension>
 
