@@ -29,6 +29,7 @@
 #include <Packrat.h>
 #include <Args.h>
 #include <FS.h>
+#include <shared.h>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -83,25 +84,39 @@ int main (int argc, const char* argv[])
       peg.debug ();
     peg.loadFromString (grammar);
 
+    // Gather all the entities.
+    std::multimap <std::string, std::string> entities;
+    for (int i = 1; i < args.getPositionalCount (); i++)
+    {
+      auto elements = split (args.getPositional (i), ':');
+      if (elements[0] == "entity")
+        entities.insert ({elements[1], elements[2]});
+    }
+
     // Test commandLine against grammar.
     for (int i = 1; i < args.getPositionalCount (); i++)
     {
       auto arg = args.getPositional (i);
+      if (arg.substr (0, 7) != "entity:")
+      {
+        // If the argument refers to an existing file, read it.
+        File input (arg);
+        if (input.exists () &&
+            input.readable ())
+          input.read (arg);
 
-      // If the argument refers to an existing file, read it.
-      File input (arg);
-      if (input.exists () &&
-          input.readable ())
-        input.read (arg);
+        // Create the parser.
+        Packrat packrat;
+        for (auto& entity : entities)
+          packrat.entity (entity.first, entity.second);
 
-      // Create the parser.
-      Packrat packrat;
-      for (auto i = 0; i < args.getOptionCount ("debug"); i++)
-        packrat.debug ();
-      packrat.parse (peg, arg);
-      std::cout << packrat.dump ();
+        for (auto i = 0; i < args.getOptionCount ("debug"); i++)
+          packrat.debug ();
+        packrat.parse (peg, arg);
+        std::cout << packrat.dump ();
 
-      // TODO Ready for eval.
+        // TODO Ready for eval.
+      }
     }
   }
 
