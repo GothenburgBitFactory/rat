@@ -72,6 +72,7 @@ public:
   std::string dump () const;
 
 private:
+  std::vector <std::string> loadImports (const std::vector <std::string>&);
   void validate () const;
 
 private:

@@ -280,6 +280,47 @@ std::string PEG::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> PEG::loadImports (const std::vector <std::string>& lines)
+{
+  std::vector <std::string> resolved;
+
+  for (auto& line : lines)
+  {
+    auto copy {trim (line)};
+
+    auto hash = copy.find ('#');
+    if (hash != std::string::npos)
+    {
+      copy.resize (hash);
+      copy = trim (copy);
+    }
+
+    if (copy.find ("import ") == 0)
+    {
+      File file (trim (copy.substr (7)));
+      if (file.exists () &&
+          file.readable ())
+      {
+        std::vector <std::string> imported;
+        file.read (imported);
+        imported = loadImports (imported);
+
+        resolved.insert(std::end(resolved), std::begin(imported), std::end(imported));
+      }
+      else
+        throw format ("Cannot import '{1}'", file._data);
+    }
+    else
+    {
+      // Store original line.
+      resolved.push_back (line);
+    }
+  }
+
+  return resolved;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void PEG::validate () const
 {
   if (_start == "")
