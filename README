@@ -83,6 +83,23 @@ Supported intrinsics are:
    <word>            Any consecutive string of non-whitespace, non-punctuation
    <token>           Any consecutive string of non-whitespace
 
+Entities are literal strings that are defined externally, and represented in the
+grammar as:
+
+   <entity:thing>
+
+This construct matches any of the externally provided entities in the 'thing'
+category. Entities are provided at runtime before a grammar is loaded. This
+capability allows for dynamic lists, such as user-defined reports, command, or
+extensions.
+
+Grammar files can grow large, and definitions may be shared across projects. To
+facilitate this, grammar files may be imported using this syntax:
+
+   import <file>
+
+Where the file is a reolvable path from the current working directory.
+
 
 How to Construct a Grammar
 --------------------------
