@@ -1,6 +1,10 @@
 #!/bin/bash
 
-./rat -d tw.peg 'add This is a test pro:P +tag due:eom' \
+./rat \
+  -d tw.peg \
+  --strict \
+  'add This is a test pro:P +tag due:eom' \
   entity:uda:priority \
   entity:report:next \
   entity:report:list
+
