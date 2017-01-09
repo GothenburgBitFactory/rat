@@ -297,6 +297,7 @@ bool Packrat::matchToken (
 //   <eol>        --> unicodeVerticalWhitespace
 //   <word>       --> <alpha>
 //   <token>      --> consecutive non <ws>
+//   <entity:e>   --> Any category 'e' token
 bool Packrat::matchIntrinsic (
   const PEG::Token& token,
   Pig& pig,
@@ -524,6 +525,36 @@ bool Packrat::matchIntrinsic (
       if (_debug)
         std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
       return true;
+    }
+  }
+
+  // <token> consecutive non-<ws>.
+  else if (token._token.find ("<entity:") == 0)
+  {
+    // Extract entity category
+    auto category = token._token.substr (8, token._token.length () - 9);
+
+    // MAtch against any one of the entity values in this category.
+    auto values = _entities.equal_range (category);
+    for (auto value = values.first; value != values.second; ++value)
+    {
+      if (pig.skipLiteral (value->second))
+      {
+        // Create a populated branch.
+        auto b = std::make_shared <Tree> ();
+        b->_name = "intrinsic";
+        b->tag ("entity");
+        b->attribute ("expected", token._token);
+        b->attribute ("value", value->second);
+        parseTree->addBranch (b);
+
+        if (_debug > 1)
+          std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << value->second << "\n";
+        if (_debug)
+          std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
+
+        return true;
+      }
     }
   }
 
