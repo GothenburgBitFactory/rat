@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (24);
+  UnitTest t (26);
 
   // Grammar that is valid.
   PEG peg1;
@@ -169,6 +169,20 @@ int main (int, char**)
   }
   catch (const std::string& e) { t.pass ("intrinsic: 'foo bar' " + e); }
 
+  // Entities
+  PEG peg5;
+  peg5.loadFromString ("thing: <entity:foo> <digit>");
+  t.is (peg5.firstRule (), "thing", "entity: firstRule found");
+
+  try
+  {
+    Packrat rat;
+    rat.entity ("foo", "bar");
+    rat.entity ("foo", "baz");
+    rat.parse (peg5, "bar3");
+    t.pass ("entity: 'bar3' valid");
+  }
+  catch (const std::string& e) { t.fail ("entity: 'bar3' " + e); }
 
   return 0;
 }
