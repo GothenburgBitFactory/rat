@@ -69,6 +69,7 @@ public:
   std::map <std::string, PEG::Rule> syntax () const;
   std::string firstRule () const;
   void debug ();
+  void strict (bool);
   std::string dump () const;
 
 private:
@@ -81,6 +82,7 @@ private:
   std::map <std::string, PEG::Rule> _rules     {};
   std::string                       _start     {};
   int                               _debug     {0};
+  bool                              _strict    {false};
 };
 
 #endif
