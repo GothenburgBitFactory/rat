@@ -384,8 +384,15 @@ void PEG::validate () const
   // Unused definitions - these are names in _rules that are never
   // referenced as token.
   for (const auto& nu : notUsed)
+  {
     if (nu != _start)
-      throw format ("Definition '{1}' is defined, but not referenced.", nu);
+    {
+      if (_strict)
+        throw format ("Definition '{1}' is defined, but not referenced.", nu);
+      else
+        std::cout << "Warning: Definition '" << nu << "' is defined, but not referenced.\n";
+    }
+  }
 
   // Intrinsics must be recognized.
   for (auto& intrinsic : intrinsics)
