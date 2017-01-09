@@ -44,6 +44,7 @@ void usage ()
             << "  -v/--version    Version number\n"
             << "  -h/--help       Command usage\n"
             << "  -d/--debug      Debug mode\n"
+            << "  -s/--strict     Strict grammar validation\n"
             << '\n';
   exit (0);
 }
@@ -58,6 +59,7 @@ int main (int argc, const char* argv[])
   args.addOption ("help",    false);
   args.addOption ("version", false);
   args.addOption ("debug",   false);
+  args.addOption ("strict",  false);
   args.scan (argc, argv);
 
   if (args.getOption ("help"))
@@ -80,6 +82,8 @@ int main (int argc, const char* argv[])
 
     // Parse the grammar.
     PEG peg;
+    if (args.getOption ("strict"))
+      peg.strict (true);
     for (auto i = 0; i < args.getOptionCount ("debug"); i++)
       peg.debug ();
     peg.loadFromString (grammar);
