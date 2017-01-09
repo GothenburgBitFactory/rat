@@ -82,10 +82,9 @@ void PEG::loadFromFile (File& file)
 //
 void PEG::loadFromString (const std::string& input)
 {
-  std::string rule_name = "";
-
   // This is a state machine.  Read each line.
-  for (auto& line : split (input, '\n'))
+  std::string rule_name = "";
+  for (auto& line : loadImports (split (input, '\n')))
   {
     line = trim (line);
 
