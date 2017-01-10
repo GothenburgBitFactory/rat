@@ -198,6 +198,9 @@ void PEG::loadFromString (const std::string& input)
 
             if (t._token.substr (0, 8) == "<entity:")
               t.tag ("entity");
+
+            if (t._token.substr (0, 10) == "<external:")
+              t.tag ("external");
           }
 
           // Add the new Token to the most recent Production, of the current
@@ -335,6 +338,7 @@ void PEG::validate () const
   std::vector <std::string> allTokens;
   std::vector <std::string> allLeftRecursive;
   std::vector <std::string> intrinsics;
+  std::vector <std::string> externals;
 
   for (const auto& rule : _rules)
   {
@@ -346,6 +350,9 @@ void PEG::validate () const
       {
         if (token.hasTag ("intrinsic"))
           intrinsics.push_back (token._token);
+
+        else if (token.hasTag ("external"))
+          externals.push_back (token._token);
 
         else if (! token.hasTag ("literal"))
           allTokens.push_back (token._token);
@@ -365,7 +372,8 @@ void PEG::validate () const
   // Undefined value - these are definitions that appear in token, but are
   // not in _rules.
   for (const auto& nd : notDefined)
-    throw format ("Definition '{1}' referenced, but not defined.", nd);
+    if (std::find (externals.begin (), externals.end (), nd) == externals.end ())
+      throw format ("Definition '{1}' referenced, but not defined.", nd);
 
   // Circular definitions - these are names in _rules that also appear as
   // the only token in any of the alternates for that definition.
@@ -385,7 +393,8 @@ void PEG::validate () const
   // referenced as token.
   for (const auto& nu : notUsed)
   {
-    if (nu != _start)
+    if (std::find (externals.begin (), externals.end (), nu) == externals.end () &&
+        nu != _start)
     {
       if (_strict)
         throw format ("Definition '{1}' is defined, but not referenced.", nu);
@@ -396,16 +405,17 @@ void PEG::validate () const
 
   // Intrinsics must be recognized.
   for (auto& intrinsic : intrinsics)
-    if (intrinsic != "<digit>"     &&
-        intrinsic != "<punct>"     &&
-        intrinsic != "<eol>"       &&
-        intrinsic != "<sep>"       &&
-        intrinsic != "<ws>"        &&
-        intrinsic != "<alpha>"     &&
-        intrinsic != "<character>" &&
-        intrinsic != "<word>"      &&
-        intrinsic != "<token>"     &&
-        intrinsic.substr (0, 8) != "<entity:")
+    if (intrinsic != "<digit>"                 &&
+        intrinsic != "<punct>"                 &&
+        intrinsic != "<eol>"                   &&
+        intrinsic != "<sep>"                   &&
+        intrinsic != "<ws>"                    &&
+        intrinsic != "<alpha>"                 &&
+        intrinsic != "<character>"             &&
+        intrinsic != "<word>"                  &&
+        intrinsic != "<token>"                 &&
+        intrinsic.substr (0, 8)  != "<entity:" &&
+        intrinsic.substr (0, 10) != "<external:")
       throw format ("Specified intrinsic '{1}' is not supported.", intrinsic);
 }
 
