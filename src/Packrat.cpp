@@ -77,6 +77,17 @@ void Packrat::entity (const std::string& category, const std::string& name)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Packrat::external (
+  const std::string& rule,
+  bool (*fn)(Pig&, std::shared_ptr <Tree>))
+{
+  if (_externals.find (rule) != _externals.end ())
+    throw format ("There is already an external parser defined for rule '{1}'.", rule);
+
+  _externals[rule] = fn;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // If there is a match, pig advances further down the pipe.
 bool Packrat::matchRule (
   const std::string& rule,
@@ -550,6 +561,31 @@ bool Packrat::matchIntrinsic (
 
         if (_debug > 1)
           std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << value->second << "\n";
+        if (_debug)
+          std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
+
+        return true;
+      }
+    }
+  }
+
+  // <external:rule>
+  else if (token._token.find ("<external:") == 0)
+  {
+    // Extract entity category
+    auto rule = token._token.substr (10, token._token.length () - 9);
+
+    // Any rule can be overridden by an external parser.
+    if (_externals.find (rule) != _externals.end ())
+    {
+      if (_externals[rule] (pig, parseTree))
+      {
+        if (_debug > 1)
+        {
+          auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
+          std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n";
+        }
+
         if (_debug)
           std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
 
