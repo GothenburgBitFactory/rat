@@ -539,13 +539,13 @@ bool Packrat::matchIntrinsic (
     }
   }
 
-  // <token> consecutive non-<ws>.
+  // <entity:category>.
   else if (token._token.find ("<entity:") == 0)
   {
     // Extract entity category
     auto category = token._token.substr (8, token._token.length () - 9);
 
-    // MAtch against any one of the entity values in this category.
+    // Match against any one of the entity values in this category.
     auto values = _entities.equal_range (category);
     for (auto value = values.first; value != values.second; ++value)
     {
