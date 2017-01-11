@@ -62,7 +62,7 @@ Note the blank line between definitions, and only one production per line. Note
 that 'sign' and 'digit' are leaf nodes, which contain no other rule references.
 
 There are several built-in categories of character/token named intrinsics, and
-these may be used to simplїfy grammar and speed parsing. The example above can
+these may be used to simplify grammar and speed parsing. The example above can
 use the <digit> intrinsic:
 
    positive_integer: sign? <digit>+
@@ -93,12 +93,20 @@ category. Entities are provided at runtime before a grammar is loaded. This
 capability allows for dynamic lists, such as user-defined reports, command, or
 extensions.
 
+Further dynamic support is available using the external intrinsic:
+
+   <external:thing>
+
+In this case, the parsing is delegated to an external function call, identified
+by the name 'thing'. External intrinsics allow complex parsing situations that
+are not readily expressed in PEG.
+
 Grammar files can grow large, and definitions may be shared across projects. To
 facilitate this, grammar files may be imported using this syntax:
 
    import <file>
 
-Where the file is a reolvable path from the current working directory.
+Where the file is a resolvable path from the current working directory.
 
 
 How to Construct a Grammar
