@@ -3,8 +3,9 @@
 
 ./rat \
   --debug \
-  clog.peg \
   --strict \
+  --time \
+  clog.peg \
   'include /path/to/file
 
 default rule "foo" --> suppress

@@ -2,6 +2,8 @@
 
 ./rat \
   --debug \
+  --strict \
+  --time \
   color.peg \
   'bold underline red on rgb255'
 

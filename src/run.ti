@@ -2,6 +2,8 @@
 
 ./rat \
   --debug \
+  --strict \
+  --time \
   ti.peg \
   'track 8am - now tag'
 
