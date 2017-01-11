@@ -1,0 +1,9 @@
+#!/bin/bash
+
+./rat \
+  --debug \
+  --strict \
+  --time \
+  dom.peg \
+  '123.entry'
+

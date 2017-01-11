@@ -1,0 +1,11 @@
+# Grammar for Taskwarrior DOM references.
+
+DOM: UUID '.' DOM_Attribute
+     DOM_ID '.' DOM_Attribute
+
+DOM_ID:  <digit>+
+
+DOM_Attribute: "entry"
+               "due"
+
+import uuid.peg
