@@ -8,7 +8,7 @@
   'include /path/to/file
 
 default rule "foo" --> suppress
-default rule "bar" --> red line'
+default rule /bar/ --> red line'
 
 #  'default rule /foo/ --> red line'
 #  'default rule "foo" --> suppress'
