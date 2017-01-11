@@ -29,6 +29,7 @@
 #include <Packrat.h>
 #include <Args.h>
 #include <FS.h>
+#include <Timer.h>
 #include <shared.h>
 #include <cstdio>
 #include <cstring>
@@ -45,6 +46,7 @@ void usage ()
             << "  -h/--help       Command usage\n"
             << "  -d/--debug      Debug mode\n"
             << "  -s/--strict     Strict grammar validation\n"
+            << "  -t/--time       Show performance metrics\n"
             << '\n';
   exit (0);
 }
@@ -60,6 +62,7 @@ int main (int argc, const char* argv[])
   args.addOption ("version", false);
   args.addOption ("debug",   false);
   args.addOption ("strict",  false);
+  args.addOption ("time",    false);
   args.scan (argc, argv);
 
   if (args.getOption ("help"))
@@ -86,7 +89,13 @@ int main (int argc, const char* argv[])
       peg.strict (true);
     for (auto i = 0; i < args.getOptionCount ("debug"); i++)
       peg.debug ();
+
+    Timer t1;
+    t1.start ();
     peg.loadFromString (grammar);
+    t1.stop ();
+    if (args.getOption ("time"))
+      std::cout << "PEG load/parse " << t1.total_us () << "μs\n";
 
     // Gather all the entities.
     std::multimap <std::string, std::string> entities;
@@ -116,7 +125,14 @@ int main (int argc, const char* argv[])
 
         for (auto i = 0; i < args.getOptionCount ("debug"); i++)
           packrat.debug ();
+
+        Timer t2;
+        t2.start ();
         packrat.parse (peg, arg);
+        t2.stop ();
+        if (args.getOption ("time"))
+          std::cout << "RAT parse " << t2.total_us () << "μs\n";
+
         std::cout << packrat.dump ();
 
         // TODO Ready for eval.

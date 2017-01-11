@@ -14,6 +14,7 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/FS.cpp            libshared/src/FS.h
                     libshared/src/Lexer.cpp         libshared/src/Lexer.h
                     libshared/src/Pig.cpp           libshared/src/Pig.h
+                    libshared/src/Timer.cpp         libshared/src/Timer.h
                     libshared/src/Tree.cpp          libshared/src/Tree.h
                     libshared/src/format.cpp        libshared/src/format.h
                     libshared/src/shared.cpp        libshared/src/shared.h
