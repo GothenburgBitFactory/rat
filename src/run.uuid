@@ -1,0 +1,9 @@
+#!/bin/bash
+
+./rat \
+  --debug \
+  --strict \
+  --time \
+  uuid.peg \
+  '12345678-90ab-CDEF-1234-567890abcdef'
+
