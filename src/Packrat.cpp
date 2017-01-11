@@ -492,7 +492,7 @@ bool Packrat::matchIntrinsic (
 
     if (pig.cursor () > checkpoint)
     {
-      auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
+      auto word = pig.substr (checkpoint, pig.cursor () - checkpoint + 1);
 
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
