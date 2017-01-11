@@ -252,6 +252,14 @@ std::string PEG::dump () const
   std::stringstream out;
   out << "PEG\n";
 
+  // Show the import files, if any.
+  if (_imports.size ())
+  {
+    for (const auto& import : _imports)
+      out << "  import " << import << '\n';
+    out << '\n';
+  }
+
   // Determine longest rule name, for display alignment.
   size_t longest = 0;
   for (const auto& rule : _rules)
