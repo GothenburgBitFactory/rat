@@ -1,5 +1,3 @@
-# ./rat -d taskwarrior.peg 'project:foo list +tag rc.name=value'
-
 # Grammar for the Taskwarrior command line.
 # When complete, task.git/src/CLI.* can be replaced.
 
@@ -8,7 +6,7 @@ CLI:                 Filter Command? Modification
 Filter:              Filter_Term*
 
 Filter_Term:         <sep>* ID
-#                     <sep>* UUID
+                     <sep>* UUID
                      <sep>* Pair
 
 Command:             "next"
@@ -25,8 +23,6 @@ Mod_Term:            <sep>* Pair
                      <sep>* <word>
 
 ID:                  <digit>+
-
-#UUID:                <xdigit> <xdigit> <xdigit>
 
 Pair:                Attribute ':' Expression
 
@@ -62,4 +58,4 @@ Expression_Term:     <token>
 #import color.peg
 #import datetime.peg
 #import duration.peg
-
+import uuid.peg
