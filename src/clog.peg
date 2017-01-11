@@ -34,43 +34,4 @@ Action:       "line"
               "blank"
               "suppress"
 
-# color.peg
-Color:           Color_FG <sep>* "on" <sep>+ Color_BG
-                 Color_FG
-                 "on" <sep>+ Color_BG
-
-
-Color_FG:        Color_bold? Color_underline? Color_16
-                 Color_underline? Color_bold? Color_16
-                 Color_underline? Color_256
-                 Color_underline? Color_RGB
-                 Color_underline? Color_Grey
-
-Color_BG:        Color_bright? Color_16
-                 Color_256
-                 Color_RGB
-                 Color_Grey
-
-Color_bold:      "bold" <sep>*
-
-Color_underline: "underline" <sep>*
-
-Color_bright:    "bright" <sep>*
-
-Color_16:        "black"
-                 "red"
-                 "blue"
-                 "green"
-                 "yellow"
-                 "magenta"
-                 "cyan"
-                 "white"
-                 "inverse"
-
-Color_256:       "color" <digit>+
-
-Color_RGB:       "rgb" <digit> <digit> <digit>
-
-Color_Grey:      "gray" <digit>+
-                 "grey" <digit>+
-
+import color.peg
