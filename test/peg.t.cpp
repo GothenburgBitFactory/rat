@@ -73,6 +73,7 @@ int main (int, char**)
   try
   {
     PEG p;
+    p.strict (true);
     p.loadFromString ("this: that\nthat: 'a'\nother: 'b'");
     t.fail ("PEG: Grammar with unreferenced definition");
   }
