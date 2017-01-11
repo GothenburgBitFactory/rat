@@ -309,6 +309,7 @@ bool Packrat::matchToken (
 //   <word>       --> <alpha>
 //   <token>      --> consecutive non <ws>
 //   <entity:e>   --> Any category 'e' token
+//   <external:x> --> Delegate to external function
 bool Packrat::matchIntrinsic (
   const PEG::Token& token,
   Pig& pig,
@@ -573,24 +574,35 @@ bool Packrat::matchIntrinsic (
   else if (token._token.find ("<external:") == 0)
   {
     // Extract entity category
-    auto rule = token._token.substr (10, token._token.length () - 9);
+    auto rule = token._token.substr (10, token._token.length () - 11);
 
     // Any rule can be overridden by an external parser.
     if (_externals.find (rule) != _externals.end ())
     {
-      if (_externals[rule] (pig, parseTree))
-      {
-        if (_debug > 1)
-        {
-          auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
-          std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n";
-        }
+      // Create a pre-populated branch, which is attached on success only.
+      auto newBranch = std::make_shared <Tree> ();
+      newBranch->_name = "intrinsic";
+      newBranch->tag ("external");
+      newBranch->attribute ("expected", token._token);
 
+      if (_externals[rule] (pig, newBranch))
+      {
+        // Determine what was parsed.
+        auto word = pig.substr (checkpoint, pig.cursor () - checkpoint);
+
+        // Attach the new branch.
+        newBranch->attribute ("value", word);
+        parseTree->addBranch (newBranch);
+
+        if (_debug > 1)
+          std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << word << "\n";
         if (_debug)
           std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
 
         return true;
       }
+
+      // Note: Branch 'newBranch' goes out of scope here if parsing fails.
     }
   }
 
