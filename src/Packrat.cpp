@@ -300,6 +300,7 @@ bool Packrat::matchToken (
 ////////////////////////////////////////////////////////////////////////////////
 // Supports the following:
 //   <digit>      --> unicodeLatinDigit
+//   <hex>        --> unicodeHexDigit
 //   <character>  --> anything
 //   <alpha>      --> unicodeAlpha
 //   <punct>      --> unicodePunctuation
@@ -325,6 +326,27 @@ bool Packrat::matchIntrinsic (
   {
     int digit;
     if (pig.getDigit (digit))
+    {
+      // Create a populated branch.
+      auto b = std::make_shared <Tree> ();
+      b->_name = "intrinsic";
+      b->attribute ("expected", token._token);
+      b->attribute ("value", format ("{1}", digit));
+      parseTree->addBranch (b);
+
+      if (_debug > 1)
+        std::cout << "trace " << std::string (indent, ' ') << "[32mmatch[0m " << digit << "\n";
+      if (_debug)
+        std::cout << "trace " << pig.dump () << ' ' << token.dump () << "\n";
+      return true;
+    }
+  }
+
+  // Upper or lower case hex digit.
+  if (token._token == "<hex>")
+  {
+    int digit;
+    if (pig.getHexDigit (digit))
     {
       // Create a populated branch.
       auto b = std::make_shared <Tree> ();
