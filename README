@@ -72,7 +72,8 @@ use the <digit> intrinsic:
 
 Supported intrinsics are:
 
-   <digit>           Numeric digits: 0, 1, 2, 3 ... 9
+   <digit>           Numeric digits: 0 ... 9
+   <hex>             Hex digits: 0 ... 9, a ... f, A ... F
    <punct>           Punctuation: . , ; : ' " ! ? etc
    <alpha>           Any single character that is printable, and not punctuation
                      or whitespace
