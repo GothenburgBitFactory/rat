@@ -406,6 +406,7 @@ void PEG::validate () const
   // Intrinsics must be recognized.
   for (auto& intrinsic : intrinsics)
     if (intrinsic != "<digit>"                 &&
+        intrinsic != "<hex>"                   &&
         intrinsic != "<punct>"                 &&
         intrinsic != "<eol>"                   &&
         intrinsic != "<sep>"                   &&
