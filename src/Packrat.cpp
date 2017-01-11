@@ -735,6 +735,13 @@ std::string Packrat::dump () const
       out << "    " << entity.first << ':' << entity.second << '\n';
   }
 
+  if (_externals.size ())
+  {
+    out << "  Externals\n";
+    for (const auto& external : _externals)
+      out << "    " << external.first << "\n";
+  }
+
   return out.str ();
 }
 
