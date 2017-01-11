@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ./rat \
-  -d tw.peg \
+  --debug \
+  tw.peg \
   --strict \
   'add This is a test pro:P +tag due:eom' \
   entity:uda:priority \

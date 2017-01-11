@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./rat \
+  --debug \
+  bug.peg \
+  x
+

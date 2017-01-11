@@ -1,5 +1,8 @@
 #!/bin/bash
 
-#./rat -d color.peg 'white on red'
-./rat -d color.peg 'bold underline red on rgb255'
+./rat \
+  --debug \
+  color.peg \
+  'bold underline red on rgb255'
 
+#  'white on red'

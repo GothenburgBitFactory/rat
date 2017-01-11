@@ -1,4 +1,7 @@
 #!/bin/bash
 
-./rat -d ti.peg 'track 8am - now tag'
+./rat \
+  --debug \
+  ti.peg \
+  'track 8am - now tag'
 
