@@ -309,11 +309,17 @@ std::vector <std::string> PEG::loadImports (const std::vector <std::string>& lin
       if (file.exists () &&
           file.readable ())
       {
-        std::vector <std::string> imported;
-        file.read (imported);
-        imported = loadImports (imported);
+        // Only import files that are not already imported.
+        if (std::find (_imports.begin (), _imports.end (), file._data) == _imports.end ())
+        {
+          _imports.push_back (file._data);
 
-        resolved.insert(std::end(resolved), std::begin(imported), std::end(imported));
+          std::vector <std::string> imported;
+          file.read (imported);
+          imported = loadImports (imported);
+
+          resolved.insert(std::end(resolved), std::begin(imported), std::end(imported));
+        }
       }
       else
         throw format ("Cannot import '{1}'", file._data);

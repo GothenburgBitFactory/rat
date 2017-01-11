@@ -83,6 +83,7 @@ private:
   std::string                       _start     {};
   int                               _debug     {0};
   bool                              _strict    {false};
+  std::vector <std::string>         _imports   {};
 };
 
 #endif
