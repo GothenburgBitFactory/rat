@@ -5,15 +5,15 @@
 
 CLI: Command Range? Tag* Hint*
 
-Command: "start"
-         "stop"
+Command: <sep>* "start"
+         <sep>* "stop"
+         <sep>* "track"
 
-Range:   "date_from" "-"  "date_to"
-         "date_from" "to" "date_to"
+Range:   <sep>* Datetime <sep>* '-'  <sep>* Datetime
+         <sep>* Datetime <sep>* "to" <sep>* Datetime
 
-Tag:     Word+
+Tag:     <sep>* <word>
 
-Word:    <character>+
+Hint:    <sep>* ":yes"
 
-Hint:   ":yes"
-
+import datetime.peg
