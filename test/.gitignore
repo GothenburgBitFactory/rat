@@ -1,6 +1,7 @@
 .log
 *.pyc
 charliteral.t
+external.t
 intrinsic.t
 negative.t
 peg.t
