@@ -30,7 +30,6 @@
 #include <shared.h>
 #include <format.h>
 #include <iostream>
-#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string PEG::Token::dump () const

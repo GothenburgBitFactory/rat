@@ -31,8 +31,6 @@
 #include <FS.h>
 #include <Timer.h>
 #include <shared.h>
-#include <cstdio>
-#include <cstring>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
