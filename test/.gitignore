@@ -1,12 +1,2 @@
 *.log
 *.pyc
-charliteral.t
-external.t
-intrinsic.t
-negative.t
-peg.t
-plus.t
-positive.t
-question.t
-star.t
-stringliteral.t
