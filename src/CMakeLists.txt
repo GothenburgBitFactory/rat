@@ -4,15 +4,15 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${RAT_INCLUDE_DIRS})
 
-set (rat_SRCS rat.cpp
-              Packrat.cpp Packrat.h
-              PEG.cpp     PEG.h)
+set (rat_SRCS rat.cpp)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Datetime.cpp      libshared/src/Datetime.h
                     libshared/src/Duration.cpp      libshared/src/Duration.h
                     libshared/src/FS.cpp            libshared/src/FS.h
                     libshared/src/Lexer.cpp         libshared/src/Lexer.h
+                    libshared/src/Packrat.cpp       libshared/src/Packrat.h
+                    libshared/src/PEG.cpp           libshared/src/PEG.h
                     libshared/src/Pig.cpp           libshared/src/Pig.h
                     libshared/src/Timer.cpp         libshared/src/Timer.h
                     libshared/src/Tree.cpp          libshared/src/Tree.h
