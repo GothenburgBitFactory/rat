@@ -1,6 +1,8 @@
 # ./rat -d datetime.peg '2016-12-27T18:28:00Z'
 # libshared.git/src/Datetime.{h,cpp}
 
+# TODO: Add negative lookahead to match libshared/Datetime.
+
 Datetime:        Datetime_Epoch
 #                 Datetime_Formatted
                  Datetime_ISO
