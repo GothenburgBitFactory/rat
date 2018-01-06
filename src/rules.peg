@@ -14,3 +14,13 @@ Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
 Path:         '/' <token>
               '~' <token>
 
+# if condition :
+#   block
+# else :
+#   block
+#
+# rule name ( ) trigger? :
+#   block
+#
+# for name in collection :
+#   block
