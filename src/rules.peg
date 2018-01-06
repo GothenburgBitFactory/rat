@@ -5,6 +5,7 @@ Rules:        Directive+
 Directive:    Include Comment?
               Rule
 
+# There is a bug that sees the quoted # as a comment.
 Comment:      '#' <character>* <eol>
 
 Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
