@@ -6,6 +6,7 @@ Directive:    Include Comment?
               Rule
 
 # There is a bug that sees the quoted # as a comment.
+# See libshared/src/PEG.cpp, where the line get de-commented.
 Comment:      '#' <character>* <eol>
 
 Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
