@@ -1,0 +1,17 @@
+#!/bin/bash
+
+./rat \
+  --debug \
+  --strict \
+  --time \
+  rules.peg \
+  '# Comment
+include /path/to/file
+include /path/to/other # Comment
+         # Comment
+name=value
+        name2         =       value2
+rule myRule(task) :on_add
+    error('not implemented')
+
+name3 = value3'

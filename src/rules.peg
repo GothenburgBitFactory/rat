@@ -1,0 +1,14 @@
+# ./rat -d rules.peg '# Comment'
+
+Rules:        Directive+
+
+Directive:    Include Comment?
+              Rule
+
+Comment:      '#' <character>* <eol>
+
+Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
+
+Path:         '/' <token>
+              '~' <token>
+
