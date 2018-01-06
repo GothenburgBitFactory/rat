@@ -24,3 +24,8 @@ Path:         '/' <token>
 #
 # for name in collection :
 #   block
+#
+# include path
+#
+# name = value?
+#
