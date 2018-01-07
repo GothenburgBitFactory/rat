@@ -5,6 +5,21 @@ Rules:        Directive+
 Directive:    Include Comment?
               Rule
 
+Rule:         "rule" Name "(" Args ")" Trigger? ":" <eol> <sep>+ Block
+
+Name:         .+
+
+Args:         .+
+
+Trigger:      "on_launch"
+              "on_exit"
+              "on_add"
+              "on_modify"
+
+Block:        Statement+
+
+Statement:    Comment
+
 # There is a bug that sees the quoted # as a comment.
 # See libshared/src/PEG.cpp, where the line get de-commented.
 Comment:      '#' <character>* <eol>
@@ -29,3 +44,4 @@ Path:         '/' <token>
 #
 # name = value?
 #
+
