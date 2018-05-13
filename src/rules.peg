@@ -4,12 +4,14 @@ Rules:        Directive+
 
 Directive:    Include Comment?
               Rule
+              Comment
+              <eol>+
 
 Rule:         "rule" Name "(" Args ")" Trigger? ":" <eol> <sep>+ Block BlankLine
 
-Name:         .+
+Name:         <word>
 
-Args:         .+
+Args:         <word>
 
 Trigger:      "on_launch"
               "on_exit"
@@ -20,11 +22,11 @@ Block:        Statement+
 
 Statement:    Comment
 
-BlankLine:    <eol>
+BlankLine:    <eol> <eol>
 
 # There is a bug that sees the quoted # as a comment.
 # See libshared/src/PEG.cpp, where the line get de-commented.
-Comment:      '#' <character>* <eol>
+Comment:      <sep>* '#' <character>* <eol>
 
 Include:      <sep>* "include" <sep>+ Path <sep>* <eol>*
 
